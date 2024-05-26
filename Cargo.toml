@@ -1,0 +1,8 @@
+[package]
+name = "gpui-builder"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+gpui = { git = "https://github.com/zed-industries/zed", rev = "ddb551c794345538dbef112c5bcc2ae99f27b07f" }
