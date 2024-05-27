@@ -1,14 +1,15 @@
-use std::{fs, path::Path, sync::Arc, thread};
-
+use gpui::{Context, WindowContext};
 use notify::Watcher;
 use serde::Deserialize;
+use std::fs;
+use std::path::Path;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(rename = "div")]
 pub struct HierarchyDiv {
-    text: Option<String>,
+    pub text: Option<String>,
     #[serde(rename = "div", default)]
-    children: Vec<HierarchyDiv>,
+    pub children: Vec<HierarchyDiv>,
 }
 
 impl HierarchyDiv {
@@ -21,32 +22,37 @@ impl HierarchyDiv {
         }
     }
 
-    pub fn watch<P: AsRef<Path>>(path: P, f: Arc<dyn Fn(HierarchyDiv) + Sync + Send>) {
+    pub fn watch<P: AsRef<Path>>(path: P, cx: &mut WindowContext) -> gpui::Model<HierarchyDiv> {
         let path = path.as_ref().to_path_buf();
-        if let Some(div) = HierarchyDiv::from_file(&path) {
-            f(div);
-        }
+        let (tx, rx) = async_channel::unbounded();
 
-        thread::spawn(move || {
-            let path_clone = path.clone();
-            let mut watcher = notify::recommended_watcher(move |res| match res {
-                Ok(_) => {
-                    if let Some(div) = HierarchyDiv::from_file(&path_clone) {
-                        f(div);
-                    }
+        let path_clone = path.clone();
+        let mut watcher = notify::recommended_watcher(move |res| match res {
+            Ok(_) => {
+                if let Some(div) = HierarchyDiv::from_file(&path_clone) {
+                    tx.send_blocking(div).unwrap();
                 }
-                Err(e) => println!("watcher error: {:?}", e),
-            })
-            .unwrap();
+            }
+            Err(e) => println!("watcher error: {:?}", e),
+        })
+        .unwrap();
 
+        let model = cx.new_model(|_| HierarchyDiv::from_file(&path).unwrap());
+        let model_clone = model.clone();
+
+        cx.spawn(|mut cx| async move {
             watcher
-                .watch(path.as_path(), notify::RecursiveMode::NonRecursive)
+                .watch(&path, notify::RecursiveMode::NonRecursive)
                 .unwrap();
 
-            // TODO: Not this
-            loop {
-                std::thread::sleep(std::time::Duration::from_secs(1));
+            while let Ok(new_hierarchy) = rx.recv().await {
+                cx.update_model(&model_clone, |hierarchy, _| {
+                    *hierarchy = new_hierarchy;
+                })
+                .unwrap();
             }
-        });
+        })
+        .detach();
+        model
     }
 }

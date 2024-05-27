@@ -5,6 +5,7 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
+async-channel = "2.3.1"
 gpui = { git = "https://github.com/zed-industries/zed", rev = "ddb551c794345538dbef112c5bcc2ae99f27b07f" }
 lazy_static = "1.4.0"
 notify = "6.1.1"
