@@ -1,34 +1,38 @@
 use gpui::*;
+use hierarchy::HierarchyDiv;
+use std::sync::Arc;
 
-struct HelloWorld {
-    text: SharedString,
-}
+mod colors;
+mod hierarchy;
 
-impl Render for HelloWorld {
+struct RootView;
+
+impl Render for RootView {
     fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
-        div()
-            .flex()
-            .bg(rgb(0x2e7d32))
-            .size_full()
-            .justify_center()
-            .items_center()
-            .text_xl()
-            .text_color(rgb(0xffffff))
-            .child(format!("Hello, {}!", &self.text))
+        div().size_full().bg(*colors::BACKGROUND)
     }
 }
 
 fn main() {
+    HierarchyDiv::watch("./hierarchy.xml", Arc::new(|div| println!("{:#?}", div)));
+
     App::new().run(|cx: &mut AppContext| {
-        cx.open_window(WindowOptions::default(), |cx| {
+        let options = WindowOptions {
+            titlebar: Some(TitlebarOptions {
+                title: Some("GPUI Builder".into()),
+                appears_transparent: false,
+                traffic_light_position: None,
+            }),
+            ..Default::default()
+        };
+
+        cx.open_window(options, |cx| {
             cx.on_window_should_close(|cx| {
                 cx.remove_window();
                 true
             });
 
-            cx.new_view(|_cx| HelloWorld {
-                text: "World".into(),
-            })
+            cx.new_view(|_cx| RootView {})
         });
     });
 }
