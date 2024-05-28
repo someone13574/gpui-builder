@@ -8,23 +8,21 @@ use std::path::Path;
 mod div;
 
 pub struct Preview {
-    pub component_model: Model<Component>,
+    state: PreviewState,
 }
 
 impl Preview {
-    pub fn new<V: Render + 'static, P: AsRef<Path>>(
-        cx: &mut ViewContext<V>,
-        component_path: P,
-    ) -> View<Preview> {
-        let component_model = watched_component(cx, component_path);
-        cx.new_view(|_| Self { component_model })
+    pub fn new<T: 'static>(state: PreviewState, cx: &mut ViewContext<T>) -> View<Self> {
+        cx.observe(&state.component, |_, _, cx| cx.notify())
+            .detach();
+        cx.new_view(|_| Self { state })
     }
 }
 
 impl Render for Preview {
     fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
         let root_element = cx
-            .read_model(&self.component_model, |root, _| root.clone())
+            .read_model(&self.state.component, |root, _| root.clone())
             .element;
 
         let this = div()
@@ -40,10 +38,20 @@ impl Render for Preview {
     }
 }
 
-fn watched_component<P: AsRef<Path>>(
-    cx: &mut WindowContext,
-    component_path: P,
-) -> Model<Component> {
+#[derive(Clone)]
+pub struct PreviewState {
+    component: Model<Component>,
+}
+
+impl PreviewState {
+    pub fn new<P: AsRef<Path>>(component_path: P, cx: &mut AppContext) -> Self {
+        Self {
+            component: watched_component(cx, component_path),
+        }
+    }
+}
+
+fn watched_component<P: AsRef<Path>>(cx: &mut AppContext, component_path: P) -> Model<Component> {
     let component_path = component_path.as_ref().to_path_buf();
     let (tx, rx) = async_channel::unbounded();
     let model = cx.new_model(|_| Component::from_file(&component_path).unwrap());
@@ -66,8 +74,9 @@ fn watched_component<P: AsRef<Path>>(
             .unwrap();
 
         while let Ok(new_component) = rx.recv().await {
-            cx.update_model(&model_clone, |component, _| {
+            cx.update_model(&model_clone, |component, cx| {
                 *component = new_component;
+                cx.notify();
             })
             .unwrap();
         }

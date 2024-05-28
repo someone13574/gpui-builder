@@ -1,5 +1,5 @@
 use gpui::*;
-use ui_components::main_view::MainView;
+use ui_components::main_view::{MainView, MainViewState};
 
 mod appearance;
 mod hierarchy;
@@ -22,7 +22,7 @@ fn main() {
                 true
             });
 
-            cx.new_view(|_| MainView {})
+            MainView::new(MainViewState::new("hierarchy.xml", cx), cx)
         });
     });
 }
