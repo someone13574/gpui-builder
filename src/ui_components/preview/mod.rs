@@ -26,6 +26,7 @@ impl Render for Preview {
             .element;
 
         let this = div()
+            .flex()
             .bg(*colors::BG)
             .size_full()
             .justify_center()

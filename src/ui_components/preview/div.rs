@@ -17,10 +17,13 @@ impl From<DivElement> for DivPreview {
 impl RenderOnce for DivPreview {
     fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
         div()
+            .p_2()
             .m_2()
             .border_1()
+            .rounded(px(16.0))
             .border_color(rgb(0xffffff))
             .bg(rgb(0x808080))
+            .font_family("Sans")
             .when(!self.element.children.is_empty(), |mut this| {
                 for child in self.element.children {
                     match child {
