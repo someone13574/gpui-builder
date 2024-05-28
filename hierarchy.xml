@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<div>
-    <text>test 1</text>
+<component>
     <div>
-        <text>test 2</text>
-    </div>
-    <div>
+        <text>testing 1</text>
+        <text>testing 2</text>
         <div>
-            <text>test 3</text>
-        </div>
-        <div>
-            <text>test 65</text>
+            <div>
+                <text>testing 3</text>
+            </div>
+            <div>
+                <text>testing 3</text>
+            </div>
         </div>
     </div>
-</div>
+</component>

@@ -1,10 +1,9 @@
-use component_preview::ComponentPreviewView;
 use gpui::*;
-use hierarchy::HierarchyDiv;
+use ui_components::main_view::MainView;
 
-mod colors;
-mod component_preview;
+mod appearance;
 mod hierarchy;
+mod ui_components;
 
 fn main() {
     App::new().run(|cx: &mut AppContext| {
@@ -23,8 +22,7 @@ fn main() {
                 true
             });
 
-            let hierarchy_model = HierarchyDiv::watch("hierarchy.xml", cx);
-            cx.new_view(|_cx| ComponentPreviewView { hierarchy_model })
+            cx.new_view(|_| MainView {})
         });
     });
 }
