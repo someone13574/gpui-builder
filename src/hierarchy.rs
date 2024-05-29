@@ -23,8 +23,17 @@ pub enum Element {
     Text(String),
 }
 
+impl From<Element> for String {
+    fn from(value: Element) -> Self {
+        match value {
+            Element::Div(_) => "div:".to_string(),
+            Element::Text(text) => format!("\"{text}\""),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct DivElement {
     #[serde(rename = "$value", default)]
-    pub children: Option<Vec<Element>>,
+    pub children: Vec<Element>,
 }

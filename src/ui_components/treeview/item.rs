@@ -1,33 +1,42 @@
-use gpui::*;
-use prelude::FluentBuilder;
-
 use crate::{appearance::colors, hierarchy::Element};
+use gpui::*;
 
-#[derive(IntoElement)]
-pub struct TreeviewItem {
-    pub element: Element,
-    pub root: bool,
+pub fn get_tree(element: &Element, indent: u32) -> Vec<TreeViewItem> {
+    let mut flat_tree = vec![TreeViewItem {
+        text: element.clone().into(),
+        indent,
+    }];
+    if let Element::Div(div) = element {
+        for child in &div.children {
+            flat_tree.append(&mut get_tree(child, indent + 1));
+        }
+    }
+    flat_tree
 }
 
-impl RenderOnce for TreeviewItem {
-    fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
-        let this = div()
-            .text_color(*colors::TEXT)
-            .font_family("Sans")
-            .text_size(px(14.0))
-            .when(!self.root, |this| {
-                this.pl_6().border_l(px(1.0)).border_color(rgb(0x404040))
-            });
-        match self.element {
-            Element::Div(div) => this
-                .child("div:")
-                .when_some(div.children, |this, children| {
-                    this.children(children.iter().map(|child| TreeviewItem {
-                        element: child.clone(),
-                        root: false,
-                    }))
-                }),
-            Element::Text(text) => this.child(format!("\"{text}\"")),
-        }
+#[derive(Default)]
+pub struct TreeViewItem {
+    pub text: String,
+    pub indent: u32,
+}
+
+impl TreeViewItem {
+    pub fn into_view<V: 'static>(self, cx: &mut ViewContext<V>) -> View<Self> {
+        cx.new_view(|_| self)
+    }
+}
+
+impl Render for TreeViewItem {
+    fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
+        div()
+            .flex()
+            .flex_row()
+            .children((0..self.indent).map(|_| {
+                div()
+                    .min_w(px(32.0))
+                    .border_l_1()
+                    .border_color(*colors::BORDER)
+            }))
+            .child(self.text.clone())
     }
 }

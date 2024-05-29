@@ -27,8 +27,14 @@ impl Render for MainView {
             .flex_grow()
             .items_center()
             .bg(*colors::BG)
-            .child(TreeviewPanel::new(self.state.preview_state.clone(), cx))
+            .child(
+                TreeviewPanel {
+                    state: self.state.preview_state.clone(),
+                }
+                .into_view(cx),
+            )
             .child(Preview::new(self.state.preview_state.clone(), cx))
+            .id("main-view")
     }
 }
 

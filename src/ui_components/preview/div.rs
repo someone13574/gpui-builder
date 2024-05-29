@@ -16,22 +16,21 @@ impl From<DivElement> for DivPreview {
 
 impl RenderOnce for DivPreview {
     fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
-        div()
+        let mut this = div()
             .p_2()
             .m_2()
             .border_1()
             .rounded(px(16.0))
             .border_color(rgb(0xffffff))
             .bg(rgb(0x808080))
-            .font_family("Sans")
-            .when_some(self.element.children, |mut this, children| {
-                for child in children {
-                    match child {
-                        Element::Div(div) => this = this.child(DivPreview::from(div)),
-                        Element::Text(text) => this = this.child(text),
-                    }
-                }
-                this
-            })
+            .font_family("Sans");
+
+        for child in self.element.children {
+            match child {
+                Element::Div(div) => this = this.child(DivPreview::from(div)),
+                Element::Text(text) => this = this.child(text),
+            }
+        }
+        this
     }
 }
