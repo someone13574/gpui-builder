@@ -29,6 +29,7 @@ impl Render for Preview {
             .flex()
             .bg(*colors::BG)
             .size_full()
+            .min_w(px(0.0))
             .justify_center()
             .items_center();
 
@@ -41,7 +42,7 @@ impl Render for Preview {
 
 #[derive(Clone)]
 pub struct PreviewState {
-    component: Model<Component>,
+    pub component: Model<Component>,
 }
 
 impl PreviewState {
