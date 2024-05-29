@@ -24,8 +24,8 @@ impl RenderOnce for DivPreview {
             .border_color(rgb(0xffffff))
             .bg(rgb(0x808080))
             .font_family("Sans")
-            .when(!self.element.children.is_empty(), |mut this| {
-                for child in self.element.children {
+            .when_some(self.element.children, |mut this, children| {
+                for child in children {
                     match child {
                         Element::Div(div) => this = this.child(DivPreview::from(div)),
                         Element::Text(text) => this = this.child(text),

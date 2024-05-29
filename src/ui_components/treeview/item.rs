@@ -21,10 +21,12 @@ impl RenderOnce for TreeviewItem {
         match self.element {
             Element::Div(div) => this
                 .child("div:")
-                .children(div.children.iter().map(|child| TreeviewItem {
-                    element: child.clone(),
-                    root: false,
-                })),
+                .when_some(div.children, |this, children| {
+                    this.children(children.iter().map(|child| TreeviewItem {
+                        element: child.clone(),
+                        root: false,
+                    }))
+                }),
             Element::Text(text) => this.child(format!("\"{text}\"")),
         }
     }

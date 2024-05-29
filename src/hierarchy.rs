@@ -25,6 +25,6 @@ pub enum Element {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct DivElement {
-    #[serde(rename = "$value")]
-    pub children: Vec<Element>,
+    #[serde(rename = "$value", default)]
+    pub children: Option<Vec<Element>>,
 }
