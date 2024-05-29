@@ -31,7 +31,8 @@ impl Render for Preview {
             .size_full()
             .min_w(px(0.0))
             .justify_center()
-            .items_center();
+            .items_center()
+            .overflow_hidden();
 
         match root_element {
             Element::Div(div) => this.child(DivPreview::from(div)),

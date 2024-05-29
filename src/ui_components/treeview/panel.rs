@@ -28,7 +28,7 @@ impl RenderOnce for TreeviewPanel {
             .h_full()
             .min_w(*sizes::SIDEBAR_WIDTH)
             .bg(*colors::SIDEBAR_BG)
-            .m_4()
+            .p_4()
             .border_r(*sizes::BORDER_WIDTH)
             .border_color(*colors::BORDER)
             .child(TreeviewItem {
