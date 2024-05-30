@@ -41,7 +41,7 @@ impl Component {
             move |result| match result {
                 Ok(_) => {
                     if let Ok(component) = Component::from_file(&path) {
-                        tx.send_blocking(component).unwrap();
+                        tx.send_blocking(component.assign_element_ids()).unwrap();
                     }
                 }
                 err => {
