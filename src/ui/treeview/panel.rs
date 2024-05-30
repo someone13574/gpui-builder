@@ -1,7 +1,7 @@
 use gpui::*;
 
 use crate::{
-    appearance::colors,
+    appearance::{colors, sizes},
     component::{element::ComponentElement, Component},
 };
 
@@ -34,9 +34,8 @@ impl Render for TreeviewPanel {
     fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
         div()
             .h_full()
-            .p_2()
             .bg(*colors::SIDEBAR_BG)
-            .min_w(px(250.0))
+            .min_w(*sizes::SIDEBAR_WIDTH)
             .border_r_1()
             .border_color(*colors::BORDER)
             .children(self.item_views.clone())

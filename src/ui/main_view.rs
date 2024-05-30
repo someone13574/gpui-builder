@@ -1,6 +1,9 @@
 use gpui::*;
 
-use crate::{appearance::colors, component::Component};
+use crate::{
+    appearance::{colors, sizes},
+    component::Component,
+};
 
 use super::treeview::panel::TreeviewPanel;
 
@@ -31,6 +34,7 @@ impl Render for MainView {
             .size_full()
             .bg(*colors::BG)
             .text_color(*colors::TEXT)
+            .text_size(*sizes::TEXT_SIZE)
             .font_family("Sans")
             .child(self.treeview_panel.clone())
     }
