@@ -4,9 +4,11 @@ use crate::{
 };
 use gpui::*;
 use prelude::FluentBuilder;
+use uuid::Uuid;
 
 pub struct TreeviewItem {
     element: ComponentElement,
+    active_element: Model<Option<Uuid>>,
     indent: u32,
 
     hover: bool,
@@ -15,11 +17,13 @@ pub struct TreeviewItem {
 impl TreeviewItem {
     pub fn new<V: 'static>(
         element: ComponentElement,
+        active_element: Model<Option<Uuid>>,
         indent: u32,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|_| Self {
             element,
+            active_element,
             indent,
             hover: false,
         })
@@ -46,5 +50,13 @@ impl Render for TreeviewItem {
                 cx.notify();
             }))
             .when(self.hover, |this| this.bg(*colors::LIST_ITEM_HOVER))
+            .on_click(cx.listener(|this, event: &ClickEvent, cx| {
+                if event.down.button == MouseButton::Left {
+                    cx.update_model(&this.active_element, |active_element, cx| {
+                        *active_element = this.element.id();
+                        cx.notify();
+                    })
+                }
+            }))
     }
 }

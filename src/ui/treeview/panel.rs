@@ -1,4 +1,5 @@
 use gpui::*;
+use uuid::Uuid;
 
 use crate::{
     appearance::{colors, sizes},
@@ -9,21 +10,28 @@ use super::item::TreeviewItem;
 
 pub struct TreeviewPanel {
     pub component: Model<Component>,
+    pub active_element: Model<Option<Uuid>>,
+
     pub item_views: Vec<View<TreeviewItem>>,
 }
 
 impl TreeviewPanel {
-    pub fn new<V: 'static>(component: Model<Component>, cx: &mut ViewContext<V>) -> View<Self> {
+    pub fn new<V: 'static>(
+        component: Model<Component>,
+        active_element: Model<Option<Uuid>>,
+        cx: &mut ViewContext<V>,
+    ) -> View<Self> {
         cx.new_view(|cx| {
             cx.observe(&component, |this: &mut TreeviewPanel, component, cx| {
-                this.item_views = list_item_views(component, cx);
+                this.item_views = list_item_views(component, this.active_element.clone(), cx);
                 cx.notify();
             })
             .detach();
 
-            let item_views = list_item_views(component.clone(), cx);
+            let item_views = list_item_views(component.clone(), active_element.clone(), cx);
             Self {
                 component,
+                active_element,
                 item_views,
             }
         })
@@ -54,6 +62,7 @@ fn into_list(element: ComponentElement, indent: u32) -> Vec<(ComponentElement, u
 
 fn list_item_views(
     component: Model<Component>,
+    active_element: Model<Option<Uuid>>,
     cx: &mut ViewContext<TreeviewPanel>,
 ) -> Vec<View<TreeviewItem>> {
     let root_element = cx
@@ -62,6 +71,6 @@ fn list_item_views(
     let element_list = into_list(root_element, 0);
     element_list
         .into_iter()
-        .map(|(element, indent)| TreeviewItem::new(element, indent, cx))
+        .map(|(element, indent)| TreeviewItem::new(element, active_element.clone(), indent, cx))
         .collect()
 }

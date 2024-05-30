@@ -17,12 +17,15 @@ impl MainView {
         cx.new_view(|cx| {
             let component = Component::from_file("component.xml")
                 .unwrap()
+                .assign_element_ids()
                 .into_model(cx);
             Component::watch_file("component.xml", component.clone(), cx);
 
-            let treeview_panel = TreeviewPanel::new(component.clone(), cx);
-            let preview_panel = PreviewPanel::new(component, cx);
-            let properties_panel = PropertiesPanel::new(cx);
+            let active_element = cx.new_model(|_| None);
+
+            let treeview_panel = TreeviewPanel::new(component.clone(), active_element.clone(), cx);
+            let preview_panel = PreviewPanel::new(component, active_element.clone(), cx);
+            let properties_panel = PropertiesPanel::new(active_element, cx);
 
             Self {
                 treeview_panel,

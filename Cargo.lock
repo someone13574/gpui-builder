@@ -1848,6 +1848,7 @@ dependencies = [
  "notify",
  "serde",
  "serde-xml-rs",
+ "uuid",
 ]
 
 [[package]]
