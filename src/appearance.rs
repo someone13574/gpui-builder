@@ -9,13 +9,3 @@ pub mod colors {
         pub static ref TEXT: Rgba = rgb(0xb0b0b0);
     }
 }
-
-pub mod sizes {
-    use gpui::{px, AbsoluteLength};
-    use lazy_static::lazy_static;
-
-    lazy_static! {
-        pub static ref SIDEBAR_WIDTH: AbsoluteLength = px(250.0).into();
-        pub static ref BORDER_WIDTH: AbsoluteLength = px(1.0).into();
-    }
-}
