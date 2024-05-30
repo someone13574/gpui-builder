@@ -1,9 +1,9 @@
 use gpui::*;
-use ui_components::main_view::{MainView, MainViewState};
+use ui::main_view::MainView;
 
 mod appearance;
-mod hierarchy;
-mod ui_components;
+mod component;
+mod ui;
 
 fn main() {
     App::new().run(|cx: &mut AppContext| {
@@ -22,7 +22,7 @@ fn main() {
                 true
             });
 
-            MainView::new(MainViewState::new("hierarchy.xml", cx), cx)
+            MainView::new(cx)
         });
     });
 }
