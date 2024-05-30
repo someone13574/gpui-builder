@@ -1,6 +1,7 @@
 use div::DivElement;
 use serde::Deserialize;
 use text::TextElement;
+use uuid::Uuid;
 
 pub mod div;
 pub mod text;
@@ -12,11 +13,27 @@ pub enum ComponentElement {
     Text(TextElement),
 }
 
+impl ComponentElement {
+    pub fn id(&self) -> Option<Uuid> {
+        match self {
+            ComponentElement::Div(element) => element.id,
+            ComponentElement::Text(element) => element.id,
+        }
+    }
+
+    pub fn assign_id_recursive(&mut self) {
+        match self {
+            ComponentElement::Div(element) => element.assign_id_recursive(),
+            ComponentElement::Text(element) => element.assign_id_recursive(),
+        }
+    }
+}
+
 impl From<ComponentElement> for String {
     fn from(value: ComponentElement) -> Self {
         match value {
             ComponentElement::Div(_) => "div:".to_string(),
-            ComponentElement::Text(text) => format!("\"{}\"", text.0),
+            ComponentElement::Text(text) => format!("\"{}\"", text.text),
         }
     }
 }

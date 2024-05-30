@@ -19,6 +19,11 @@ impl Component {
         serde_xml_rs::from_str(&file_content)
     }
 
+    pub fn assign_element_ids(mut self) -> Self {
+        self.root.assign_id_recursive();
+        self
+    }
+
     pub fn into_model(self, cx: &mut AppContext) -> Model<Self> {
         cx.new_model(|_| self)
     }
