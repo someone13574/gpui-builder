@@ -27,7 +27,18 @@ impl ComponentElement {
             ComponentElement::Div(_) => "div:".to_string(),
             ComponentElement::Text(element) => {
                 let element = cx.read_model(element, |element, _| element.clone());
-                format!("\"{}\"", element.text)
+                format!(
+                    "\"{}\"",
+                    String::from(
+                        element
+                            .properties
+                            .iter()
+                            .find(|property| property.name == "text")
+                            .unwrap()
+                            .content
+                            .clone()
+                    )
+                )
             }
         }
     }
@@ -65,7 +76,17 @@ impl ComponentElement {
                     cx.notify();
                 });
             }
-            ComponentElement::Text(_) => todo!(),
+            ComponentElement::Text(element) => {
+                cx.update_model(element, |element, cx| {
+                    let property = element
+                        .properties
+                        .iter_mut()
+                        .find(|property| property.name == name)
+                        .unwrap();
+                    property.content = value;
+                    cx.notify();
+                });
+            }
         }
     }
 
@@ -74,7 +95,9 @@ impl ComponentElement {
             ComponentElement::Div(element) => {
                 cx.read_model(element, |element, _| element.properties.clone())
             }
-            ComponentElement::Text(_) => Vec::new(),
+            ComponentElement::Text(element) => {
+                cx.read_model(element, |element, _| element.properties.clone())
+            }
         }
     }
 

@@ -40,16 +40,21 @@ impl TextPreview {
 
 impl Render for TextPreview {
     fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
-        let text_element = cx.read_model(&self.element, |element, _| element.clone());
         let active_element =
             cx.read_model(&self.active_element, |active_element, _| *active_element);
+        let properties = &self.element.read(cx).properties;
+        let text = properties
+            .iter()
+            .find(|property| property.name == "text")
+            .unwrap();
 
-        div()
-            .child(text_element.text)
-            .when(active_element == Some(self.id), |this| {
+        div().child(String::from(text.content.clone())).when(
+            active_element == Some(self.id),
+            |this| {
                 this.child(ActiveIndicator {
                     animation_id: self.indicator_animation_id,
                 })
-            })
+            },
+        )
     }
 }

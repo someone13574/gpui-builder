@@ -41,6 +41,7 @@ impl Render for TreeviewPanel {
             .border_r_1()
             .border_color(*colors::BORDER)
             .children(self.item_views.clone())
+            .overflow_hidden()
     }
 }
 

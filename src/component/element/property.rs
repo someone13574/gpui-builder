@@ -15,12 +15,19 @@ impl ElementProperty {
             }),
         }
     }
+
+    pub fn new_text(name: &str, default: &str) -> ElementProperty {
+        Self {
+            name: name.to_string(),
+            content: ElementPropertyType::Text(default.to_string()),
+        }
+    }
 }
 
 #[derive(Clone)]
 pub enum ElementPropertyType {
     Float(FloatProperty),
-    _String,
+    Text(String),
 }
 
 #[derive(Clone)]
@@ -33,6 +40,16 @@ pub struct FloatProperty {
 impl From<ElementPropertyType> for FloatProperty {
     fn from(value: ElementPropertyType) -> Self {
         if let ElementPropertyType::Float(value) = value {
+            value
+        } else {
+            unreachable!()
+        }
+    }
+}
+
+impl From<ElementPropertyType> for String {
+    fn from(value: ElementPropertyType) -> Self {
+        if let ElementPropertyType::Text(value) = value {
             value
         } else {
             unreachable!()

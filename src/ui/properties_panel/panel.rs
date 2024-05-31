@@ -77,6 +77,7 @@ impl Render for PropertiesPanel {
     fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
         div()
             .h_full()
+            .p_4()
             .bg(*colors::SIDEBAR_BG)
             .min_w(*sizes::SIDEBAR_WIDTH)
             .border_l_1()
