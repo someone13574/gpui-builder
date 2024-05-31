@@ -1,10 +1,9 @@
-use crate::{
-    appearance::{colors, sizes},
-    component::element::ComponentElement,
-};
 use gpui::*;
 use prelude::FluentBuilder;
 use uuid::Uuid;
+
+use crate::appearance::{colors, sizes};
+use crate::component::element::ComponentElement;
 
 pub struct TreeviewItem {
     element: ComponentElement,

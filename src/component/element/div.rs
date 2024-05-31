@@ -1,6 +1,7 @@
-use super::ComponentElement;
 use gpui::{AppContext, Context};
 use uuid::Uuid;
+
+use super::ComponentElement;
 
 #[derive(Clone)]
 pub struct DivElement {

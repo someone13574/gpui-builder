@@ -1,12 +1,12 @@
+use gpui::*;
+
 use super::preview::panel::PreviewPanel;
 use super::properties_panel::panel::PropertiesPanel;
 use super::treeview::panel::TreeviewPanel;
-use crate::appearance::colors;
-use crate::appearance::sizes;
+use crate::appearance::{colors, sizes};
 use crate::component::element::div::DivElement;
 use crate::component::element::text::TextElement;
 use crate::component::Component;
-use gpui::*;
 
 pub struct MainView {
     treeview_panel: View<TreeviewPanel>,

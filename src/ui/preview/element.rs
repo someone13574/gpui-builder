@@ -1,7 +1,9 @@
-use super::{div::DivPreview, text::TextPreview};
-use crate::component::element::ComponentElement;
 use gpui::*;
 use uuid::Uuid;
+
+use super::div::DivPreview;
+use super::text::TextPreview;
+use crate::component::element::ComponentElement;
 
 #[derive(IntoElement, Clone)]
 pub enum ElementPreview {

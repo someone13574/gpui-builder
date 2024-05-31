@@ -1,9 +1,9 @@
-use crate::component::Component;
 use gpui::*;
 use prelude::FluentBuilder;
 use uuid::Uuid;
 
 use super::element::ElementPreview;
+use crate::component::Component;
 
 pub struct PreviewPanel {
     root_element: Option<ElementPreview>,

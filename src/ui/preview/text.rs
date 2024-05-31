@@ -1,9 +1,9 @@
-use crate::component::element::text::TextElement;
 use gpui::*;
 use prelude::FluentBuilder;
 use uuid::Uuid;
 
 use super::active_indicator::ActiveIndicator;
+use crate::component::element::text::TextElement;
 
 pub struct TextPreview {
     id: Uuid,

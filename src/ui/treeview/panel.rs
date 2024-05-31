@@ -1,12 +1,10 @@
 use gpui::*;
 use uuid::Uuid;
 
-use crate::{
-    appearance::{colors, sizes},
-    component::{element::ComponentElement, Component},
-};
-
 use super::item::TreeviewItem;
+use crate::appearance::{colors, sizes};
+use crate::component::element::ComponentElement;
+use crate::component::Component;
 
 pub struct TreeviewPanel {
     active_element: Model<Option<Uuid>>,

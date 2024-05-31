@@ -1,8 +1,10 @@
-use super::{active_indicator::ActiveIndicator, element::ElementPreview};
-use crate::component::element::div::DivElement;
 use gpui::*;
 use prelude::FluentBuilder;
 use uuid::Uuid;
+
+use super::active_indicator::ActiveIndicator;
+use super::element::ElementPreview;
+use crate::component::element::div::DivElement;
 
 pub struct DivPreview {
     id: Uuid,

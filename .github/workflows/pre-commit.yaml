@@ -11,4 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
+      - name: Install Rust nightly
+        uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: nightly
+          profile: minimal
+          components: rustfmt
       - uses: pre-commit/action@v3.0.1
