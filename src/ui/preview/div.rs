@@ -5,7 +5,7 @@ use uuid::Uuid;
 use super::active_indicator::ActiveIndicator;
 use super::element::ElementPreview;
 use crate::component::element::div::DivElement;
-use crate::component::element::property;
+use crate::component::element::property::FloatProperty;
 
 pub struct DivPreview {
     id: Uuid,
@@ -65,19 +65,14 @@ impl Render for DivPreview {
         let active_element =
             cx.read_model(&self.active_element, |active_element, _| *active_element);
         let properties = &self.element.read(cx).properties;
-        let rounded = properties
-            .iter()
-            .find(|property| property.name == "rounded")
-            .unwrap();
+        let rounded = properties.get("rounded").unwrap();
 
         div()
             .flex()
             .flex_col()
             .gap_4()
             .p_4()
-            .rounded(px(
-                property::FloatProperty::from(rounded.content.clone()).value
-            ))
+            .rounded(px(FloatProperty::from(rounded.clone()).value))
             .bg(rgb(0x808080))
             .border_color(white())
             .border_1()

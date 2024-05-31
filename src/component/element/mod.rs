@@ -1,6 +1,8 @@
+use std::collections::HashMap;
+
 use div::DivElement;
 use gpui::{AppContext, Context, Model, ViewContext};
-use property::{ElementProperty, ElementPropertyType};
+use property::ElementProperty;
 use text::TextElement;
 use uuid::Uuid;
 
@@ -22,24 +24,25 @@ impl ComponentElement {
         }
     }
 
-    pub fn string(&self, cx: &mut AppContext) -> String {
+    pub fn property(&self, property: &str, cx: &mut AppContext) -> ElementProperty {
+        self.properties(cx).get(property).unwrap().clone()
+    }
+
+    pub fn set_property(&self, property: String, value: ElementProperty, cx: &mut AppContext) {
         match &self {
-            ComponentElement::Div(_) => "div:".to_string(),
-            ComponentElement::Text(element) => {
-                let element = cx.read_model(element, |element, _| element.clone());
-                format!(
-                    "\"{}\"",
-                    String::from(
-                        element
-                            .properties
-                            .iter()
-                            .find(|property| property.name == "text")
-                            .unwrap()
-                            .content
-                            .clone()
-                    )
-                )
-            }
+            ComponentElement::Div(element) => element.update(cx, |element, _| {
+                element.properties.insert(property, value);
+            }),
+            ComponentElement::Text(element) => element.update(cx, |element, _| {
+                element.properties.insert(property, value);
+            }),
+        }
+    }
+
+    pub fn properties(&self, cx: &mut AppContext) -> HashMap<String, ElementProperty> {
+        match &self {
+            ComponentElement::Div(element) => element.read(cx).properties.clone(),
+            ComponentElement::Text(element) => element.read(cx).properties.clone(),
         }
     }
 
@@ -53,52 +56,6 @@ impl ComponentElement {
             }
         }
         flattened
-    }
-
-    pub fn property(&self, name: &str, cx: &mut AppContext) -> ElementProperty {
-        let properties = self.properties(cx);
-        properties
-            .into_iter()
-            .find(|property| property.name == name)
-            .unwrap()
-    }
-
-    pub fn set_property(&self, name: &str, value: ElementPropertyType, cx: &mut AppContext) {
-        match &self {
-            ComponentElement::Div(element) => {
-                cx.update_model(element, |element, cx| {
-                    let property = element
-                        .properties
-                        .iter_mut()
-                        .find(|property| property.name == name)
-                        .unwrap();
-                    property.content = value;
-                    cx.notify();
-                });
-            }
-            ComponentElement::Text(element) => {
-                cx.update_model(element, |element, cx| {
-                    let property = element
-                        .properties
-                        .iter_mut()
-                        .find(|property| property.name == name)
-                        .unwrap();
-                    property.content = value;
-                    cx.notify();
-                });
-            }
-        }
-    }
-
-    pub fn properties(&self, cx: &mut AppContext) -> Vec<ElementProperty> {
-        match &self {
-            ComponentElement::Div(element) => {
-                cx.read_model(element, |element, _| element.properties.clone())
-            }
-            ComponentElement::Text(element) => {
-                cx.read_model(element, |element, _| element.properties.clone())
-            }
-        }
     }
 
     pub fn observe_notify<V: 'static>(&self, cx: &mut ViewContext<V>) {

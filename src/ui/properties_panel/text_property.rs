@@ -1,6 +1,7 @@
 use gpui::*;
 
-use crate::component::element::{property, ComponentElement};
+use crate::component::element::property::ElementProperty;
+use crate::component::element::ComponentElement;
 use crate::ui::text_entry::{TextEntry, TextModel};
 
 pub struct TextProperty {
@@ -18,15 +19,12 @@ impl TextProperty {
         cx.new_view(|cx| {
             element.observe_notify(cx);
 
-            let model = TextModel::new(
-                String::from(element.property(&property_name, cx).content),
-                cx,
-            );
+            let model = TextModel::new(String::from(element.property(&property_name, cx)), cx);
             cx.observe(&model, |this: &mut Self, text, cx| {
                 let text = text.read(cx).text.clone();
                 this.element.set_property(
-                    &this.property_name,
-                    property::ElementPropertyType::Text(text),
+                    this.property_name.clone(),
+                    ElementProperty::Text(text),
                     cx,
                 );
             })

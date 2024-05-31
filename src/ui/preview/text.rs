@@ -43,18 +43,14 @@ impl Render for TextPreview {
         let active_element =
             cx.read_model(&self.active_element, |active_element, _| *active_element);
         let properties = &self.element.read(cx).properties;
-        let text = properties
-            .iter()
-            .find(|property| property.name == "text")
-            .unwrap();
+        let text: String = properties.get("text").unwrap().clone().into();
 
-        div().child(String::from(text.content.clone())).when(
-            active_element == Some(self.id),
-            |this| {
+        div()
+            .child(text)
+            .when(active_element == Some(self.id), |this| {
                 this.child(ActiveIndicator {
                     animation_id: self.indicator_animation_id,
                 })
-            },
-        )
+            })
     }
 }

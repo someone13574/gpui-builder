@@ -52,7 +52,7 @@ impl Render for TreeviewItem {
                     .border_l_1()
                     .border_color(*colors::BORDER)
             }))
-            .child(self.element.string(cx))
+            .child(format_element_name(&self.element, cx))
             .id("treeview-item")
             .on_mouse_up(MouseButton::Left, |_, _| {})
             .on_hover(cx.listener(|this, hover, cx| {
@@ -69,5 +69,17 @@ impl Render for TreeviewItem {
             }))
             .when(self.hover, |this| this.bg(*colors::LIST_ITEM_HOVER))
             .when(self.active, |this| this.bg(*colors::LIST_ITEM_ACTIVE))
+    }
+}
+
+fn format_element_name(element: &ComponentElement, cx: &mut AppContext) -> String {
+    match element {
+        ComponentElement::Div(_) => "div:".to_string(),
+        ComponentElement::Text(element) => {
+            format!(
+                "\"{}\"",
+                String::from(element.read(cx).properties.get("text").unwrap().clone())
+            )
+        }
     }
 }

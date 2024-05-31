@@ -21,8 +21,7 @@ impl FloatProperty {
             let model = TextModel::new(
                 format!(
                     "{}",
-                    property::FloatProperty::from(element.property(&property_name, cx).content)
-                        .value
+                    property::FloatProperty::from(element.property(&property_name, cx)).value
                 ),
                 cx,
             );
@@ -34,15 +33,11 @@ impl FloatProperty {
                     0.0
                 };
 
-                let mut current = property::FloatProperty::from(
-                    this.element.property(&this.property_name, cx).content,
-                );
+                let mut current =
+                    property::FloatProperty::from(this.element.property(&this.property_name, cx));
                 current.value = value;
-                this.element.set_property(
-                    &this.property_name,
-                    property::ElementPropertyType::Float(current),
-                    cx,
-                );
+                this.element
+                    .set_property(this.property_name.clone(), current.into(), cx);
             })
             .detach();
 

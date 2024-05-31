@@ -1,24 +1,35 @@
+use std::collections::HashMap;
+
 use gpui::{AppContext, Context};
 use uuid::Uuid;
 
-use super::property::ElementProperty;
+use super::property::{ElementProperty, FloatProperty};
 use super::ComponentElement;
 
 #[derive(Clone)]
 pub struct DivElement {
-    pub children: Vec<ComponentElement>,
     pub id: Uuid,
-    pub properties: Vec<ElementProperty>,
+    pub children: Vec<ComponentElement>,
+    pub properties: HashMap<String, ElementProperty>,
 }
 
 impl DivElement {
     pub fn new() -> Self {
-        let rounded_property = ElementProperty::new_float("rounded", Some(0.0), None, 0.0);
+        let mut properties = HashMap::new();
+        properties.insert(
+            "rounded".to_string(),
+            FloatProperty {
+                min: Some(0.0),
+                max: None,
+                value: 0.0,
+            }
+            .into(),
+        );
 
         Self {
-            children: Vec::new(),
             id: Uuid::new_v4(),
-            properties: vec![rounded_property],
+            children: Vec::new(),
+            properties,
         }
     }
 
