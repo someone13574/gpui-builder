@@ -59,10 +59,12 @@ impl PropertiesPanel {
 
     fn observe_element(element: &ComponentElement, cx: &mut ViewContext<Self>) -> Subscription {
         match element {
-            ComponentElement::Div(element) => cx.observe(element, |this: &mut Self, active, cx| {
-                this.properties = Self::make_properties(&ComponentElement::Div(active), cx);
-                cx.notify();
-            }),
+            ComponentElement::Div(element) => {
+                cx.observe(element, |this: &mut Self, active, cx| {
+                    this.properties = Self::make_properties(&ComponentElement::Div(active), cx);
+                    cx.notify();
+                })
+            }
             ComponentElement::Text(element) => {
                 cx.observe(element, |this: &mut Self, active, cx| {
                     this.properties = Self::make_properties(&ComponentElement::Text(active), cx);

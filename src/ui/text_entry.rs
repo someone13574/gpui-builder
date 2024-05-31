@@ -1,5 +1,3 @@
-use std::ops::Range;
-
 use gpui::*;
 use uuid::Uuid;
 
@@ -7,16 +5,11 @@ use crate::appearance::colors;
 
 pub struct TextModel {
     pub text: String,
-    pub selection: Range<usize>,
 }
 
 impl TextModel {
     pub fn new(text: String, cx: &mut AppContext) -> Model<Self> {
-        let end_of_text = text.len();
-        cx.new_model(|_cx| Self {
-            text,
-            selection: end_of_text..end_of_text,
-        })
+        cx.new_model(|_cx| Self { text })
     }
 }
 

@@ -21,21 +21,27 @@ impl Property {
         cx: &mut ViewContext<V>,
     ) -> Self {
         match &property {
-            ElementProperty::Float(_) => Self::Float(FloatProperty::new(
-                property_name.to_string(),
-                element.clone(),
-                cx,
-            )),
-            ElementProperty::Text(_) => Self::Text(TextProperty::new(
-                property_name.to_string(),
-                element.clone(),
-                cx,
-            )),
-            ElementProperty::Color(_) => Self::Color(ColorProperty::new(
-                property_name.to_string(),
-                element.clone(),
-                cx,
-            )),
+            ElementProperty::Float(_) => {
+                Self::Float(FloatProperty::new(
+                    property_name.to_string(),
+                    element.clone(),
+                    cx,
+                ))
+            }
+            ElementProperty::Text(_) => {
+                Self::Text(TextProperty::new(
+                    property_name.to_string(),
+                    element.clone(),
+                    cx,
+                ))
+            }
+            ElementProperty::Color(_) => {
+                Self::Color(ColorProperty::new(
+                    property_name.to_string(),
+                    element.clone(),
+                    cx,
+                ))
+            }
         }
     }
 }

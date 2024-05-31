@@ -17,9 +17,11 @@ impl TextElement {
         let mut properties = IndexMap::new();
         properties.insert("text".to_string(), text.to_string().into());
 
-        ComponentElement::Text(cx.new_model(|_| Self {
-            id: Uuid::new_v4(),
-            properties,
+        ComponentElement::Text(cx.new_model(|_| {
+            Self {
+                id: Uuid::new_v4(),
+                properties,
+            }
         }))
     }
 }

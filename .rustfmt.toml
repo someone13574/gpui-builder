@@ -1,2 +1,3 @@
+force_multiline_blocks = true
 imports_granularity = "Module"
 group_imports = "StdExternalCrate"
