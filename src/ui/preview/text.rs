@@ -9,6 +9,8 @@ pub struct TextPreview {
     id: Uuid,
     element: Model<TextElement>,
     active_element: Model<Option<Uuid>>,
+
+    indicator_animation_id: Uuid,
 }
 
 impl TextPreview {
@@ -20,12 +22,17 @@ impl TextPreview {
     ) -> View<Self> {
         cx.new_view(|cx| {
             cx.observe(&element, |_, _, cx| cx.notify()).detach();
-            cx.observe(&active_element, |_, _, cx| cx.notify()).detach();
+            cx.observe(&active_element, |this: &mut Self, _, cx| {
+                this.indicator_animation_id = Uuid::new_v4();
+                cx.notify()
+            })
+            .detach();
 
             Self {
                 id,
                 element,
                 active_element,
+                indicator_animation_id: Uuid::new_v4(),
             }
         })
     }
@@ -40,7 +47,9 @@ impl Render for TextPreview {
         div()
             .child(text_element.text)
             .when(active_element == Some(self.id), |this| {
-                this.child(ActiveIndicator {})
+                this.child(ActiveIndicator {
+                    animation_id: self.indicator_animation_id,
+                })
             })
     }
 }

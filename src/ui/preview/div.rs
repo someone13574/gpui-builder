@@ -10,6 +10,8 @@ pub struct DivPreview {
     id: Uuid,
     children: Vec<ElementPreview>,
     active_element: Model<Option<Uuid>>,
+
+    indicator_animation_id: Uuid,
 }
 
 impl DivPreview {
@@ -25,13 +27,18 @@ impl DivPreview {
                 cx.notify()
             })
             .detach();
-            cx.observe(&active_element, |_, _, cx| cx.notify()).detach();
+            cx.observe(&active_element, |this, _, cx| {
+                this.indicator_animation_id = Uuid::new_v4();
+                cx.notify();
+            })
+            .detach();
 
             let children = Self::make_children(element.clone(), active_element.clone(), cx);
             Self {
                 id,
                 children,
                 active_element,
+                indicator_animation_id: Uuid::new_v4(),
             }
         })
     }
@@ -66,7 +73,9 @@ impl Render for DivPreview {
             .border_1()
             .children(self.children.clone())
             .when(active_element == Some(self.id), |this| {
-                this.child(ActiveIndicator {})
+                this.child(ActiveIndicator {
+                    animation_id: self.indicator_animation_id,
+                })
             })
     }
 }

@@ -1,16 +1,19 @@
 use std::time::Duration;
 
 use gpui::*;
+use uuid::Uuid;
 
 use crate::appearance::colors;
 
 #[derive(IntoElement)]
-pub struct ActiveIndicator;
+pub struct ActiveIndicator {
+    pub animation_id: Uuid,
+}
 
 impl RenderOnce for ActiveIndicator {
     fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
         div().absolute().inset_0().with_animation(
-            "active-indicator",
+            self.animation_id,
             Animation::new(Duration::from_millis(500)).with_easing(bounce(ease_in_out)),
             |this, delta| {
                 let mut color = *colors::ACTIVE_ELEMENT_INDICATOR_MAX;
