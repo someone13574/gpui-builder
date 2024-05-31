@@ -1,6 +1,6 @@
 use div::DivElement;
 use gpui::{AppContext, Context, Model, ViewContext};
-use property::ElementProperty;
+use property::{ElementProperty, ElementPropertyType};
 use text::TextElement;
 use uuid::Uuid;
 
@@ -50,6 +50,23 @@ impl ComponentElement {
             .into_iter()
             .find(|property| property.name == name)
             .unwrap()
+    }
+
+    pub fn set_property(&self, name: &str, value: ElementPropertyType, cx: &mut AppContext) {
+        match &self {
+            ComponentElement::Div(element) => {
+                cx.update_model(element, |element, cx| {
+                    let property = element
+                        .properties
+                        .iter_mut()
+                        .find(|property| property.name == name)
+                        .unwrap();
+                    property.content = value;
+                    cx.notify();
+                });
+            }
+            ComponentElement::Text(_) => todo!(),
+        }
     }
 
     pub fn properties(&self, cx: &mut AppContext) -> Vec<ElementProperty> {

@@ -5,9 +5,11 @@ use uuid::Uuid;
 use super::active_indicator::ActiveIndicator;
 use super::element::ElementPreview;
 use crate::component::element::div::DivElement;
+use crate::component::element::property;
 
 pub struct DivPreview {
     id: Uuid,
+    element: Model<DivElement>,
     children: Vec<ElementPreview>,
     active_element: Model<Option<Uuid>>,
 
@@ -36,6 +38,7 @@ impl DivPreview {
             let children = Self::make_children(element.clone(), active_element.clone(), cx);
             Self {
                 id,
+                element,
                 children,
                 active_element,
                 indicator_animation_id: Uuid::new_v4(),
@@ -61,13 +64,20 @@ impl Render for DivPreview {
     fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
         let active_element =
             cx.read_model(&self.active_element, |active_element, _| *active_element);
+        let properties = &self.element.read(cx).properties;
+        let rounded = properties
+            .iter()
+            .find(|property| property.name == "rounded")
+            .unwrap();
 
         div()
             .flex()
             .flex_col()
             .gap_4()
             .p_4()
-            .rounded(px(16.0))
+            .rounded(px(
+                property::FloatProperty::from(rounded.content.clone()).value
+            ))
             .bg(rgb(0x808080))
             .border_color(white())
             .border_1()
