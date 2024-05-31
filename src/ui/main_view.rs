@@ -34,8 +34,8 @@ impl MainView {
             let active_element = cx.new_model(|_| None);
 
             let treeview_panel = TreeviewPanel::new(component.clone(), active_element.clone(), cx);
-            let preview_panel = PreviewPanel::new(component, active_element, cx);
-            let properties_panel = PropertiesPanel::new(cx);
+            let preview_panel = PreviewPanel::new(component.clone(), active_element.clone(), cx);
+            let properties_panel = PropertiesPanel::new(component, active_element, cx);
 
             Self {
                 treeview_panel,

@@ -1,9 +1,11 @@
 use div::DivElement;
-use gpui::{AppContext, Context, Model};
+use gpui::{AppContext, Context, Model, ViewContext};
+use property::ElementProperty;
 use text::TextElement;
 use uuid::Uuid;
 
 pub mod div;
+pub mod property;
 pub mod text;
 
 #[derive(Clone)]
@@ -27,6 +29,50 @@ impl ComponentElement {
                 let element = cx.read_model(element, |element, _| element.clone());
                 format!("\"{}\"", element.text)
             }
+        }
+    }
+
+    pub fn element_list(&self, indent: u32, cx: &mut AppContext) -> Vec<(Self, u32)> {
+        let mut flattened = vec![(self.clone(), indent)];
+        if let ComponentElement::Div(div) = self {
+            let div = cx.read_model(div, |div, _| div.clone());
+
+            for child in div.children {
+                flattened.append(&mut child.element_list(indent + 1, cx));
+            }
+        }
+        flattened
+    }
+
+    pub fn property(&self, name: &str, cx: &mut AppContext) -> ElementProperty {
+        let properties = self.properties(cx);
+        properties
+            .into_iter()
+            .find(|property| property.name == name)
+            .unwrap()
+    }
+
+    pub fn properties(&self, cx: &mut AppContext) -> Vec<ElementProperty> {
+        match &self {
+            ComponentElement::Div(element) => {
+                cx.read_model(element, |element, _| element.properties.clone())
+            }
+            ComponentElement::Text(_) => Vec::new(),
+        }
+    }
+
+    pub fn observe_notify<V: 'static>(&self, cx: &mut ViewContext<V>) {
+        match &self {
+            ComponentElement::Div(element) => cx
+                .observe(element, |_, _, cx| {
+                    cx.notify();
+                })
+                .detach(),
+            ComponentElement::Text(element) => cx
+                .observe(element, |_, _, cx| {
+                    cx.notify();
+                })
+                .detach(),
         }
     }
 }
