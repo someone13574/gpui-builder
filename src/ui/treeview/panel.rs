@@ -9,10 +9,8 @@ use crate::{
 use super::item::TreeviewItem;
 
 pub struct TreeviewPanel {
-    pub component: Model<Component>,
-    pub active_element: Model<Option<Uuid>>,
-
-    pub item_views: Vec<View<TreeviewItem>>,
+    active_element: Model<Option<Uuid>>,
+    item_views: Vec<View<TreeviewItem>>,
 }
 
 impl TreeviewPanel {
@@ -23,14 +21,13 @@ impl TreeviewPanel {
     ) -> View<Self> {
         cx.new_view(|cx| {
             cx.observe(&component, |this: &mut TreeviewPanel, component, cx| {
-                this.item_views = list_item_views(component, this.active_element.clone(), cx);
+                this.item_views = create_items(component, this.active_element.clone(), cx);
                 cx.notify();
             })
             .detach();
 
-            let item_views = list_item_views(component.clone(), active_element.clone(), cx);
+            let item_views = create_items(component.clone(), active_element.clone(), cx);
             Self {
-                component,
                 active_element,
                 item_views,
             }
@@ -50,25 +47,32 @@ impl Render for TreeviewPanel {
     }
 }
 
-fn into_list(element: ComponentElement, indent: u32) -> Vec<(ComponentElement, u32)> {
+fn into_list(
+    element: ComponentElement,
+    indent: u32,
+    cx: &mut AppContext,
+) -> Vec<(ComponentElement, u32)> {
     let mut flattened = vec![(element.clone(), indent)];
     if let ComponentElement::Div(div) = element {
+        let div = cx.read_model(&div, |div, _| div.clone());
+
         for child in div.children {
-            flattened.append(&mut into_list(child, indent + 1));
+            flattened.append(&mut into_list(child, indent + 1, cx));
         }
     }
     flattened
 }
 
-fn list_item_views(
+fn create_items(
     component: Model<Component>,
     active_element: Model<Option<Uuid>>,
     cx: &mut ViewContext<TreeviewPanel>,
 ) -> Vec<View<TreeviewItem>> {
     let root_element = cx
         .read_model(&component, |component_root, _cx| component_root.clone())
-        .root;
-    let element_list = into_list(root_element, 0);
+        .root
+        .unwrap();
+    let element_list = into_list(root_element, 0, cx);
     element_list
         .into_iter()
         .map(|(element, indent)| TreeviewItem::new(element, active_element.clone(), indent, cx))

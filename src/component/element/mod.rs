@@ -1,39 +1,32 @@
 use div::DivElement;
-use serde::Deserialize;
+use gpui::{AppContext, Context, Model};
 use text::TextElement;
 use uuid::Uuid;
 
 pub mod div;
 pub mod text;
 
-#[derive(Deserialize, Debug, Clone)]
-#[serde(rename_all = "snake_case")]
+#[derive(Clone)]
 pub enum ComponentElement {
-    Div(DivElement),
-    Text(TextElement),
+    Div(Model<DivElement>),
+    Text(Model<TextElement>),
 }
 
 impl ComponentElement {
-    pub fn id(&self) -> Option<Uuid> {
-        match self {
-            ComponentElement::Div(element) => element.id,
-            ComponentElement::Text(element) => element.id,
+    pub fn id(&self, cx: &mut AppContext) -> Uuid {
+        match &self {
+            ComponentElement::Div(element) => cx.read_model(element, |element, _| element.id),
+            ComponentElement::Text(element) => cx.read_model(element, |element, _| element.id),
         }
     }
 
-    pub fn assign_id_recursive(&mut self) {
-        match self {
-            ComponentElement::Div(element) => element.assign_id_recursive(),
-            ComponentElement::Text(element) => element.assign_id_recursive(),
-        }
-    }
-}
-
-impl From<ComponentElement> for String {
-    fn from(value: ComponentElement) -> Self {
-        match value {
+    pub fn string(&self, cx: &mut AppContext) -> String {
+        match &self {
             ComponentElement::Div(_) => "div:".to_string(),
-            ComponentElement::Text(text) => format!("\"{}\"", text.text),
+            ComponentElement::Text(element) => {
+                let element = cx.read_model(element, |element, _| element.clone());
+                format!("\"{}\"", element.text)
+            }
         }
     }
 }

@@ -1,27 +1,70 @@
-use super::element::PreviewElement;
+use super::{active_indicator::ActiveIndicator, element::ElementPreview};
 use crate::component::element::div::DivElement;
 use gpui::*;
+use prelude::FluentBuilder;
 use uuid::Uuid;
 
-#[derive(IntoElement)]
-pub struct PreviewDiv {
-    pub div: DivElement,
-    pub active_element: Option<Uuid>,
+pub struct DivPreview {
+    id: Uuid,
+    children: Vec<ElementPreview>,
+    active_element: Model<Option<Uuid>>,
 }
 
-impl RenderOnce for PreviewDiv {
-    fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
+impl DivPreview {
+    pub fn new<V: 'static>(
+        element: Model<DivElement>,
+        id: Uuid,
+        active_element: Model<Option<Uuid>>,
+        cx: &mut ViewContext<V>,
+    ) -> View<Self> {
+        cx.new_view(|cx| {
+            cx.observe(&element, |this: &mut DivPreview, element, cx| {
+                this.children = Self::make_children(element, this.active_element.clone(), cx);
+                cx.notify()
+            })
+            .detach();
+            cx.observe(&active_element, |_, _, cx| cx.notify()).detach();
+
+            let children = Self::make_children(element.clone(), active_element.clone(), cx);
+            Self {
+                id,
+                children,
+                active_element,
+            }
+        })
+    }
+
+    fn make_children(
+        element: Model<DivElement>,
+        active_element: Model<Option<Uuid>>,
+        cx: &mut ViewContext<Self>,
+    ) -> Vec<ElementPreview> {
+        let element = cx.read_model(&element, |element, _| element.clone());
+        element
+            .children
+            .into_iter()
+            .map(|element| ElementPreview::new(element, active_element.clone(), cx))
+            .collect()
+    }
+}
+
+impl Render for DivPreview {
+    fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
+        let active_element =
+            cx.read_model(&self.active_element, |active_element, _| *active_element);
+
         div()
-            .bg(rgb(0x808080))
-            .p_4()
             .flex()
             .flex_col()
             .gap_4()
-            .border_1()
+            .p_4()
+            .rounded(px(16.0))
+            .bg(rgb(0x808080))
             .border_color(white())
-            .children(self.div.children.iter().map(|child| PreviewElement {
-                element: child.clone(),
-                active_element: self.active_element,
-            }))
+            .border_1()
+            .children(self.children.clone())
+            .when(active_element == Some(self.id), |this| {
+                this.child(ActiveIndicator {})
+            })
     }
 }

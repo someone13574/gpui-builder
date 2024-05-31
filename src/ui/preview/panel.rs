@@ -1,13 +1,12 @@
+use crate::component::Component;
 use gpui::*;
+use prelude::FluentBuilder;
 use uuid::Uuid;
 
-use crate::{appearance::colors, component::Component};
-
-use super::element::PreviewElement;
+use super::element::ElementPreview;
 
 pub struct PreviewPanel {
-    component: Model<Component>,
-    active_element: Model<Option<Uuid>>,
+    root_element: Option<ElementPreview>,
 }
 
 impl PreviewPanel {
@@ -17,38 +16,26 @@ impl PreviewPanel {
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            cx.observe(&active_element, |_, _, cx| {
-                cx.notify();
-            })
-            .detach();
-
-            Self {
-                component,
-                active_element,
-            }
+            let root_element = cx
+                .read_model(&component, |component, _| component.clone())
+                .root;
+            let root_element = root_element
+                .map(|root_element| ElementPreview::new(root_element, active_element, cx));
+            Self { root_element }
         })
     }
 }
 
 impl Render for PreviewPanel {
-    fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
-        let root_element = cx
-            .read_model(&self.component, |component, _| component.clone())
-            .root;
-
-        let active_element = cx.read_model(&self.active_element, |id, _| *id);
-
+    fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
         div()
-            .flex()
             .size_full()
-            .min_w_0()
-            .overflow_hidden()
+            .min_w(px(0.0))
+            .flex()
             .items_center()
             .justify_center()
-            .bg(*colors::BG)
-            .child(PreviewElement {
-                element: root_element,
-                active_element,
+            .when_some(self.root_element.clone(), |this, root_element| {
+                this.child(root_element)
             })
     }
 }

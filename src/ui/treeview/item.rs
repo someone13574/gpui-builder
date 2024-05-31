@@ -24,9 +24,8 @@ impl TreeviewItem {
     ) -> View<Self> {
         cx.new_view(|cx| {
             cx.observe(&active_element, |this: &mut Self, active_element, cx| {
-                let active_element =
-                    cx.read_model(&active_element, |active_element, _| *active_element);
-                this.active = this.element.id() == active_element;
+                this.active = Some(this.element.id(cx))
+                    == cx.read_model(&active_element, |active_element, _| *active_element);
                 cx.notify();
             })
             .detach();
@@ -54,7 +53,7 @@ impl Render for TreeviewItem {
                     .border_l_1()
                     .border_color(*colors::BORDER)
             }))
-            .child(String::from(self.element.clone()))
+            .child(self.element.string(cx))
             .id("treeview-item")
             .on_mouse_up(MouseButton::Left, |_, _| {})
             .on_hover(cx.listener(|this, hover, cx| {
@@ -64,7 +63,7 @@ impl Render for TreeviewItem {
             .on_click(cx.listener(|this, event: &ClickEvent, cx| {
                 if event.down.button == MouseButton::Left {
                     cx.update_model(&this.active_element, |active_element, cx| {
-                        *active_element = this.element.id();
+                        *active_element = Some(this.element.id(cx));
                         cx.notify();
                     })
                 }

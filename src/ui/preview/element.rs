@@ -1,35 +1,37 @@
-use super::div::PreviewDiv;
-use crate::{appearance::colors, component::element::ComponentElement};
+use super::{div::DivPreview, text::TextPreview};
+use crate::component::element::ComponentElement;
 use gpui::*;
-use prelude::FluentBuilder;
-use std::time::Duration;
 use uuid::Uuid;
 
-#[derive(IntoElement)]
-pub struct PreviewElement {
-    pub element: ComponentElement,
-    pub active_element: Option<Uuid>,
+#[derive(IntoElement, Clone)]
+pub enum ElementPreview {
+    Div(View<DivPreview>),
+    Text(View<TextPreview>),
 }
 
-impl RenderOnce for PreviewElement {
-    fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
-        match self.element.clone() {
-            ComponentElement::Div(element) => div().child(PreviewDiv {
-                div: element,
-                active_element: self.active_element,
-            }),
-            ComponentElement::Text(element) => div().child(element.text),
+impl ElementPreview {
+    pub fn new<V: 'static>(
+        element: ComponentElement,
+        active_element: Model<Option<Uuid>>,
+        cx: &mut ViewContext<V>,
+    ) -> Self {
+        let id = element.id(cx);
+        match element {
+            ComponentElement::Div(element) => {
+                Self::Div(DivPreview::new(element, id, active_element, cx))
+            }
+            ComponentElement::Text(element) => {
+                Self::Text(TextPreview::new(element, id, active_element, cx))
+            }
         }
-        .when(self.active_element == self.element.id(), |this| {
-            this.child(div().absolute().size_full().inset_0().with_animation(
-                self.element.id().unwrap(),
-                Animation::new(Duration::from_millis(500)).with_easing(bounce(ease_in_out)),
-                |this, delta| {
-                    let mut color = *colors::ACTIVE_ELEMENT_INDICATOR_MAX;
-                    color.a *= delta;
-                    this.bg(color)
-                },
-            ))
-        })
+    }
+}
+
+impl RenderOnce for ElementPreview {
+    fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
+        match self {
+            ElementPreview::Div(element) => div().child(element),
+            ElementPreview::Text(element) => div().child(element),
+        }
     }
 }
