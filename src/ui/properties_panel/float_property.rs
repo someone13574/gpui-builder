@@ -41,11 +41,7 @@ impl FloatProperty {
             })
             .detach();
 
-            let text_entry = TextEntry::new(
-                model,
-                Box::new(|key| key.chars().next().unwrap().is_numeric()),
-                cx,
-            );
+            let text_entry = TextEntry::new(model, |char| char.is_ascii_digit() || char == '.', cx);
 
             Self {
                 property_name,

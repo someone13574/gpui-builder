@@ -20,13 +20,13 @@ impl TextModel {
 pub struct TextEntry {
     model: Model<TextModel>,
     focus_handle: FocusHandle,
-    filter_input: Box<dyn Fn(String) -> bool>,
+    filter_input: fn(char) -> bool,
 }
 
 impl TextEntry {
     pub fn new<V: 'static>(
         model: Model<TextModel>,
-        filter_input: Box<dyn Fn(String) -> bool>,
+        filter_input: fn(char) -> bool,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
@@ -65,7 +65,7 @@ impl Render for TextEntry {
                                 key.to_string()
                             };
 
-                            if (this.filter_input)(key.clone()) {
+                            if (this.filter_input)(key.chars().next().unwrap()) {
                                 model.text.push_str(&key);
                                 cx.notify();
                             }

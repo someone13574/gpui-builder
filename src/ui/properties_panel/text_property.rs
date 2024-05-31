@@ -30,7 +30,7 @@ impl TextProperty {
             })
             .detach();
 
-            let text_entry = TextEntry::new(model, Box::new(|_| true), cx);
+            let text_entry = TextEntry::new(model, |_| true, cx);
             Self {
                 property_name,
                 element,
