@@ -83,6 +83,7 @@ impl Render for PropertiesPanel {
             .border_l_1()
             .border_color(*colors::BORDER)
             .children(self.properties.clone())
+            .overflow_hidden()
     }
 }
 

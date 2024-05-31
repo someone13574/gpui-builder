@@ -37,5 +37,6 @@ impl Render for PreviewPanel {
             .when_some(self.root_element.clone(), |this, root_element| {
                 this.child(root_element)
             })
+            .overflow_hidden()
     }
 }
