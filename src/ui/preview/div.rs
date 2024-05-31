@@ -64,15 +64,18 @@ impl Render for DivPreview {
     fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
         let active_element =
             cx.read_model(&self.active_element, |active_element, _| *active_element);
+
         let properties = &self.element.read(cx).properties;
-        let rounded = properties.get("rounded").unwrap();
+        let rounding = FloatProperty::from(properties.get("rounding").unwrap().clone());
+        let margin = FloatProperty::from(properties.get("padding").unwrap().clone());
 
         div()
             .flex()
             .flex_col()
             .gap_4()
             .p_4()
-            .rounded(px(FloatProperty::from(rounded.clone()).value))
+            .rounded(px(rounding.value))
+            .p(px(margin.value))
             .bg(rgb(0x808080))
             .border_color(white())
             .border_1()

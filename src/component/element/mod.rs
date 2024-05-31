@@ -1,7 +1,6 @@
-use std::collections::HashMap;
-
 use div::DivElement;
 use gpui::{AppContext, Context, Model, ViewContext};
+use indexmap::IndexMap;
 use property::ElementProperty;
 use text::TextElement;
 use uuid::Uuid;
@@ -39,7 +38,7 @@ impl ComponentElement {
         }
     }
 
-    pub fn properties(&self, cx: &mut AppContext) -> HashMap<String, ElementProperty> {
+    pub fn properties(&self, cx: &mut AppContext) -> IndexMap<String, ElementProperty> {
         match &self {
             ComponentElement::Div(element) => element.read(cx).properties.clone(),
             ComponentElement::Text(element) => element.read(cx).properties.clone(),

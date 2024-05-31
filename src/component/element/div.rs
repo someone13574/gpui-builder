@@ -1,6 +1,5 @@
-use std::collections::HashMap;
-
 use gpui::{AppContext, Context};
+use indexmap::IndexMap;
 use uuid::Uuid;
 
 use super::property::{ElementProperty, FloatProperty};
@@ -10,18 +9,27 @@ use super::ComponentElement;
 pub struct DivElement {
     pub id: Uuid,
     pub children: Vec<ComponentElement>,
-    pub properties: HashMap<String, ElementProperty>,
+    pub properties: IndexMap<String, ElementProperty>,
 }
 
 impl DivElement {
     pub fn new() -> Self {
-        let mut properties = HashMap::new();
+        let mut properties = IndexMap::new();
         properties.insert(
-            "rounded".to_string(),
+            "rounding".to_string(),
             FloatProperty {
                 min: Some(0.0),
                 max: None,
                 value: 0.0,
+            }
+            .into(),
+        );
+        properties.insert(
+            "padding".to_string(),
+            FloatProperty {
+                min: Some(0.0),
+                max: None,
+                value: 16.0,
             }
             .into(),
         );

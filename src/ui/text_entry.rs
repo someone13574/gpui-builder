@@ -1,6 +1,9 @@
 use std::ops::Range;
 
 use gpui::*;
+use uuid::Uuid;
+
+use crate::appearance::colors;
 
 pub struct TextModel {
     pub text: String,
@@ -18,6 +21,7 @@ impl TextModel {
 }
 
 pub struct TextEntry {
+    pub id: Uuid,
     model: Model<TextModel>,
     focus_handle: FocusHandle,
     filter_input: fn(char) -> bool,
@@ -32,6 +36,7 @@ impl TextEntry {
         cx.new_view(|cx| {
             cx.observe(&model, |_, _, cx| cx.notify()).detach();
             Self {
+                id: Uuid::new_v4(),
                 model,
                 filter_input,
                 focus_handle: cx.focus_handle(),
@@ -42,11 +47,18 @@ impl TextEntry {
 
 impl Render for TextEntry {
     fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
-        cx.focus(&self.focus_handle);
-
         let text = self.model.read(cx).text.clone();
         div()
+            .w_full()
+            .border_color(*colors::BORDER)
+            .border_1()
+            .rounded(px(8.0))
+            .px_1()
+            .id(self.id)
             .track_focus(&self.focus_handle)
+            .on_click(cx.listener(|this, _, cx| {
+                cx.focus(&this.focus_handle);
+            }))
             .on_key_down(cx.listener(|this, event: &KeyDownEvent, cx| {
                 cx.update_model(&this.model, |model, cx| {
                     match event.keystroke.key.as_str() {
@@ -75,5 +87,6 @@ impl Render for TextEntry {
                 });
             }))
             .child(InteractiveText::new("entry", StyledText::new(text)))
+            .focus(|this| this.bg(rgba(0xffffff04)))
     }
 }
