@@ -1,4 +1,4 @@
-use gpui::{AppContext, Context};
+use gpui::{rgba, AppContext, Context};
 use indexmap::IndexMap;
 use uuid::Uuid;
 
@@ -33,6 +33,7 @@ impl DivElement {
             }
             .into(),
         );
+        properties.insert("bg".to_string(), rgba(0x808080ff).into());
 
         Self {
             id: Uuid::new_v4(),

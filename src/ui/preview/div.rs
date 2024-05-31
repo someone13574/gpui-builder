@@ -68,6 +68,7 @@ impl Render for DivPreview {
         let properties = &self.element.read(cx).properties;
         let rounding = FloatProperty::from(properties.get("rounding").unwrap().clone());
         let margin = FloatProperty::from(properties.get("padding").unwrap().clone());
+        let bg = Rgba::from(properties.get("bg").unwrap().clone());
 
         div()
             .flex()
@@ -76,7 +77,7 @@ impl Render for DivPreview {
             .p_4()
             .rounded(px(rounding.value))
             .p(px(margin.value))
-            .bg(rgb(0x808080))
+            .bg(bg)
             .border_color(white())
             .border_1()
             .children(self.children.clone())

@@ -29,10 +29,10 @@ impl ComponentElement {
 
     pub fn set_property(&self, property: String, value: ElementProperty, cx: &mut AppContext) {
         match &self {
-            ComponentElement::Div(element) => element.update(cx, |element, _| {
+            ComponentElement::Div(element) => element.update(cx, |element, _cx| {
                 element.properties.insert(property, value);
             }),
-            ComponentElement::Text(element) => element.update(cx, |element, _| {
+            ComponentElement::Text(element) => element.update(cx, |element, _cx| {
                 element.properties.insert(property, value);
             }),
         }

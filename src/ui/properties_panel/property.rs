@@ -1,5 +1,6 @@
 use gpui::*;
 
+use super::color_property::ColorProperty;
 use super::float_property::FloatProperty;
 use super::text_property::TextProperty;
 use crate::component::element::property::ElementProperty;
@@ -9,6 +10,7 @@ use crate::component::element::ComponentElement;
 pub enum Property {
     Float(View<FloatProperty>),
     Text(View<TextProperty>),
+    Color(View<ColorProperty>),
 }
 
 impl Property {
@@ -29,6 +31,11 @@ impl Property {
                 element.clone(),
                 cx,
             )),
+            ElementProperty::Color(_) => Self::Color(ColorProperty::new(
+                property_name.to_string(),
+                element.clone(),
+                cx,
+            )),
         }
     }
 }
@@ -38,6 +45,7 @@ impl RenderOnce for Property {
         match self {
             Self::Float(element) => div().child(element),
             Self::Text(element) => div().child(element),
+            Self::Color(element) => div().child(element),
         }
     }
 }
