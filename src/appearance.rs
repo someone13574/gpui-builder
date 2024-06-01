@@ -9,7 +9,7 @@ pub mod colors {
         pub static ref TEXT: Rgba = rgb(0xb0b0b0);
         pub static ref LIST_ITEM_HOVER: Rgba = rgba(0xffffff04);
         pub static ref LIST_ITEM_ACTIVE: Rgba = rgba(0xffffff08);
-        pub static ref ACTIVE_ELEMENT_INDICATOR_MAX: Rgba = rgba(0xff000080);
+        pub static ref ACTIVE_ELEMENT_INDICATOR_MAX: Rgba = rgb(0xff0000);
     }
 }
 
