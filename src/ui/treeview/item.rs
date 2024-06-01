@@ -4,6 +4,7 @@ use uuid::Uuid;
 
 use crate::appearance::{colors, sizes};
 use crate::component::element::ComponentElement;
+use crate::ui::context_menu::{ContextMenuAction, ContextMenuGlobal};
 
 pub struct TreeviewItem {
     element: ComponentElement,
@@ -54,7 +55,20 @@ impl Render for TreeviewItem {
             }))
             .child(format_element_name(&self.element, cx))
             .id("treeview-item")
-            .on_mouse_up(MouseButton::Left, |_, _| {})
+            .on_mouse_up(
+                MouseButton::Right,
+                cx.listener(|_, event: &MouseUpEvent, cx| {
+                    ContextMenuGlobal::activate(
+                        event.position,
+                        vec![
+                            ContextMenuAction::new("Example action 1".to_string()),
+                            ContextMenuAction::new("Example action 2".to_string()),
+                            ContextMenuAction::new("Example action 3".to_string()),
+                        ],
+                        cx,
+                    )
+                }),
+            )
             .on_hover(cx.listener(|this, hover, cx| {
                 this.hover = *hover;
                 cx.notify();

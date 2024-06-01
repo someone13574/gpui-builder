@@ -1,5 +1,7 @@
 use gpui::*;
+use prelude::FluentBuilder;
 
+use super::context_menu::ContextMenuGlobal;
 use super::preview::panel::PreviewPanel;
 use super::properties_panel::panel::PropertiesPanel;
 use super::treeview::panel::TreeviewPanel;
@@ -37,6 +39,8 @@ impl MainView {
             let preview_panel = PreviewPanel::new(component.clone(), active_element.clone(), cx);
             let properties_panel = PropertiesPanel::new(component, active_element, cx);
 
+            ContextMenuGlobal::init(cx);
+
             Self {
                 treeview_panel,
                 preview_panel,
@@ -47,7 +51,7 @@ impl MainView {
 }
 
 impl Render for MainView {
-    fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
+    fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
         div()
             .flex()
             .flex_row()
@@ -59,5 +63,18 @@ impl Render for MainView {
             .child(self.treeview_panel.clone())
             .child(self.preview_panel.clone())
             .child(self.properties_panel.clone())
+            .on_mouse_down(MouseButton::Left, |_event, cx| {
+                ContextMenuGlobal::hide(cx);
+            })
+            .on_mouse_down(MouseButton::Middle, |_event, cx| {
+                ContextMenuGlobal::hide(cx);
+            })
+            .on_mouse_down(MouseButton::Right, |_event, cx| {
+                ContextMenuGlobal::hide(cx);
+            })
+            .when_some(
+                cx.global::<ContextMenuGlobal>().view.clone(),
+                |this, context_menu| this.child(context_menu),
+            )
     }
 }
