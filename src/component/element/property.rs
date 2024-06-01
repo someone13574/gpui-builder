@@ -87,7 +87,11 @@ pub fn format_rgba(rgba: Rgba) -> String {
     let b = (rgba.g * 255.0) as u32;
     let a = (rgba.a * 255.0) as u32;
 
-    format!("{r:x}{g:x}{b:x}{a:x}")
+    if a == 255 {
+        format!("{r:02x}{g:02x}{b:02x}")
+    } else {
+        format!("{r:02x}{g:02x}{b:02x}{a:02x}")
+    }
 }
 
 impl From<ElementProperty> for Rgba {
