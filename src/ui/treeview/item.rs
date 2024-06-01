@@ -61,9 +61,11 @@ impl Render for TreeviewItem {
                     ContextMenuGlobal::activate(
                         event.position,
                         vec![
-                            ContextMenuAction::new("Example action 1".to_string()),
-                            ContextMenuAction::new("Example action 2".to_string()),
-                            ContextMenuAction::new("Example action 3".to_string()),
+                            vec![
+                                ContextMenuAction::new("Example action 1".to_string()),
+                                ContextMenuAction::new("Example action 2".to_string()),
+                            ],
+                            vec![ContextMenuAction::new("Example action 3".to_string())],
                         ],
                         cx,
                     )

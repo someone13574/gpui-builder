@@ -24,16 +24,21 @@ impl ContextMenuGlobal {
 
     pub fn activate(
         position: Point<Pixels>,
-        actions: Vec<ContextMenuAction>,
+        actions: Vec<Vec<ContextMenuAction>>,
         cx: &mut WindowContext,
     ) {
         let this = Self {
             view: Some(cx.new_view(|cx| {
                 ContextMenu {
                     position,
-                    items: actions
+                    item_groups: actions
                         .into_iter()
-                        .map(|action| ContextMenuItem::new(action, cx))
+                        .map(|action_group| {
+                            action_group
+                                .into_iter()
+                                .map(|action| ContextMenuItem::new(action, cx))
+                                .collect()
+                        })
                         .collect(),
                 }
             })),
@@ -50,7 +55,7 @@ impl Global for ContextMenuGlobal {}
 
 pub struct ContextMenu {
     position: Point<Pixels>,
-    items: Vec<View<ContextMenuItem>>,
+    item_groups: Vec<Vec<View<ContextMenuItem>>>,
 }
 
 impl Render for ContextMenu {
@@ -58,17 +63,28 @@ impl Render for ContextMenu {
         anchored().position(self.position).child(
             deferred(
                 div()
-                    .flex()
-                    .flex_col()
+                    .occlude()
                     .bg(*colors::CONTEXT_MENU_BG)
                     .border_1()
                     .border_color(*colors::BORDER)
                     .rounded(px(8.0))
-                    .px_2()
-                    .py_1()
-                    .gap_1()
-                    .on_mouse_down(MouseButton::Left, |_event, cx| cx.stop_propagation())
-                    .children(self.items.clone()),
+                    .children(
+                        self.item_groups
+                            .iter()
+                            .enumerate()
+                            .map(|(idx, item_group)| {
+                                div()
+                                    .flex()
+                                    .flex_col()
+                                    .px_2()
+                                    .py_1()
+                                    .gap_1()
+                                    .when(idx != 0, |this| {
+                                        this.border_t_1().border_color(*colors::BORDER)
+                                    })
+                                    .children(item_group.clone())
+                            }),
+                    ),
             )
             .priority(1),
         )
