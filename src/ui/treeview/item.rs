@@ -204,38 +204,6 @@ impl Render for TreeviewItem {
                     })),
             )
             .children(self.child_views.clone())
-        // div()
-        //     .flex()
-        //     .flex_row()
-        //     .px_2()
-        //     .children((0..self.indent).map(|_| {
-        //         div()
-        //             .min_w(*sizes::TREEVIEW_INDENT)
-        //             .border_l_1()
-        //             .border_color(*colors::BORDER)
-        //     }))
-        //     .child(format_element_name(&self.element, cx))
-        //     .id("treeview-item")
-        //     .on_mouse_up(
-        //         MouseButton::Right,
-        //         cx.listener(|this, event: &MouseUpEvent, cx| {
-        //             ContextMenuGlobal::activate(event.position, this.context_menu_actions(cx), cx)
-        //         }),
-        //     )
-        //     .on_hover(cx.listener(|this, hover, cx| {
-        //         this.hover = *hover;
-        //         cx.notify();
-        //     }))
-        //     .on_click(cx.listener(|this, event: &ClickEvent, cx| {
-        //         if event.down.button == MouseButton::Left {
-        //             cx.update_model(&this.active_element, |active_element, cx| {
-        //                 *active_element = Some(this.element.id());
-        //                 cx.notify();
-        //             })
-        //         }
-        //     }))
-        //     .when(self.hover, |this| this.bg(*colors::LIST_ITEM_HOVER))
-        //     .when(self.active, |this| this.bg(*colors::LIST_ITEM_ACTIVE))
     }
 }
 
