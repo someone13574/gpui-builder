@@ -30,6 +30,7 @@ impl TreeviewItem {
         cx.new_view(|cx| {
             let cached_text = get_element_text(&element, cx);
             let child_views = Self::make_child_views(indent + 1, &element, &active_element, cx);
+            let active = *active_element.read(cx) == Some(element.id());
 
             Self::observe_text(&element, cx);
             Self::observe_children(&element, cx);
@@ -44,7 +45,7 @@ impl TreeviewItem {
                 child_views,
 
                 hovered: false,
-                active: false,
+                active,
             }
         })
     }
