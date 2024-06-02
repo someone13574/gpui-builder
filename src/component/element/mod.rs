@@ -40,6 +40,25 @@ impl ComponentElement {
             }
         }
     }
+
+    pub fn find_parent_recursive(&self, id: Uuid, cx: &mut AppContext) -> Option<Self> {
+        let children = match self {
+            ComponentElement::Div(element) => element.children.read(cx).clone(),
+            ComponentElement::Text(_) => return None,
+        };
+
+        for child in children {
+            if child.id() == id {
+                return Some(self.clone());
+            }
+
+            if let Some(parent_id) = child.find_parent_recursive(id, cx) {
+                return Some(parent_id);
+            }
+        }
+
+        None
+    }
 }
 
 impl From<DivElement> for ComponentElement {

@@ -6,9 +6,11 @@ use crate::appearance::{colors, sizes};
 use crate::component::element::div::DivElement;
 use crate::component::element::text::TextElement;
 use crate::component::element::ComponentElement;
+use crate::component::Component;
 use crate::ui::context_menu::{ContextMenuAction, ContextMenuGlobal};
 
 pub struct TreeviewItem {
+    component: Model<Component>,
     element: ComponentElement,
     active_element: Model<Option<Uuid>>,
 
@@ -23,13 +25,15 @@ pub struct TreeviewItem {
 impl TreeviewItem {
     pub fn new<V: 'static>(
         indent: u32,
+        component: &Model<Component>,
         element: ComponentElement,
         active_element: Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
             let cached_text = get_element_text(&element, cx);
-            let child_views = Self::make_child_views(indent + 1, &element, &active_element, cx);
+            let child_views =
+                Self::make_child_views(indent + 1, component, &element, &active_element, cx);
             let active = *active_element.read(cx) == Some(element.id());
 
             Self::observe_text(&element, cx);
@@ -37,6 +41,7 @@ impl TreeviewItem {
             Self::observe_active_element(&active_element, cx);
 
             Self {
+                component: component.clone(),
                 element,
                 active_element,
 
@@ -52,6 +57,7 @@ impl TreeviewItem {
 
     fn make_child_views(
         indent: u32,
+        component: &Model<Component>,
         element: &ComponentElement,
         active_element: &Model<Option<Uuid>>,
         cx: &mut ViewContext<Self>,
@@ -62,7 +68,13 @@ impl TreeviewItem {
                 children
                     .iter()
                     .map(|child| {
-                        TreeviewItem::new(indent, child.clone(), active_element.clone(), cx)
+                        TreeviewItem::new(
+                            indent,
+                            component,
+                            child.clone(),
+                            active_element.clone(),
+                            cx,
+                        )
                     })
                     .collect()
             }
@@ -86,6 +98,7 @@ impl TreeviewItem {
             cx.observe(&element.children, |this, _, cx| {
                 this.child_views = Self::make_child_views(
                     this.indent + 1,
+                    &this.component,
                     &this.element,
                     &this.active_element,
                     cx,
@@ -150,15 +163,29 @@ impl TreeviewItem {
             }
             ComponentElement::Text(_) => Vec::new(),
         };
-        actions.append(&mut vec![
-            vec![ContextMenuAction::new(
-                "Wrap in new `div`".to_string(),
-                |_, _| println!("Wrap in div"),
-            )],
-            vec![ContextMenuAction::new("Delete".to_string(), |_, _| {
-                println!("Delete")
-            })],
-        ]);
+        actions.push(vec![ContextMenuAction::new(
+            "Delete".to_string(),
+            cx.listener(|this, _, cx| {
+                let root = this.component.read(cx).root.clone().unwrap();
+                let parent: DivElement = root
+                    .find_parent_recursive(this.element.id(), cx)
+                    .unwrap()
+                    .into();
+                parent.children.update(cx, |children, cx| {
+                    *children = children
+                        .iter()
+                        .filter(|child| child.id() != this.element.id())
+                        .cloned()
+                        .collect();
+                    cx.notify();
+                });
+                this.active_element.update(cx, |active_element, cx| {
+                    // TODO: Only switch to parent if the active element is a child
+                    *active_element = Some(parent.id);
+                    cx.notify();
+                });
+            }),
+        )]);
         actions
     }
 }

@@ -33,3 +33,13 @@ impl DivElement {
         properties
     }
 }
+
+impl From<ComponentElement> for DivElement {
+    fn from(value: ComponentElement) -> Self {
+        if let ComponentElement::Div(element) = value {
+            element
+        } else {
+            unreachable!()
+        }
+    }
+}
