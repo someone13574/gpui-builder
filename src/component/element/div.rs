@@ -1,53 +1,35 @@
-use gpui::{rgba, AppContext, Context};
+use gpui::{rgb, AppContext, Context, Model};
 use indexmap::IndexMap;
 use uuid::Uuid;
 
-use super::property::{ElementProperty, FloatProperty};
 use super::ComponentElement;
+use crate::component::element_property::{insert_property, ElementProperty};
 
 #[derive(Clone)]
 pub struct DivElement {
     pub id: Uuid,
-    pub children: Vec<ComponentElement>,
-    pub properties: IndexMap<String, ElementProperty>,
+    pub children: Model<Vec<ComponentElement>>,
+    pub properties: IndexMap<String, Model<(String, ElementProperty)>>,
 }
 
 impl DivElement {
-    pub fn new() -> Self {
-        let mut properties = IndexMap::new();
-        properties.insert(
-            "rounding".to_string(),
-            FloatProperty {
-                min: Some(0.0),
-                max: None,
-                value: 0.0,
-            }
-            .into(),
-        );
-        properties.insert(
-            "padding".to_string(),
-            FloatProperty {
-                min: Some(0.0),
-                max: None,
-                value: 16.0,
-            }
-            .into(),
-        );
-        properties.insert("bg".to_string(), rgba(0x808080ff).into());
-
+    pub fn new(cx: &mut AppContext) -> Self {
         Self {
             id: Uuid::new_v4(),
-            children: Vec::new(),
-            properties,
+            children: cx.new_model(|_| Vec::new()),
+            properties: Self::default_properties(cx),
         }
     }
 
-    pub fn child(mut self, child: ComponentElement) -> Self {
-        self.children.push(child);
-        self
-    }
+    fn default_properties(
+        cx: &mut AppContext,
+    ) -> IndexMap<String, Model<(String, ElementProperty)>> {
+        let mut properties = IndexMap::new();
 
-    pub fn build(self, cx: &mut AppContext) -> ComponentElement {
-        ComponentElement::Div(cx.new_model(|_| self))
+        insert_property("rounding", 0.0.into(), &mut properties, cx);
+        insert_property("padding", 16.0.into(), &mut properties, cx);
+        insert_property("bg", rgb(0x808080).into(), &mut properties, cx);
+
+        properties
     }
 }

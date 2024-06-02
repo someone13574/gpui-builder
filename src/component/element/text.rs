@@ -1,25 +1,28 @@
-use gpui::{AppContext, Context};
+use gpui::{AppContext, Model};
 use indexmap::IndexMap;
 use uuid::Uuid;
 
-use super::property::ElementProperty;
-use super::ComponentElement;
+use crate::component::element_property::{insert_property, ElementProperty};
 
 #[derive(Clone)]
 pub struct TextElement {
     pub id: Uuid,
-    pub properties: IndexMap<String, ElementProperty>,
+    pub properties: IndexMap<String, Model<(String, ElementProperty)>>,
 }
 
 impl TextElement {
-    #[allow(clippy::new_ret_no_self)]
-    pub fn new(text: &str, cx: &mut AppContext) -> ComponentElement {
-        let mut properties = IndexMap::new();
-        properties.insert("text".to_string(), text.to_string().into());
-
-        ComponentElement::Text(cx.new_model(|_| Self {
+    pub fn new(cx: &mut AppContext) -> Self {
+        Self {
             id: Uuid::new_v4(),
-            properties,
-        }))
+            properties: Self::default_properties(cx),
+        }
+    }
+
+    fn default_properties(
+        cx: &mut AppContext,
+    ) -> IndexMap<String, Model<(String, ElementProperty)>> {
+        let mut properties = IndexMap::new();
+        insert_property("text", "New text".to_string().into(), &mut properties, cx);
+        properties
     }
 }

@@ -9,67 +9,62 @@ use crate::component::Component;
 pub struct PropertiesPanel {
     component: Model<Component>,
     properties: Vec<Property>,
-
-    active_element_sub: Option<Subscription>,
 }
 
 impl PropertiesPanel {
     pub fn new<V: 'static>(
         component: Model<Component>,
-        active_element_id: Model<Option<Uuid>>,
+        active_element: Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            let active_element = get_active_element(&component, &active_element_id, cx);
-
-            let (properties, sub) = if let Some(active_element) = active_element {
-                let properties = Self::make_properties(&active_element, cx);
-                let sub = Self::observe_element(&active_element, cx);
-                (properties, Some(sub))
+            let cached_active_element = *active_element.read(cx);
+            let properties = if let Some(active_element) = get_active_element(
+                component.read(cx).root.as_ref().unwrap(),
+                cached_active_element,
+                cx,
+            ) {
+                Self::make_properties(&active_element, cx)
             } else {
-                (Vec::new(), None)
+                Vec::new()
             };
 
-            cx.observe(&active_element_id, |this, active_element_id, cx| {
-                if let Some(active_element) =
-                    get_active_element(&this.component, &active_element_id, cx)
-                {
-                    this.active_element_sub = Some(Self::observe_element(&active_element, cx));
-                    this.properties = Self::make_properties(&active_element, cx);
-                }
-                cx.notify();
-            })
-            .detach();
+            Self::observe_active_element(&active_element, cx);
 
             Self {
                 component,
                 properties,
-                active_element_sub: sub,
             }
         })
     }
 
     fn make_properties(element: &ComponentElement, cx: &mut ViewContext<Self>) -> Vec<Property> {
-        element
-            .properties(cx)
+        let properties = match element {
+            ComponentElement::Div(element) => element.properties.clone(),
+            ComponentElement::Text(element) => element.properties.clone(),
+        };
+
+        properties
             .into_iter()
-            .map(|(name, property)| Property::new(&name, &property, element, cx))
+            .map(|(_, property)| Property::new(property, element.clone(), cx))
             .collect()
     }
 
-    fn observe_element(element: &ComponentElement, cx: &mut ViewContext<Self>) -> Subscription {
-        match element {
-            ComponentElement::Div(element) => cx.observe(element, |this: &mut Self, active, cx| {
-                this.properties = Self::make_properties(&ComponentElement::Div(active), cx);
-                cx.notify();
-            }),
-            ComponentElement::Text(element) => {
-                cx.observe(element, |this: &mut Self, active, cx| {
-                    this.properties = Self::make_properties(&ComponentElement::Text(active), cx);
-                    cx.notify();
-                })
-            }
-        }
+    fn observe_active_element(active_element: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
+        cx.observe(active_element, |this, active_element_id, cx| {
+            let active_element_id = *active_element_id.read(cx);
+            this.properties = if let Some(active_element) = get_active_element(
+                this.component.read(cx).root.as_ref().unwrap(),
+                active_element_id,
+                cx,
+            ) {
+                Self::make_properties(&active_element, cx)
+            } else {
+                Vec::new()
+            };
+            cx.notify();
+        })
+        .detach();
     }
 }
 
@@ -91,16 +86,21 @@ impl Render for PropertiesPanel {
 }
 
 fn get_active_element(
-    component: &Model<Component>,
-    active_element: &Model<Option<Uuid>>,
-    cx: &mut AppContext,
+    search_element: &ComponentElement,
+    active_element: Option<Uuid>,
+    cx: &AppContext,
 ) -> Option<ComponentElement> {
-    let component = cx.read_model(component, |component, _| component.clone());
-    let active_element = cx.read_model(active_element, |active_element, _| *active_element);
+    if Some(search_element.id()) == active_element {
+        return Some(search_element.clone());
+    }
 
-    component
-        .element_list(cx)
-        .into_iter()
-        .map(|(element, _)| element)
-        .find(|element| Some(element.id(cx)) == active_element)
+    match search_element {
+        ComponentElement::Div(element) => {
+            let children = element.children.read(cx);
+            children
+                .iter()
+                .find_map(|child| get_active_element(child, active_element, cx))
+        }
+        ComponentElement::Text(_) => None,
+    }
 }

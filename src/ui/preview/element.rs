@@ -17,13 +17,12 @@ impl ElementPreview {
         active_element: Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> Self {
-        let id = element.id(cx);
         match element {
             ComponentElement::Div(element) => {
-                Self::Div(DivPreview::new(element, id, active_element, cx))
+                Self::Div(DivPreview::new(element, active_element, cx))
             }
             ComponentElement::Text(element) => {
-                Self::Text(TextPreview::new(element, id, active_element, cx))
+                Self::Text(TextPreview::new(element, active_element, cx))
             }
         }
     }

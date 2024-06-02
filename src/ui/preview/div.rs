@@ -1,90 +1,127 @@
 use gpui::*;
+use indexmap::IndexMap;
 use prelude::FluentBuilder;
 use uuid::Uuid;
 
 use super::active_indicator::ActiveIndicator;
 use super::element::ElementPreview;
 use crate::component::element::div::DivElement;
-use crate::component::element::property::FloatProperty;
+use crate::component::element::ComponentElement;
+use crate::component::element_property::{read_properties, ElementProperty};
 
 pub struct DivPreview {
-    id: Uuid,
-    element: Model<DivElement>,
-    children: Vec<ElementPreview>,
+    element: DivElement,
     active_element: Model<Option<Uuid>>,
 
-    indicator_animation_id: Uuid,
+    cached_properties: IndexMap<String, ElementProperty>,
+    child_previews: Vec<ElementPreview>,
+    indicator_animation_id: Option<Uuid>,
 }
 
 impl DivPreview {
     pub fn new<V: 'static>(
-        element: Model<DivElement>,
-        id: Uuid,
+        element: DivElement,
         active_element: Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            cx.observe(&element, |this: &mut DivPreview, element, cx| {
-                this.children = Self::make_children(element, this.active_element.clone(), cx);
-                cx.notify()
-            })
-            .detach();
-            cx.observe(&active_element, |this, _, cx| {
-                this.indicator_animation_id = Uuid::new_v4();
-                cx.notify();
-            })
-            .detach();
+            let cached_properties = read_properties(&element.properties, cx);
+            let child_previews = create_child_previews(&element.children, &active_element, cx);
+            let indicator_animation_id = if *active_element.read(cx) == Some(element.id) {
+                Some(Uuid::new_v4())
+            } else {
+                None
+            };
 
-            let children = Self::make_children(element.clone(), active_element.clone(), cx);
+            Self::observe_properties(&element, cx);
+            Self::observe_children(&element, cx);
+            Self::observe_active_element(&active_element, cx);
+
             Self {
-                id,
                 element,
-                children,
                 active_element,
-                indicator_animation_id: Uuid::new_v4(),
+
+                cached_properties,
+                child_previews,
+                indicator_animation_id,
             }
         })
     }
 
-    fn make_children(
-        element: Model<DivElement>,
-        active_element: Model<Option<Uuid>>,
-        cx: &mut ViewContext<Self>,
-    ) -> Vec<ElementPreview> {
-        let element = cx.read_model(&element, |element, _| element.clone());
-        element
-            .children
-            .into_iter()
-            .map(|element| ElementPreview::new(element, active_element.clone(), cx))
-            .collect()
+    fn observe_properties(element: &DivElement, cx: &mut ViewContext<Self>) {
+        for (_, value) in &element.properties {
+            cx.observe(value, |this, property, cx| {
+                let (key, value) = property.read(cx).clone();
+                this.cached_properties.insert(key, value);
+                cx.notify();
+            })
+            .detach();
+        }
+    }
+
+    fn observe_children(element: &DivElement, cx: &mut ViewContext<Self>) {
+        cx.observe(&element.children, |this, children, cx| {
+            this.child_previews = create_child_previews(&children, &this.active_element, cx);
+            cx.notify();
+        })
+        .detach();
+    }
+
+    fn observe_active_element(active_element: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
+        cx.observe(active_element, |this, active_element, cx| {
+            let active_element = *active_element.read(cx);
+            if active_element == Some(this.element.id) {
+                this.indicator_animation_id = Some(Uuid::new_v4());
+            } else {
+                this.indicator_animation_id = None;
+            }
+            cx.notify();
+        })
+        .detach();
     }
 }
 
 impl Render for DivPreview {
-    fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
-        let active_element =
-            cx.read_model(&self.active_element, |active_element, _| *active_element);
-
-        let properties = &self.element.read(cx).properties;
-        let rounding = FloatProperty::from(properties.get("rounding").unwrap().clone());
-        let margin = FloatProperty::from(properties.get("padding").unwrap().clone());
-        let bg = Rgba::from(properties.get("bg").unwrap().clone());
+    fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
+        let rounding: f32 = self
+            .cached_properties
+            .get("rounding")
+            .unwrap()
+            .clone()
+            .into();
+        let padding: f32 = self
+            .cached_properties
+            .get("padding")
+            .unwrap()
+            .clone()
+            .into();
+        let bg: Rgba = self.cached_properties.get("bg").unwrap().clone().into();
 
         div()
             .flex()
             .flex_col()
             .gap_4()
             .p_4()
-            .rounded(px(rounding.value))
-            .p(px(margin.value))
+            .rounded(px(rounding))
+            .p(px(padding))
             .bg(bg)
             .border_color(white())
             .border_1()
-            .children(self.children.clone())
-            .when(active_element == Some(self.id), |this| {
-                this.child(ActiveIndicator {
-                    animation_id: self.indicator_animation_id,
-                })
+            .children(self.child_previews.clone())
+            .when_some(self.indicator_animation_id, |this, animation_id| {
+                this.child(ActiveIndicator { animation_id })
             })
     }
+}
+
+fn create_child_previews(
+    children: &Model<Vec<ComponentElement>>,
+    active_element: &Model<Option<Uuid>>,
+    cx: &mut ViewContext<DivPreview>,
+) -> Vec<ElementPreview> {
+    let children = children.read(cx).clone();
+    children
+        .into_iter()
+        .map(|child| ElementPreview::new(child, active_element.clone(), cx))
+        .collect()
 }

@@ -1,47 +1,46 @@
 use gpui::*;
 
-use crate::component::element::property::{format_rgba, parse_rgba};
 use crate::component::element::ComponentElement;
+use crate::component::element_property::color::{format_rgba, parse_rgba};
+use crate::component::element_property::ElementProperty;
 use crate::ui::text_entry::{TextEntry, TextModel};
 
 pub struct ColorProperty {
-    property_name: String,
     element: ComponentElement,
+    property_name: String,
     text_entry: View<TextEntry>,
 }
 
 impl ColorProperty {
     pub fn new<V: 'static>(
-        property_name: String,
+        property: Model<(String, ElementProperty)>,
         element: ComponentElement,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            element.observe_notify(cx);
+            let (property_name, property_value) = property.read(cx).clone();
+            let text_model = TextModel::new(format_rgba(property_value.clone().into()), cx);
+            Self::observe_entry(&text_model, cx);
 
-            let model =
-                TextModel::new(format_rgba(element.property(&property_name, cx).into()), cx);
-            cx.observe(&model, |this: &mut Self, text, cx| {
-                let text = &text.read(cx).text;
-                let rgba = if let Some(rgba) = parse_rgba(text) {
-                    rgba
-                } else {
-                    rgba(0xff00ffff)
-                };
-
-                this.element
-                    .set_property(this.property_name.clone(), rgba.into(), cx);
-            })
-            .detach();
-
-            let text_entry = TextEntry::new(model, |char| char.is_ascii_hexdigit(), cx);
+            let text_entry = TextEntry::new(text_model, |char| char.is_ascii_hexdigit(), cx);
 
             Self {
-                property_name,
                 element,
+                property_name,
                 text_entry,
             }
         })
+    }
+
+    fn observe_entry(text_model: &Model<TextModel>, cx: &mut ViewContext<Self>) {
+        cx.observe(text_model, |this, text_model, cx| {
+            let text = &text_model.read(cx).text;
+            if let Some(rgba) = parse_rgba(text) {
+                this.element
+                    .set_property(&this.property_name, rgba.into(), cx);
+            }
+        })
+        .detach();
     }
 }
 

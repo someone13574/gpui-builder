@@ -1,42 +1,43 @@
 use gpui::*;
 
-use crate::component::element::property::ElementProperty;
 use crate::component::element::ComponentElement;
+use crate::component::element_property::ElementProperty;
 use crate::ui::text_entry::{TextEntry, TextModel};
 
 pub struct TextProperty {
-    property_name: String,
     element: ComponentElement,
+    property_name: String,
     text_entry: View<TextEntry>,
 }
 
 impl TextProperty {
     pub fn new<V: 'static>(
-        property_name: String,
+        property: Model<(String, ElementProperty)>,
         element: ComponentElement,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            element.observe_notify(cx);
+            let (property_name, property_value) = property.read(cx).clone();
+            let text_model = TextModel::new(property_value.clone().into(), cx);
+            Self::observe_entry(&text_model, cx);
 
-            let model = TextModel::new(String::from(element.property(&property_name, cx)), cx);
-            cx.observe(&model, |this: &mut Self, text, cx| {
-                let text = text.read(cx).text.clone();
-                this.element.set_property(
-                    this.property_name.clone(),
-                    ElementProperty::Text(text),
-                    cx,
-                );
-            })
-            .detach();
+            let text_entry = TextEntry::new(text_model, |_| true, cx);
 
-            let text_entry = TextEntry::new(model, |_| true, cx);
             Self {
-                property_name,
                 element,
+                property_name,
                 text_entry,
             }
         })
+    }
+
+    fn observe_entry(text_model: &Model<TextModel>, cx: &mut ViewContext<Self>) {
+        cx.observe(text_model, |this, text_model, cx| {
+            let text = text_model.read(cx).text.clone();
+            this.element
+                .set_property(&this.property_name, text.into(), cx);
+        })
+        .detach();
     }
 }
 

@@ -1,54 +1,45 @@
 use gpui::*;
 
-use crate::component::element::{property, ComponentElement};
+use crate::component::element::ComponentElement;
+use crate::component::element_property::ElementProperty;
 use crate::ui::text_entry::{TextEntry, TextModel};
 
 pub struct FloatProperty {
-    property_name: String,
     element: ComponentElement,
+    property_name: String,
     text_entry: View<TextEntry>,
 }
 
 impl FloatProperty {
     pub fn new<V: 'static>(
-        property_name: String,
+        property: Model<(String, ElementProperty)>,
         element: ComponentElement,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            element.observe_notify(cx);
+            let (property_name, property_value) = property.read(cx).clone();
+            let text_model = TextModel::new(f32::from(property_value).to_string(), cx);
+            Self::observe_entry(&text_model, cx);
 
-            let model = TextModel::new(
-                format!(
-                    "{}",
-                    property::FloatProperty::from(element.property(&property_name, cx)).value
-                ),
-                cx,
-            );
-            cx.observe(&model, |this: &mut Self, text, cx| {
-                let text = &text.read(cx).text;
-                let value = if let Ok(value) = text.parse::<f32>() {
-                    value
-                } else {
-                    0.0
-                };
-
-                let mut current =
-                    property::FloatProperty::from(this.element.property(&this.property_name, cx));
-                current.value = value;
-                this.element
-                    .set_property(this.property_name.clone(), current.into(), cx);
-            })
-            .detach();
-
-            let text_entry = TextEntry::new(model, |char| char.is_ascii_digit() || char == '.', cx);
+            let text_entry = TextEntry::new(text_model, |char| char.is_ascii_hexdigit(), cx);
 
             Self {
-                property_name,
                 element,
+                property_name,
                 text_entry,
             }
         })
+    }
+
+    fn observe_entry(text_model: &Model<TextModel>, cx: &mut ViewContext<Self>) {
+        cx.observe(text_model, |this, text_model, cx| {
+            let text = &text_model.read(cx).text;
+            if let Ok(value) = text.parse::<f32>() {
+                this.element
+                    .set_property(&this.property_name, value.into(), cx);
+            }
+        })
+        .detach();
     }
 }
 
