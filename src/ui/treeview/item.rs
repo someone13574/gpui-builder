@@ -3,6 +3,8 @@ use prelude::FluentBuilder;
 use uuid::Uuid;
 
 use crate::appearance::{colors, sizes};
+use crate::component::element::div::DivElement;
+use crate::component::element::text::TextElement;
 use crate::component::element::ComponentElement;
 use crate::ui::context_menu::{ContextMenuAction, ContextMenuGlobal};
 
@@ -39,6 +41,64 @@ impl TreeviewItem {
             }
         })
     }
+
+    fn context_menu_actions(&self, cx: &mut ViewContext<Self>) -> Vec<Vec<ContextMenuAction>> {
+        let mut actions = match self.element {
+            ComponentElement::Div(_) => {
+                vec![vec![
+                    ContextMenuAction::new(
+                        "New `div` child".to_string(),
+                        cx.listener(|this, _, cx| {
+                            if let ComponentElement::Div(element) = &this.element {
+                                let new_element = DivElement::new().build(cx);
+                                let id = new_element.id(cx);
+                                cx.update_model(element, |element, cx| {
+                                    element.children.push(new_element);
+                                    cx.notify();
+                                });
+                                cx.update_model(&this.active_element, |active_element, cx| {
+                                    *active_element = Some(id);
+                                    cx.notify();
+                                })
+                            } else {
+                                unreachable!();
+                            }
+                        }),
+                    ),
+                    ContextMenuAction::new(
+                        "New `text` child".to_string(),
+                        cx.listener(|this, _, cx| {
+                            if let ComponentElement::Div(element) = &this.element {
+                                let new_element = TextElement::new("New Text", cx);
+                                let id = new_element.id(cx);
+                                cx.update_model(element, |element, cx| {
+                                    element.children.push(new_element);
+                                    cx.notify();
+                                });
+                                cx.update_model(&this.active_element, |active_element, cx| {
+                                    *active_element = Some(id);
+                                    cx.notify();
+                                })
+                            } else {
+                                unreachable!();
+                            }
+                        }),
+                    ),
+                ]]
+            }
+            ComponentElement::Text(_) => Vec::new(),
+        };
+        actions.append(&mut vec![
+            vec![ContextMenuAction::new(
+                "Wrap in new `div`".to_string(),
+                |_, _| println!("Wrap in div"),
+            )],
+            vec![ContextMenuAction::new("Delete".to_string(), |_, _| {
+                println!("Delete")
+            })],
+        ]);
+        actions
+    }
 }
 
 impl Render for TreeviewItem {
@@ -57,18 +117,8 @@ impl Render for TreeviewItem {
             .id("treeview-item")
             .on_mouse_up(
                 MouseButton::Right,
-                cx.listener(|_, event: &MouseUpEvent, cx| {
-                    ContextMenuGlobal::activate(
-                        event.position,
-                        vec![
-                            vec![
-                                ContextMenuAction::new("Example action 1".to_string()),
-                                ContextMenuAction::new("Example action 2".to_string()),
-                            ],
-                            vec![ContextMenuAction::new("Example action 3".to_string())],
-                        ],
-                        cx,
-                    )
+                cx.listener(|this, event: &MouseUpEvent, cx| {
+                    ContextMenuGlobal::activate(event.position, this.context_menu_actions(cx), cx)
                 }),
             )
             .on_hover(cx.listener(|this, hover, cx| {

@@ -91,30 +91,35 @@ impl Render for ContextMenu {
     }
 }
 
+pub type OnClickFn = dyn Fn(&ClickEvent, &mut WindowContext);
+
 pub struct ContextMenuAction {
     text: String,
+    on_click: Box<OnClickFn>,
 }
 
 impl ContextMenuAction {
-    pub fn new(text: String) -> Self {
-        Self { text }
+    pub fn new(text: String, on_click: impl Fn(&ClickEvent, &mut WindowContext) + 'static) -> Self {
+        Self {
+            text,
+            on_click: Box::new(on_click),
+        }
     }
 }
 
 struct ContextMenuItem {
-    text: String,
-
     id: Uuid,
     hover: bool,
+    action: ContextMenuAction,
 }
 
 impl ContextMenuItem {
     pub fn new(action: ContextMenuAction, cx: &mut ViewContext<ContextMenu>) -> View<Self> {
         cx.new_view(|_| {
             Self {
-                text: action.text,
                 id: Uuid::new_v4(),
                 hover: false,
+                action,
             }
         })
     }
@@ -123,7 +128,7 @@ impl ContextMenuItem {
 impl Render for ContextMenuItem {
     fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
         div()
-            .child(self.text.clone())
+            .child(self.action.text.clone())
             .px_1()
             .rounded(px(4.0))
             .when(self.hover, |this| this.bg(*colors::LIST_ITEM_HOVER))
@@ -133,6 +138,9 @@ impl Render for ContextMenuItem {
                 this.hover = *hover;
                 cx.notify();
             }))
-            .on_click(|_, _| println!("Click!"))
+            .on_click(cx.listener(|this, event, cx| {
+                ContextMenuGlobal::hide(cx);
+                (this.action.on_click)(event, cx);
+            }))
     }
 }
