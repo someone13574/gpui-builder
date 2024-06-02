@@ -53,22 +53,20 @@ fn create_items(
 
     for (element, _) in &element_list {
         match element {
-            ComponentElement::Div(element) => {
-                cx.observe(element, |this, _, cx| {
+            ComponentElement::Div(element) => cx
+                .observe(element, |this, _, cx| {
                     this.item_views =
                         create_items(this.root_component.clone(), this.active_element.clone(), cx);
                     cx.notify();
                 })
-                .detach()
-            }
-            ComponentElement::Text(element) => {
-                cx.observe(element, |this, _, cx| {
+                .detach(),
+            ComponentElement::Text(element) => cx
+                .observe(element, |this, _, cx| {
                     this.item_views =
                         create_items(this.root_component.clone(), this.active_element.clone(), cx);
                     cx.notify();
                 })
-                .detach()
-            }
+                .detach(),
         }
     }
 

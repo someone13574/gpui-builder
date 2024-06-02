@@ -29,16 +29,12 @@ impl ComponentElement {
 
     pub fn set_property(&self, property: String, value: ElementProperty, cx: &mut AppContext) {
         match &self {
-            ComponentElement::Div(element) => {
-                element.update(cx, |element, _cx| {
-                    element.properties.insert(property, value);
-                })
-            }
-            ComponentElement::Text(element) => {
-                element.update(cx, |element, _cx| {
-                    element.properties.insert(property, value);
-                })
-            }
+            ComponentElement::Div(element) => element.update(cx, |element, _cx| {
+                element.properties.insert(property, value);
+            }),
+            ComponentElement::Text(element) => element.update(cx, |element, _cx| {
+                element.properties.insert(property, value);
+            }),
         }
     }
 
@@ -63,18 +59,16 @@ impl ComponentElement {
 
     pub fn observe_notify<V: 'static>(&self, cx: &mut ViewContext<V>) {
         match &self {
-            ComponentElement::Div(element) => {
-                cx.observe(element, |_, _, cx| {
+            ComponentElement::Div(element) => cx
+                .observe(element, |_, _, cx| {
                     cx.notify();
                 })
-                .detach()
-            }
-            ComponentElement::Text(element) => {
-                cx.observe(element, |_, _, cx| {
+                .detach(),
+            ComponentElement::Text(element) => cx
+                .observe(element, |_, _, cx| {
                     cx.notify();
                 })
-                .detach()
-            }
+                .detach(),
         }
     }
 }

@@ -115,12 +115,10 @@ struct ContextMenuItem {
 
 impl ContextMenuItem {
     pub fn new(action: ContextMenuAction, cx: &mut ViewContext<ContextMenu>) -> View<Self> {
-        cx.new_view(|_| {
-            Self {
-                id: Uuid::new_v4(),
-                hover: false,
-                action,
-            }
+        cx.new_view(|_| Self {
+            id: Uuid::new_v4(),
+            hover: false,
+            action,
         })
     }
 }
