@@ -1,3 +1,4 @@
+mod bool_property;
 mod color_property;
 mod float_property;
 pub mod panel;
