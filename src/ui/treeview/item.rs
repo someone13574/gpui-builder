@@ -163,29 +163,123 @@ impl TreeviewItem {
             }
             ComponentElement::Text(_) => Vec::new(),
         };
-        actions.push(vec![ContextMenuAction::new(
-            "Delete".to_string(),
-            cx.listener(|this, _, cx| {
-                let root = this.component.read(cx).root.clone().unwrap();
-                let parent: DivElement = root
-                    .find_parent_recursive(this.element.id(), cx)
-                    .unwrap()
-                    .into();
-                parent.children.update(cx, |children, cx| {
-                    *children = children
-                        .iter()
-                        .filter(|child| child.id() != this.element.id())
-                        .cloned()
-                        .collect();
-                    cx.notify();
-                });
-                this.active_element.update(cx, |active_element, cx| {
-                    // TODO: Only switch to parent if the active element is a child
-                    *active_element = Some(parent.id);
-                    cx.notify();
-                });
-            }),
-        )]);
+        if self.component.read(cx).root.as_ref().unwrap().id() != self.element.id() {
+            actions.push(vec![
+                ContextMenuAction::new(
+                    "Move up".to_string(),
+                    cx.listener(|this, _, cx| {
+                        let root = this.component.read(cx).root.clone().unwrap();
+                        let parent: DivElement = root
+                            .find_parent_recursive(this.element.id(), cx)
+                            .unwrap()
+                            .into();
+
+                        let child_id = this.element.id();
+                        this.active_element.update(cx, |active_element, cx| {
+                            *active_element = Some(child_id);
+                            cx.notify();
+                        });
+
+                        let children = parent.children.read(cx).clone();
+                        if let Some(pos) = children.iter().position(|child| child.id() == child_id)
+                        {
+                            if pos > 0 {
+                                parent.children.update(cx, |children, cx| {
+                                    children.swap(pos, pos - 1);
+                                    cx.notify();
+                                });
+                            } else if let Some(grandparent) =
+                                root.find_parent_recursive(parent.id, cx)
+                            {
+                                let grandparent: DivElement = grandparent.into();
+
+                                parent.children.update(cx, |children, cx| {
+                                    let child = children.remove(pos);
+                                    cx.notify();
+
+                                    grandparent.children.update(cx, |grandchildren, cx| {
+                                        let parent_pos = grandchildren
+                                            .iter()
+                                            .position(|p| p.id() == parent.id)
+                                            .unwrap();
+                                        grandchildren.insert(parent_pos, child);
+                                        cx.notify();
+                                    });
+                                });
+                            }
+                        }
+                    }),
+                ),
+                ContextMenuAction::new(
+                    "Move down".to_string(),
+                    cx.listener(|this, _, cx| {
+                        let root = this.component.read(cx).root.clone().unwrap();
+                        let parent: DivElement = root
+                            .find_parent_recursive(this.element.id(), cx)
+                            .unwrap()
+                            .into();
+
+                        let child_id = this.element.id();
+                        this.active_element.update(cx, |active_element, cx| {
+                            *active_element = Some(child_id);
+                            cx.notify();
+                        });
+
+                        let children = parent.children.read(cx).clone();
+                        if let Some(pos) = children.iter().position(|child| child.id() == child_id)
+                        {
+                            if pos < children.len() - 1 {
+                                parent.children.update(cx, |children, cx| {
+                                    children.swap(pos, pos + 1);
+                                    cx.notify();
+                                });
+                            } else if let Some(grandparent) =
+                                root.find_parent_recursive(parent.id, cx)
+                            {
+                                let grandparent: DivElement = grandparent.into();
+
+                                parent.children.update(cx, |children, cx| {
+                                    let child = children.remove(pos);
+                                    cx.notify();
+
+                                    grandparent.children.update(cx, |grandchildren, cx| {
+                                        let parent_pos = grandchildren
+                                            .iter()
+                                            .position(|p| p.id() == parent.id)
+                                            .unwrap();
+                                        grandchildren.insert(parent_pos + 1, child);
+                                        cx.notify();
+                                    });
+                                });
+                            }
+                        }
+                    }),
+                ),
+            ]);
+            actions.push(vec![ContextMenuAction::new(
+                "Delete".to_string(),
+                cx.listener(|this, _, cx| {
+                    let root = this.component.read(cx).root.clone().unwrap();
+                    let parent: DivElement = root
+                        .find_parent_recursive(this.element.id(), cx)
+                        .unwrap()
+                        .into();
+                    parent.children.update(cx, |children, cx| {
+                        *children = children
+                            .iter()
+                            .filter(|child| child.id() != this.element.id())
+                            .cloned()
+                            .collect();
+                        cx.notify();
+                    });
+                    this.active_element.update(cx, |active_element, cx| {
+                        // TODO: Only switch to parent if the active element is a child
+                        *active_element = Some(parent.id);
+                        cx.notify();
+                    });
+                }),
+            )]);
+        }
         actions
     }
 }
