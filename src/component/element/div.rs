@@ -26,6 +26,7 @@ impl DivElement {
     ) -> IndexMap<String, Model<(String, ElementProperty)>> {
         let mut properties = IndexMap::new();
 
+        insert_property("flex", true.into(), &mut properties, cx);
         insert_property("rounding", 0.0.into(), &mut properties, cx);
         insert_property("padding", 16.0.into(), &mut properties, cx);
         insert_property("bg", rgb(0x808080).into(), &mut properties, cx);

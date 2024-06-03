@@ -6,6 +6,7 @@ pub mod color;
 #[derive(Clone)]
 pub enum ElementProperty {
     Float(f32),
+    Bool(bool),
     Text(String),
     Color(Rgba),
 }
@@ -19,6 +20,12 @@ impl ElementProperty {
 impl From<f32> for ElementProperty {
     fn from(value: f32) -> Self {
         Self::Float(value)
+    }
+}
+
+impl From<bool> for ElementProperty {
+    fn from(value: bool) -> Self {
+        Self::Bool(value)
     }
 }
 
@@ -56,6 +63,16 @@ pub fn insert_property(
 impl From<ElementProperty> for f32 {
     fn from(value: ElementProperty) -> Self {
         if let ElementProperty::Float(value) = value {
+            value
+        } else {
+            unreachable!()
+        }
+    }
+}
+
+impl From<ElementProperty> for bool {
+    fn from(value: ElementProperty) -> Self {
+        if let ElementProperty::Bool(value) = value {
             value
         } else {
             unreachable!()

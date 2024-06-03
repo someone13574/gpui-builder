@@ -1,3 +1,4 @@
+pub mod checkbox;
 pub mod context_menu;
 pub mod main_view;
 pub mod preview;
