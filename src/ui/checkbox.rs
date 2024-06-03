@@ -17,9 +17,11 @@ impl CheckBox {
             })
             .detach();
 
+            let checked = *model.read(cx);
+
             Self {
                 model,
-                checked: false,
+                checked,
                 hovered: false,
             }
         })

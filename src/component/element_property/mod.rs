@@ -35,6 +35,12 @@ impl From<String> for ElementProperty {
     }
 }
 
+impl From<&str> for ElementProperty {
+    fn from(value: &str) -> Self {
+        value.to_string().into()
+    }
+}
+
 impl From<Rgba> for ElementProperty {
     fn from(value: Rgba) -> Self {
         Self::Color(value)
