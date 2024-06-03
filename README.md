@@ -1,9 +1,9 @@
+> [!WARNING]
+> This application is still *very* early in development and the code is very volatile. Don't expect it to be useful or working correctly. Please don't open any issues at this time; they will be ignored. PR's are still accepted.
+
 # UI Builder & Preview for GPUI
 
 This is an application which aims to speed up the visual aspect of designing an interface which GPUI. Instead of rebuilding for each change, you instead get a live preview of a component which can then be easily exported into your project.
-
-> [!NOTE]
-> This program cannot model stateful components.
 
 ## Contributing
 
