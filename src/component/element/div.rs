@@ -1,4 +1,4 @@
-use gpui::{rgb, AppContext, Context, Model};
+use gpui::{rgba, AppContext, Context, Model};
 use indexmap::IndexMap;
 use uuid::Uuid;
 
@@ -26,10 +26,30 @@ impl DivElement {
     ) -> IndexMap<String, Model<(String, ElementProperty)>> {
         let mut properties = IndexMap::new();
 
-        insert_property("flex", true.into(), &mut properties, cx);
-        insert_property("rounding", 0.0.into(), &mut properties, cx);
-        insert_property("padding", 16.0.into(), &mut properties, cx);
-        insert_property("bg", rgb(0x808080).into(), &mut properties, cx);
+        insert_property("flex", false.into(), &mut properties, cx);
+        insert_property("visible", true.into(), &mut properties, cx);
+        insert_property("overflow_x_hidden", false.into(), &mut properties, cx);
+        insert_property("overflow_y_hidden", false.into(), &mut properties, cx);
+        insert_property("margin_left", 0.0.into(), &mut properties, cx);
+        insert_property("margin_right", 0.0.into(), &mut properties, cx);
+        insert_property("margin_top", 0.0.into(), &mut properties, cx);
+        insert_property("margin_bottom", 0.0.into(), &mut properties, cx);
+        insert_property("padding_left", 0.0.into(), &mut properties, cx);
+        insert_property("padding_right", 0.0.into(), &mut properties, cx);
+        insert_property("padding_top", 0.0.into(), &mut properties, cx);
+        insert_property("padding_bottom", 0.0.into(), &mut properties, cx);
+        insert_property("border_left", 0.0.into(), &mut properties, cx);
+        insert_property("border_right", 0.0.into(), &mut properties, cx);
+        insert_property("border_top", 0.0.into(), &mut properties, cx);
+        insert_property("border_bottom", 0.0.into(), &mut properties, cx);
+        insert_property("gap_x", 0.0.into(), &mut properties, cx);
+        insert_property("gap_y", 0.0.into(), &mut properties, cx);
+        insert_property("background", rgba(0x00000000).into(), &mut properties, cx);
+        insert_property("border_color", rgba(0x00000000).into(), &mut properties, cx);
+        insert_property("radius_top_left", 0.0.into(), &mut properties, cx);
+        insert_property("radius_top_right", 0.0.into(), &mut properties, cx);
+        insert_property("radius_bottom_left", 0.0.into(), &mut properties, cx);
+        insert_property("radius_bottom_right", 0.0.into(), &mut properties, cx);
 
         properties
     }

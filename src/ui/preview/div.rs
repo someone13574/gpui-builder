@@ -79,34 +79,45 @@ impl DivPreview {
         })
         .detach();
     }
+
+    fn get_property(&self, key: &str) -> ElementProperty {
+        self.cached_properties.get(key).unwrap().clone()
+    }
 }
 
 impl Render for DivPreview {
     fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
-        let rounding: f32 = self
-            .cached_properties
-            .get("rounding")
-            .unwrap()
-            .clone()
-            .into();
-        let padding: f32 = self
-            .cached_properties
-            .get("padding")
-            .unwrap()
-            .clone()
-            .into();
-        let bg: Rgba = self.cached_properties.get("bg").unwrap().clone().into();
-
         div()
-            .flex()
-            .flex_col()
-            .gap_4()
-            .p_4()
-            .rounded(px(rounding))
-            .p(px(padding))
-            .bg(bg)
-            .border_color(white())
-            .border_1()
+            .when(self.get_property("flex").into(), |this| this.flex())
+            .when(!bool::from(self.get_property("visible")), |this| {
+                this.invisible()
+            })
+            .when(self.get_property("overflow_x_hidden").into(), |this| {
+                this.overflow_x_hidden()
+            })
+            .when(self.get_property("overflow_y_hidden").into(), |this| {
+                this.overflow_y_hidden()
+            })
+            .ml(px(self.get_property("margin_left").into()))
+            .mr(px(self.get_property("margin_right").into()))
+            .mt(px(self.get_property("margin_top").into()))
+            .mb(px(self.get_property("margin_bottom").into()))
+            .pl(px(self.get_property("padding_left").into()))
+            .pr(px(self.get_property("padding_right").into()))
+            .pt(px(self.get_property("padding_top").into()))
+            .pb(px(self.get_property("padding_bottom").into()))
+            .border_l(px(self.get_property("border_left").into()))
+            .border_r(px(self.get_property("border_right").into()))
+            .border_t(px(self.get_property("border_top").into()))
+            .border_b(px(self.get_property("border_bottom").into()))
+            .gap_x(px(self.get_property("gap_x").into()))
+            .gap_y(px(self.get_property("gap_y").into()))
+            .bg(Rgba::from(self.get_property("background")))
+            .border_color(Rgba::from(self.get_property("border_color")))
+            .rounded_tl(px(self.get_property("radius_top_left").into()))
+            .rounded_tr(px(self.get_property("radius_top_right").into()))
+            .rounded_bl(px(self.get_property("radius_bottom_left").into()))
+            .rounded_br(px(self.get_property("radius_bottom_right").into()))
             .children(self.child_previews.clone())
             .when_some(self.indicator_animation_id, |this, animation_id| {
                 this.child(ActiveIndicator { animation_id })
