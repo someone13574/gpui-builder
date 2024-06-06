@@ -2,6 +2,7 @@ use gpui::*;
 
 use super::bool_property::BoolProperty;
 use super::color_property::ColorProperty;
+use super::enum_property::EnumProperty;
 use super::float_property::FloatProperty;
 use super::text_property::TextProperty;
 use crate::component::element::ComponentElement;
@@ -13,6 +14,7 @@ pub enum Property {
     Bool(View<BoolProperty>),
     Text(View<TextProperty>),
     Color(View<ColorProperty>),
+    Enum(View<EnumProperty>),
 }
 
 impl Property {
@@ -34,6 +36,7 @@ impl Property {
             ElementProperty::Color(_) => {
                 Self::Color(ColorProperty::new(property, element.clone(), cx))
             }
+            ElementProperty::Enum(_) => Self::Enum(EnumProperty::new(property, cx)),
         }
     }
 }
@@ -45,6 +48,7 @@ impl RenderOnce for Property {
             Self::Bool(element) => div().child(element),
             Self::Text(element) => div().child(element),
             Self::Color(element) => div().child(element),
+            Self::Enum(element) => div().child(element),
         }
     }
 }

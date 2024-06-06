@@ -1,7 +1,9 @@
+use enum_property::EnumProperty;
 use gpui::{AppContext, Context, Model, Rgba};
 use indexmap::IndexMap;
 
 pub mod color;
+pub mod enum_property;
 
 #[derive(Clone)]
 pub enum ElementProperty {
@@ -9,6 +11,7 @@ pub enum ElementProperty {
     Bool(bool),
     Text(String),
     Color(Rgba),
+    Enum(EnumProperty),
 }
 
 impl ElementProperty {
