@@ -9,6 +9,7 @@ use crate::component::Component;
 pub struct PropertiesPanel {
     component: Model<Component>,
     properties: Vec<Property>,
+    scroll_handle: ScrollHandle,
 }
 
 impl PropertiesPanel {
@@ -34,6 +35,7 @@ impl PropertiesPanel {
             Self {
                 component,
                 properties,
+                scroll_handle: ScrollHandle::new(),
             }
         })
     }
@@ -81,7 +83,10 @@ impl Render for PropertiesPanel {
             .border_l_1()
             .border_color(*colors::BORDER)
             .children(self.properties.clone())
-            .overflow_hidden()
+            .overflow_x_hidden()
+            .id("properties_panel")
+            .overflow_y_scroll()
+            .track_scroll(&self.scroll_handle)
     }
 }
 
