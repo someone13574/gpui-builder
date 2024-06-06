@@ -3,9 +3,8 @@ use indexmap::IndexMap;
 use uuid::Uuid;
 
 use super::ComponentElement;
-use crate::component::element_property::{
-    enum_property::cursor::cursor_property, insert_property, ElementProperty,
-};
+use crate::component::element_property::enum_property::cursor::cursor_property;
+use crate::component::element_property::{insert_property, ElementProperty};
 
 #[derive(Clone)]
 pub struct DivElement {

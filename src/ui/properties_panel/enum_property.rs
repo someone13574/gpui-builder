@@ -1,10 +1,8 @@
 use gpui::*;
 use prelude::FluentBuilder;
 
-use crate::{
-    appearance::colors,
-    component::element_property::{enum_property, ElementProperty},
-};
+use crate::appearance::colors;
+use crate::component::element_property::{enum_property, ElementProperty};
 
 pub struct EnumProperty {
     property_name: String,
@@ -98,7 +96,7 @@ impl Render for EnumItem {
             .on_click(cx.listener(|this, _, cx| {
                 this.property.update(cx, |(_, property), cx| {
                     let mut enum_property: enum_property::EnumProperty = property.clone().into();
-                    enum_property.value = this.text.clone();
+                    enum_property.value.clone_from(&this.text);
                     *property = enum_property.into();
                     cx.notify();
                 })
