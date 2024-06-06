@@ -3,6 +3,7 @@ use indexmap::IndexMap;
 use uuid::Uuid;
 
 use super::ComponentElement;
+use crate::component::element_property::enum_property::cursor::cursor_property;
 use crate::component::element_property::{insert_property, ElementProperty};
 
 #[derive(Clone)]
@@ -50,6 +51,12 @@ impl DivElement {
         insert_property("radius_top_right", 0.0.into(), &mut properties, cx);
         insert_property("radius_bottom_left", 0.0.into(), &mut properties, cx);
         insert_property("radius_bottom_right", 0.0.into(), &mut properties, cx);
+        insert_property(
+            "cursor_style",
+            cursor_property().into(),
+            &mut properties,
+            cx,
+        );
 
         properties
     }

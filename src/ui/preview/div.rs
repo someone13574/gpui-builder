@@ -7,7 +7,7 @@ use super::active_indicator::ActiveIndicator;
 use super::element::ElementPreview;
 use crate::component::element::div::DivElement;
 use crate::component::element::ComponentElement;
-use crate::component::element_property::{read_properties, ElementProperty};
+use crate::component::element_property::{enum_property, read_properties, ElementProperty};
 
 pub struct DivPreview {
     element: DivElement,
@@ -118,6 +118,7 @@ impl Render for DivPreview {
             .rounded_tr(px(self.get_property("radius_top_right").into()))
             .rounded_bl(px(self.get_property("radius_bottom_left").into()))
             .rounded_br(px(self.get_property("radius_bottom_right").into()))
+            .cursor(enum_property::EnumProperty::from(self.get_property("cursor_style")).value())
             .children(self.child_previews.clone())
             .when_some(self.indicator_animation_id, |this, animation_id| {
                 this.child(ActiveIndicator { animation_id })
