@@ -3,6 +3,8 @@ use std::any::Any;
 use super::ElementProperty;
 
 pub mod cursor;
+pub mod display;
+pub mod overflow;
 
 #[derive(Clone)]
 pub struct EnumProperty {

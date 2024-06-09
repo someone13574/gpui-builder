@@ -4,7 +4,7 @@ use gpui::CursorStyle;
 
 use super::EnumProperty;
 
-pub fn cursor_property() -> EnumProperty {
+pub fn cursor_enum_property() -> EnumProperty {
     EnumProperty {
         value: "Arrow".to_string(),
         valid: vec![
@@ -57,6 +57,6 @@ fn text_to_enum(text: &str) -> Box<dyn Any> {
         "Drag Link" => CursorStyle::DragLink,
         "Drag Copy" => CursorStyle::DragCopy,
         "Context Menu" => CursorStyle::ContextualMenu,
-        _ => unreachable!(),
+        _ => unreachable!("Invalid option {text}"),
     })
 }

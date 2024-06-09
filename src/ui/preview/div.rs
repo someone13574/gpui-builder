@@ -83,20 +83,36 @@ impl DivPreview {
     fn get_property(&self, key: &str) -> ElementProperty {
         self.cached_properties.get(key).unwrap().clone()
     }
+
+    fn get_enum_property<T: 'static>(&self, key: &str) -> T {
+        enum_property::EnumProperty::from(self.get_property(key)).value()
+    }
 }
 
 impl Render for DivPreview {
     fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
+        let display: Display = self.get_enum_property("display");
+        let overflow_x: Overflow = self.get_enum_property("overflow_x");
+        let overflow_y: Overflow = self.get_enum_property("overflow_y");
+
         div()
-            .when(self.get_property("flex").into(), |this| this.flex())
+            .id("preview-div")
+            .when(display == Display::Block, |this| this.block())
+            .when(display == Display::Flex, |this| this.flex())
             .when(!bool::from(self.get_property("visible")), |this| {
                 this.invisible()
             })
-            .when(self.get_property("overflow_x_hidden").into(), |this| {
+            .when(overflow_x == Overflow::Hidden, |this| {
                 this.overflow_x_hidden()
             })
-            .when(self.get_property("overflow_y_hidden").into(), |this| {
+            .when(overflow_x == Overflow::Scroll, |this| {
+                this.overflow_x_scroll()
+            })
+            .when(overflow_y == Overflow::Hidden, |this| {
                 this.overflow_y_hidden()
+            })
+            .when(overflow_y == Overflow::Scroll, |this| {
+                this.overflow_y_scroll()
             })
             .ml(px(self.get_property("margin_left").into()))
             .mr(px(self.get_property("margin_right").into()))
@@ -118,7 +134,7 @@ impl Render for DivPreview {
             .rounded_tr(px(self.get_property("radius_top_right").into()))
             .rounded_bl(px(self.get_property("radius_bottom_left").into()))
             .rounded_br(px(self.get_property("radius_bottom_right").into()))
-            .cursor(enum_property::EnumProperty::from(self.get_property("cursor_style")).value())
+            .cursor(self.get_enum_property("cursor_style"))
             .children(self.child_previews.clone())
             .when_some(self.indicator_animation_id, |this, animation_id| {
                 this.child(ActiveIndicator { animation_id })

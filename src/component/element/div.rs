@@ -3,7 +3,9 @@ use indexmap::IndexMap;
 use uuid::Uuid;
 
 use super::ComponentElement;
-use crate::component::element_property::enum_property::cursor::cursor_property;
+use crate::component::element_property::enum_property::cursor::cursor_enum_property;
+use crate::component::element_property::enum_property::display::display_enum_property;
+use crate::component::element_property::enum_property::overflow::overflow_enum_property;
 use crate::component::element_property::{insert_property, ElementProperty};
 
 #[derive(Clone)]
@@ -27,10 +29,25 @@ impl DivElement {
     ) -> IndexMap<String, Model<(String, ElementProperty)>> {
         let mut properties = IndexMap::new();
 
-        insert_property("flex", false.into(), &mut properties, cx);
+        insert_property(
+            "display",
+            display_enum_property().into(),
+            &mut properties,
+            cx,
+        );
         insert_property("visible", true.into(), &mut properties, cx);
-        insert_property("overflow_x_hidden", false.into(), &mut properties, cx);
-        insert_property("overflow_y_hidden", false.into(), &mut properties, cx);
+        insert_property(
+            "overflow_x",
+            overflow_enum_property().into(),
+            &mut properties,
+            cx,
+        );
+        insert_property(
+            "overflow_y",
+            overflow_enum_property().into(),
+            &mut properties,
+            cx,
+        );
         insert_property("margin_left", 0.0.into(), &mut properties, cx);
         insert_property("margin_right", 0.0.into(), &mut properties, cx);
         insert_property("margin_top", 0.0.into(), &mut properties, cx);
@@ -53,7 +70,7 @@ impl DivElement {
         insert_property("radius_bottom_right", 0.0.into(), &mut properties, cx);
         insert_property(
             "cursor_style",
-            cursor_property().into(),
+            cursor_enum_property().into(),
             &mut properties,
             cx,
         );
