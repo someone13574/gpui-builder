@@ -49,10 +49,11 @@ impl DivPreview {
     }
 
     fn observe_properties(element: &DivElement, cx: &mut ViewContext<Self>) {
-        for (_, value) in &element.properties {
-            cx.observe(value, |this, property, cx| {
-                let (key, value) = property.read(cx).clone();
-                this.cached_properties.insert(key, value);
+        for (key, value) in &element.properties {
+            let key = key.clone();
+            cx.observe(value, move |this, property, cx| {
+                this.cached_properties
+                    .insert(key.clone(), property.read(cx).clone());
                 cx.notify();
             })
             .detach();

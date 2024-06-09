@@ -12,7 +12,7 @@ use crate::component::element_property::{insert_property, ElementProperty};
 pub struct DivElement {
     pub id: Uuid,
     pub children: Model<Vec<ComponentElement>>,
-    pub properties: IndexMap<String, Model<(String, ElementProperty)>>,
+    pub properties: IndexMap<String, Model<ElementProperty>>,
 }
 
 impl DivElement {
@@ -24,9 +24,7 @@ impl DivElement {
         }
     }
 
-    fn default_properties(
-        cx: &mut AppContext,
-    ) -> IndexMap<String, Model<(String, ElementProperty)>> {
+    fn default_properties(cx: &mut AppContext) -> IndexMap<String, Model<ElementProperty>> {
         let mut properties = IndexMap::new();
 
         insert_property(

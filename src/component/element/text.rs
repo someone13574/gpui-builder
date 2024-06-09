@@ -7,7 +7,7 @@ use crate::component::element_property::{insert_property, ElementProperty};
 #[derive(Clone)]
 pub struct TextElement {
     pub id: Uuid,
-    pub properties: IndexMap<String, Model<(String, ElementProperty)>>,
+    pub properties: IndexMap<String, Model<ElementProperty>>,
 }
 
 impl TextElement {
@@ -18,9 +18,7 @@ impl TextElement {
         }
     }
 
-    fn default_properties(
-        cx: &mut AppContext,
-    ) -> IndexMap<String, Model<(String, ElementProperty)>> {
+    fn default_properties(cx: &mut AppContext) -> IndexMap<String, Model<ElementProperty>> {
         let mut properties = IndexMap::new();
         insert_property("text", "New text".to_string().into(), &mut properties, cx);
         properties

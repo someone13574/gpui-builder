@@ -5,7 +5,6 @@ use super::color_property::ColorProperty;
 use super::enum_property::EnumProperty;
 use super::float_property::FloatProperty;
 use super::text_property::TextProperty;
-use crate::component::element::ComponentElement;
 use crate::component::element_property::ElementProperty;
 
 #[derive(IntoElement, Clone)]
@@ -19,24 +18,20 @@ pub enum Property {
 
 impl Property {
     pub fn new<V: 'static>(
-        property: Model<(String, ElementProperty)>,
-        element: ComponentElement,
+        property: Model<ElementProperty>,
+        property_name: String,
         cx: &mut ViewContext<V>,
     ) -> Self {
-        match property.read(cx).1 {
+        match property.read(cx) {
             ElementProperty::Float(_) => {
-                Self::Float(FloatProperty::new(property, element.clone(), cx))
+                Self::Float(FloatProperty::new(property, property_name, cx))
             }
-            ElementProperty::Bool(_) => {
-                Self::Bool(BoolProperty::new(property, element.clone(), cx))
-            }
-            ElementProperty::Text(_) => {
-                Self::Text(TextProperty::new(property, element.clone(), cx))
-            }
+            ElementProperty::Bool(_) => Self::Bool(BoolProperty::new(property, property_name, cx)),
+            ElementProperty::Text(_) => Self::Text(TextProperty::new(property, property_name, cx)),
             ElementProperty::Color(_) => {
-                Self::Color(ColorProperty::new(property, element.clone(), cx))
+                Self::Color(ColorProperty::new(property, property_name, cx))
             }
-            ElementProperty::Enum(_) => Self::Enum(EnumProperty::new(property, cx)),
+            ElementProperty::Enum(_) => Self::Enum(EnumProperty::new(property, property_name, cx)),
         }
     }
 }

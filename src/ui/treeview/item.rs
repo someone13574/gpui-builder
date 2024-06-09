@@ -333,7 +333,7 @@ fn get_element_text(element: &ComponentElement, cx: &AppContext) -> String {
     match element {
         ComponentElement::Div(_) => "div:".to_string(),
         ComponentElement::Text(element) => {
-            let text_property = element.properties.get("text").unwrap().read(cx).1.clone();
+            let text_property = element.properties.get("text").unwrap().read(cx).clone();
             let text_property: String = text_property.into();
             format!("\"{text_property}\"")
         }

@@ -14,12 +14,12 @@ pub struct EnumProperty {
 
 impl EnumProperty {
     pub fn new<V: 'static>(
-        property: Model<(String, ElementProperty)>,
+        property: Model<ElementProperty>,
+        property_name: String,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            let (property_name, property_value) = property.read(cx).clone();
-            let property_value: enum_property::EnumProperty = property_value.into();
+            let property_value: enum_property::EnumProperty = property.read(cx).clone().into();
 
             let items = property_value
                 .valid
@@ -29,7 +29,7 @@ impl EnumProperty {
 
             cx.observe(&property, |this: &mut Self, property, cx| {
                 this.active_item =
-                    enum_property::EnumProperty::from(property.read(cx).1.clone()).value;
+                    enum_property::EnumProperty::from(property.read(cx).clone()).value;
                 this.expanded = false;
                 cx.notify();
             })
@@ -74,13 +74,13 @@ impl Render for EnumProperty {
 
 struct EnumItem {
     text: String,
-    property: Model<(String, ElementProperty)>,
+    property: Model<ElementProperty>,
 }
 
 impl EnumItem {
     pub fn new(
         text: String,
-        property: Model<(String, ElementProperty)>,
+        property: Model<ElementProperty>,
         cx: &mut ViewContext<EnumProperty>,
     ) -> View<Self> {
         cx.new_view(|_| Self { text, property })
@@ -94,7 +94,7 @@ impl Render for EnumItem {
             .child(self.text.clone())
             .id("item")
             .on_click(cx.listener(|this, _, cx| {
-                this.property.update(cx, |(_, property), cx| {
+                this.property.update(cx, |property, cx| {
                     let mut enum_property: enum_property::EnumProperty = property.clone().into();
                     enum_property.value.clone_from(&this.text);
                     *property = enum_property.into();
