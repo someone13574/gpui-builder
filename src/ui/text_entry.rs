@@ -47,6 +47,7 @@ impl Render for TextEntry {
             .border_1()
             .rounded(px(8.0))
             .px_1()
+            .cursor_text()
             .id(self.id)
             .track_focus(&self.focus_handle)
             .on_click(cx.listener(|this, _, cx| {
