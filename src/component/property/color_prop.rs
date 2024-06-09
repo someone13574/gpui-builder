@@ -1,5 +1,23 @@
 use gpui::Rgba;
 
+use super::ComponentProperty;
+
+impl From<ComponentProperty> for Rgba {
+    fn from(value: ComponentProperty) -> Self {
+        if let ComponentProperty::Color(value) = value {
+            value
+        } else {
+            unreachable!("Property {value:?} cannot be downcast to Rgba")
+        }
+    }
+}
+
+impl From<Rgba> for ComponentProperty {
+    fn from(value: Rgba) -> Self {
+        ComponentProperty::Color(value)
+    }
+}
+
 pub fn parse_rgba(string: &str) -> Option<Rgba> {
     if string.len() != 6 && string.len() != 8 {
         return None;

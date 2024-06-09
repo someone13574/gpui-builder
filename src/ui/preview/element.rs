@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use super::div::DivPreview;
 use super::text::TextPreview;
-use crate::component::element::ComponentElement;
+use crate::component::Component;
 
 #[derive(IntoElement, Clone)]
 pub enum ElementPreview {
@@ -13,17 +13,13 @@ pub enum ElementPreview {
 
 impl ElementPreview {
     pub fn new<V: 'static>(
-        element: ComponentElement,
-        active_element: Model<Option<Uuid>>,
+        component: &Component,
+        active_id: &Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> Self {
-        match element {
-            ComponentElement::Div(element) => {
-                Self::Div(DivPreview::new(element, active_element, cx))
-            }
-            ComponentElement::Text(element) => {
-                Self::Text(TextPreview::new(element, active_element, cx))
-            }
+        match component {
+            Component::Div(component) => Self::Div(DivPreview::new(component, active_id, cx)),
+            Component::Text(component) => Self::Text(TextPreview::new(component, active_id, cx)),
         }
     }
 }

@@ -11,14 +11,12 @@ pub struct TreeviewPanel {
 
 impl TreeviewPanel {
     pub fn new<V: 'static>(
-        component: &Model<Component>,
-        active_element: Model<Option<Uuid>>,
+        root_component: &Component,
+        active_id: &Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            let root_element = component.read(cx).root.clone();
-            let root_item =
-                TreeviewItem::new(0, component, root_element.unwrap(), active_element, cx);
+            let root_item = TreeviewItem::new(0, root_component, active_id, cx);
 
             Self { root_item }
         })

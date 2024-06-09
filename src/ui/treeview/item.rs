@@ -2,19 +2,16 @@ use gpui::prelude::*;
 use gpui::*;
 use uuid::Uuid;
 
+use super::context_actions::item_context_actions;
 use crate::appearance::{colors, sizes};
-use crate::component::element::div::DivElement;
-use crate::component::element::text::TextElement;
-use crate::component::element::ComponentElement;
 use crate::component::Component;
-use crate::ui::context_menu::{ContextMenuAction, ContextMenuGlobal};
+use crate::ui::context_menu::ContextMenuGlobal;
 
 pub struct TreeviewItem {
-    component: Model<Component>,
-    element: ComponentElement,
-    active_element: Model<Option<Uuid>>,
-
     indent: u32,
+    pub component: Component,
+    pub active_id: Model<Option<Uuid>>,
+
     cached_text: String,
     child_views: Vec<View<TreeviewItem>>,
 
@@ -25,262 +22,67 @@ pub struct TreeviewItem {
 impl TreeviewItem {
     pub fn new<V: 'static>(
         indent: u32,
-        component: &Model<Component>,
-        element: ComponentElement,
-        active_element: Model<Option<Uuid>>,
+        component: &Component,
+        active_id: &Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            let cached_text = get_element_text(&element, cx);
-            let child_views =
-                Self::make_child_views(indent + 1, component, &element, &active_element, cx);
-            let active = *active_element.read(cx) == Some(element.id());
+            let cached_text = get_text(component, cx);
+            let active = *active_id.read(cx) == Some(component.id());
 
-            Self::observe_text(&element, cx);
-            Self::observe_children(&element, cx);
-            Self::observe_active_element(&active_element, cx);
+            Self::observe_component(component, cx);
+            Self::observe_active_id(active_id, cx);
 
-            Self {
-                component: component.clone(),
-                element,
-                active_element,
-
+            let mut this = Self {
                 indent,
+                component: component.clone(),
+                active_id: active_id.clone(),
+
                 cached_text,
-                child_views,
+                child_views: Vec::new(),
 
                 hovered: false,
                 active,
-            }
+            };
+            this.make_child_views(cx);
+            this
         })
     }
 
-    fn make_child_views(
-        indent: u32,
-        component: &Model<Component>,
-        element: &ComponentElement,
-        active_element: &Model<Option<Uuid>>,
-        cx: &mut ViewContext<Self>,
-    ) -> Vec<View<TreeviewItem>> {
-        match element {
-            ComponentElement::Div(div_element) => {
-                let children = div_element.children.read(cx).clone();
-                children
-                    .iter()
-                    .map(|child| {
-                        TreeviewItem::new(
-                            indent,
-                            component,
-                            child.clone(),
-                            active_element.clone(),
-                            cx,
-                        )
-                    })
-                    .collect()
+    fn make_child_views(&mut self, cx: &mut ViewContext<Self>) {
+        if let Component::Div(div_component) = &self.component {
+            let children = div_component.children.read(cx).clone();
+            self.child_views = children
+                .iter()
+                .map(|child| TreeviewItem::new(self.indent + 1, child, &self.active_id, cx))
+                .collect();
+        }
+    }
+
+    fn observe_component(component: &Component, cx: &mut ViewContext<Self>) {
+        match component {
+            Component::Div(component) => cx
+                .observe(&component.children, |this, _, cx| {
+                    this.make_child_views(cx);
+                    cx.notify();
+                })
+                .detach(),
+            Component::Text(component) => {
+                cx.observe(component.properties.get("text").unwrap(), |this, _, cx| {
+                    this.cached_text = get_text(&this.component, cx);
+                    cx.notify();
+                })
+                .detach();
             }
-            _ => Vec::new(),
         }
     }
 
-    fn observe_text(element: &ComponentElement, cx: &mut ViewContext<Self>) {
-        if let ComponentElement::Text(element) = element {
-            let text_property = element.properties.get("text").unwrap();
-            cx.observe(text_property, |this, _, cx| {
-                this.cached_text = get_element_text(&this.element, cx);
-                cx.notify();
-            })
-            .detach();
-        }
-    }
-
-    fn observe_children(element: &ComponentElement, cx: &mut ViewContext<Self>) {
-        if let ComponentElement::Div(element) = element {
-            cx.observe(&element.children, |this, _, cx| {
-                this.child_views = Self::make_child_views(
-                    this.indent + 1,
-                    &this.component,
-                    &this.element,
-                    &this.active_element,
-                    cx,
-                );
-                cx.notify();
-            })
-            .detach();
-        }
-    }
-
-    fn observe_active_element(active_element: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
-        cx.observe(active_element, |this, active_element, cx| {
-            this.active = Some(this.element.id()) == *active_element.read(cx);
+    fn observe_active_id(active_id: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
+        cx.observe(active_id, |this, active_id, cx| {
+            this.active = Some(this.component.id()) == *active_id.read(cx);
             cx.notify();
         })
         .detach();
-    }
-
-    fn context_menu_actions(&self, cx: &mut ViewContext<Self>) -> Vec<Vec<ContextMenuAction>> {
-        let mut actions = match self.element {
-            ComponentElement::Div(_) => {
-                vec![vec![
-                    ContextMenuAction::new(
-                        "New `div` child".to_string(),
-                        cx.listener(|this, _, cx| {
-                            if let ComponentElement::Div(element) = &this.element {
-                                let new_element = DivElement::new(cx);
-                                let id = new_element.id;
-                                cx.update_model(&element.children, |children, cx| {
-                                    children.push(new_element.into());
-                                    cx.notify();
-                                });
-                                cx.update_model(&this.active_element, |active_element, cx| {
-                                    *active_element = Some(id);
-                                    cx.notify();
-                                });
-                            } else {
-                                unreachable!();
-                            }
-                        }),
-                    ),
-                    ContextMenuAction::new(
-                        "New `text` child".to_string(),
-                        cx.listener(|this, _, cx| {
-                            if let ComponentElement::Div(element) = &this.element {
-                                let new_element = TextElement::new(cx);
-                                let id = new_element.id;
-                                cx.update_model(&element.children, |children, cx| {
-                                    children.push(new_element.into());
-                                    cx.notify();
-                                });
-                                cx.update_model(&this.active_element, |active_element, cx| {
-                                    *active_element = Some(id);
-                                    cx.notify();
-                                });
-                            } else {
-                                unreachable!();
-                            }
-                        }),
-                    ),
-                ]]
-            }
-            ComponentElement::Text(_) => Vec::new(),
-        };
-        if self.component.read(cx).root.as_ref().unwrap().id() != self.element.id() {
-            actions.push(vec![
-                ContextMenuAction::new(
-                    "Move up".to_string(),
-                    cx.listener(|this, _, cx| {
-                        let root = this.component.read(cx).root.clone().unwrap();
-                        let parent: DivElement = root
-                            .find_parent_recursive(this.element.id(), cx)
-                            .unwrap()
-                            .into();
-
-                        let child_id = this.element.id();
-                        this.active_element.update(cx, |active_element, cx| {
-                            *active_element = Some(child_id);
-                            cx.notify();
-                        });
-
-                        let children = parent.children.read(cx).clone();
-                        if let Some(pos) = children.iter().position(|child| child.id() == child_id)
-                        {
-                            if pos > 0 {
-                                parent.children.update(cx, |children, cx| {
-                                    children.swap(pos, pos - 1);
-                                    cx.notify();
-                                });
-                            } else if let Some(grandparent) =
-                                root.find_parent_recursive(parent.id, cx)
-                            {
-                                let grandparent: DivElement = grandparent.into();
-
-                                parent.children.update(cx, |children, cx| {
-                                    let child = children.remove(pos);
-                                    cx.notify();
-
-                                    grandparent.children.update(cx, |grandchildren, cx| {
-                                        let parent_pos = grandchildren
-                                            .iter()
-                                            .position(|p| p.id() == parent.id)
-                                            .unwrap();
-                                        grandchildren.insert(parent_pos, child);
-                                        cx.notify();
-                                    });
-                                });
-                            }
-                        }
-                    }),
-                ),
-                ContextMenuAction::new(
-                    "Move down".to_string(),
-                    cx.listener(|this, _, cx| {
-                        let root = this.component.read(cx).root.clone().unwrap();
-                        let parent: DivElement = root
-                            .find_parent_recursive(this.element.id(), cx)
-                            .unwrap()
-                            .into();
-
-                        let child_id = this.element.id();
-                        this.active_element.update(cx, |active_element, cx| {
-                            *active_element = Some(child_id);
-                            cx.notify();
-                        });
-
-                        let children = parent.children.read(cx).clone();
-                        if let Some(pos) = children.iter().position(|child| child.id() == child_id)
-                        {
-                            if pos < children.len() - 1 {
-                                parent.children.update(cx, |children, cx| {
-                                    children.swap(pos, pos + 1);
-                                    cx.notify();
-                                });
-                            } else if let Some(grandparent) =
-                                root.find_parent_recursive(parent.id, cx)
-                            {
-                                let grandparent: DivElement = grandparent.into();
-
-                                parent.children.update(cx, |children, cx| {
-                                    let child = children.remove(pos);
-                                    cx.notify();
-
-                                    grandparent.children.update(cx, |grandchildren, cx| {
-                                        let parent_pos = grandchildren
-                                            .iter()
-                                            .position(|p| p.id() == parent.id)
-                                            .unwrap();
-                                        grandchildren.insert(parent_pos + 1, child);
-                                        cx.notify();
-                                    });
-                                });
-                            }
-                        }
-                    }),
-                ),
-            ]);
-            actions.push(vec![ContextMenuAction::new(
-                "Delete".to_string(),
-                cx.listener(|this, _, cx| {
-                    let root = this.component.read(cx).root.clone().unwrap();
-                    let parent: DivElement = root
-                        .find_parent_recursive(this.element.id(), cx)
-                        .unwrap()
-                        .into();
-                    parent.children.update(cx, |children, cx| {
-                        *children = children
-                            .iter()
-                            .filter(|child| child.id() != this.element.id())
-                            .cloned()
-                            .collect();
-                        cx.notify();
-                    });
-                    this.active_element.update(cx, |active_element, cx| {
-                        // TODO: Only switch to parent if the active element is a child
-                        *active_element = Some(parent.id);
-                        cx.notify();
-                    });
-                }),
-            )]);
-        }
-        actions
     }
 }
 
@@ -307,15 +109,15 @@ impl Render for TreeviewItem {
                         cx.listener(|this, event: &MouseUpEvent, cx| {
                             ContextMenuGlobal::activate(
                                 event.position,
-                                this.context_menu_actions(cx),
+                                item_context_actions(this, cx),
                                 cx,
                             )
                         }),
                     )
                     .on_click(cx.listener(|this, event: &ClickEvent, cx| {
                         if event.down.button == MouseButton::Left {
-                            cx.update_model(&this.active_element, |active_element, cx| {
-                                *active_element = Some(this.element.id());
+                            cx.update_model(&this.active_id, |active_element, cx| {
+                                *active_element = Some(this.component.id());
                                 cx.notify();
                             })
                         }
@@ -329,10 +131,10 @@ impl Render for TreeviewItem {
     }
 }
 
-fn get_element_text(element: &ComponentElement, cx: &AppContext) -> String {
-    match element {
-        ComponentElement::Div(_) => "div:".to_string(),
-        ComponentElement::Text(element) => {
+fn get_text(component: &Component, cx: &AppContext) -> String {
+    match component {
+        Component::Div(_) => "div:".to_string(),
+        Component::Text(element) => {
             let text_property = element.properties.get("text").unwrap().read(cx).clone();
             let text_property: String = text_property.into();
             format!("\"{text_property}\"")

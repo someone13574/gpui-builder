@@ -5,41 +5,41 @@ use uuid::Uuid;
 
 use super::active_indicator::ActiveIndicator;
 use super::element::ElementPreview;
-use crate::component::element::div::DivElement;
-use crate::component::element::ComponentElement;
-use crate::component::element_property::{enum_property, read_properties, ElementProperty};
+use crate::component::div::DivComponent;
+use crate::component::property::{enum_prop, read_properties, ComponentProperty};
+use crate::component::Component;
 
 pub struct DivPreview {
-    element: DivElement,
-    active_element: Model<Option<Uuid>>,
+    component: DivComponent,
+    active_id: Model<Option<Uuid>>,
 
-    cached_properties: IndexMap<String, ElementProperty>,
+    cached_properties: IndexMap<String, ComponentProperty>,
     child_previews: Vec<ElementPreview>,
     indicator_animation_id: Option<Uuid>,
 }
 
 impl DivPreview {
     pub fn new<V: 'static>(
-        element: DivElement,
-        active_element: Model<Option<Uuid>>,
+        component: &DivComponent,
+        active_id: &Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            let cached_properties = read_properties(&element.properties, cx);
-            let child_previews = create_child_previews(&element.children, &active_element, cx);
-            let indicator_animation_id = if *active_element.read(cx) == Some(element.id) {
+            let cached_properties = read_properties(&component.properties, cx);
+            let child_previews = create_child_previews(&component.children, active_id, cx);
+            let indicator_animation_id = if *active_id.read(cx) == Some(component.id) {
                 Some(Uuid::new_v4())
             } else {
                 None
             };
 
-            Self::observe_properties(&element, cx);
-            Self::observe_children(&element, cx);
-            Self::observe_active_element(&active_element, cx);
+            Self::observe_properties(component, cx);
+            Self::observe_children(component, cx);
+            Self::observe_active_id(active_id, cx);
 
             Self {
-                element,
-                active_element,
+                component: component.clone(),
+                active_id: active_id.clone(),
 
                 cached_properties,
                 child_previews,
@@ -48,7 +48,7 @@ impl DivPreview {
         })
     }
 
-    fn observe_properties(element: &DivElement, cx: &mut ViewContext<Self>) {
+    fn observe_properties(element: &DivComponent, cx: &mut ViewContext<Self>) {
         for (key, value) in &element.properties {
             let key = key.clone();
             cx.observe(value, move |this, property, cx| {
@@ -60,18 +60,18 @@ impl DivPreview {
         }
     }
 
-    fn observe_children(element: &DivElement, cx: &mut ViewContext<Self>) {
+    fn observe_children(element: &DivComponent, cx: &mut ViewContext<Self>) {
         cx.observe(&element.children, |this, children, cx| {
-            this.child_previews = create_child_previews(&children, &this.active_element, cx);
+            this.child_previews = create_child_previews(&children, &this.active_id, cx);
             cx.notify();
         })
         .detach();
     }
 
-    fn observe_active_element(active_element: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
-        cx.observe(active_element, |this, active_element, cx| {
-            let active_element = *active_element.read(cx);
-            if active_element == Some(this.element.id) {
+    fn observe_active_id(active_id: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
+        cx.observe(active_id, |this, active_id, cx| {
+            let active_id = *active_id.read(cx);
+            if active_id == Some(this.component.id) {
                 this.indicator_animation_id = Some(Uuid::new_v4());
             } else {
                 this.indicator_animation_id = None;
@@ -81,12 +81,12 @@ impl DivPreview {
         .detach();
     }
 
-    fn get_property(&self, key: &str) -> ElementProperty {
+    fn get_property(&self, key: &str) -> ComponentProperty {
         self.cached_properties.get(key).unwrap().clone()
     }
 
     fn get_enum_property<T: 'static>(&self, key: &str) -> T {
-        enum_property::EnumProperty::from(self.get_property(key)).value()
+        enum_prop::EnumProperty::from(self.get_property(key)).value()
     }
 }
 
@@ -144,13 +144,13 @@ impl Render for DivPreview {
 }
 
 fn create_child_previews(
-    children: &Model<Vec<ComponentElement>>,
+    children: &Model<Vec<Component>>,
     active_element: &Model<Option<Uuid>>,
     cx: &mut ViewContext<DivPreview>,
 ) -> Vec<ElementPreview> {
     let children = children.read(cx).clone();
     children
-        .into_iter()
-        .map(|child| ElementPreview::new(child, active_element.clone(), cx))
+        .iter()
+        .map(|child| ElementPreview::new(child, active_element, cx))
         .collect()
 }

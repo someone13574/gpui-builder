@@ -3,47 +3,44 @@ use uuid::Uuid;
 
 use super::property::Property;
 use crate::appearance::{colors, sizes};
-use crate::component::element::ComponentElement;
 use crate::component::Component;
 
 pub struct PropertiesPanel {
-    component: Model<Component>,
+    root_component: Component,
     properties: Vec<Property>,
     scroll_handle: ScrollHandle,
 }
 
 impl PropertiesPanel {
     pub fn new<V: 'static>(
-        component: Model<Component>,
-        active_element: Model<Option<Uuid>>,
+        root_component: &Component,
+        active_element: &Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
             let cached_active_element = *active_element.read(cx);
-            let properties = if let Some(active_element) = get_active_element(
-                component.read(cx).root.as_ref().unwrap(),
-                cached_active_element,
-                cx,
-            ) {
+            let properties = if let Some(active_element) =
+                get_active_element(root_component, cached_active_element, cx)
+            {
                 Self::make_properties(&active_element, cx)
             } else {
                 Vec::new()
             };
 
-            Self::observe_active_element(&active_element, cx);
+            Self::observe_active_element(active_element, cx);
 
             Self {
-                component,
+                root_component: root_component.clone(),
                 properties,
                 scroll_handle: ScrollHandle::new(),
             }
         })
     }
 
-    fn make_properties(element: &ComponentElement, cx: &mut ViewContext<Self>) -> Vec<Property> {
-        let properties = match element {
-            ComponentElement::Div(element) => element.properties.clone(),
-            ComponentElement::Text(element) => element.properties.clone(),
+    fn make_properties(component: &Component, cx: &mut ViewContext<Self>) -> Vec<Property> {
+        let properties = match component {
+            Component::Div(component) => component.properties.clone(),
+            Component::Text(component) => component.properties.clone(),
         };
 
         properties
@@ -55,11 +52,9 @@ impl PropertiesPanel {
     fn observe_active_element(active_element: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
         cx.observe(active_element, |this, active_element_id, cx| {
             let active_element_id = *active_element_id.read(cx);
-            this.properties = if let Some(active_element) = get_active_element(
-                this.component.read(cx).root.as_ref().unwrap(),
-                active_element_id,
-                cx,
-            ) {
+            this.properties = if let Some(active_element) =
+                get_active_element(&this.root_component, active_element_id, cx)
+            {
                 Self::make_properties(&active_element, cx)
             } else {
                 Vec::new()
@@ -91,21 +86,21 @@ impl Render for PropertiesPanel {
 }
 
 fn get_active_element(
-    search_element: &ComponentElement,
-    active_element: Option<Uuid>,
+    search_component: &Component,
+    active_id: Option<Uuid>,
     cx: &AppContext,
-) -> Option<ComponentElement> {
-    if Some(search_element.id()) == active_element {
-        return Some(search_element.clone());
+) -> Option<Component> {
+    if Some(search_component.id()) == active_id {
+        return Some(search_component.clone());
     }
 
-    match search_element {
-        ComponentElement::Div(element) => {
-            let children = element.children.read(cx);
+    match search_component {
+        Component::Div(component) => {
+            let children = component.children.read(cx);
             children
                 .iter()
-                .find_map(|child| get_active_element(child, active_element, cx))
+                .find_map(|child| get_active_element(child, active_id, cx))
         }
-        ComponentElement::Text(_) => None,
+        Component::Text(_) => None,
     }
 }

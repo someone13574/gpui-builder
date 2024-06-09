@@ -1,17 +1,17 @@
 use gpui::*;
 
-use crate::component::element_property::ElementProperty;
+use crate::component::property::ComponentProperty;
 use crate::ui::checkbox::CheckBox;
 
 pub struct BoolProperty {
-    property: Model<ElementProperty>,
+    property: Model<ComponentProperty>,
     property_name: String,
     checkbox: View<CheckBox>,
 }
 
 impl BoolProperty {
     pub fn new<V: 'static>(
-        property: Model<ElementProperty>,
+        property: Model<ComponentProperty>,
         property_name: String,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {

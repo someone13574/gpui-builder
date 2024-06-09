@@ -6,7 +6,7 @@ use super::preview::panel::PreviewPanel;
 use super::properties_panel::panel::PropertiesPanel;
 use super::treeview::panel::TreeviewPanel;
 use crate::appearance::{colors, sizes};
-use crate::component::element::div::DivElement;
+use crate::component::div::DivComponent;
 use crate::component::Component;
 
 pub struct MainView {
@@ -18,15 +18,12 @@ pub struct MainView {
 impl MainView {
     pub fn new(cx: &mut WindowContext) -> View<Self> {
         cx.new_view(|cx| {
-            let component = Component {
-                root: Some(DivElement::new(cx).into()),
-            };
-            let component = cx.new_model(|_| component);
-            let active_element = cx.new_model(|_| None);
+            let root_component = Component::from(DivComponent::new(cx));
+            let selected_id = cx.new_model(|_| None);
 
-            let treeview_panel = TreeviewPanel::new(&component, active_element.clone(), cx);
-            let preview_panel = PreviewPanel::new(component.clone(), active_element.clone(), cx);
-            let properties_panel = PropertiesPanel::new(component, active_element, cx);
+            let treeview_panel = TreeviewPanel::new(&root_component, &selected_id, cx);
+            let preview_panel = PreviewPanel::new(&root_component, &selected_id, cx);
+            let properties_panel = PropertiesPanel::new(&root_component, &selected_id, cx);
 
             ContextMenuGlobal::init(cx);
 
