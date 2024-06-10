@@ -52,8 +52,8 @@ impl TextPreview {
     }
 
     fn observe_active_id(active_id: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
-        cx.observe(active_id, |this, active_element, cx| {
-            let active_id = *active_element.read(cx);
+        cx.observe(active_id, |this, active_id, cx| {
+            let active_id = *active_id.read(cx);
             if active_id == Some(this.component.id) {
                 this.indicator_animation_id = Some(Uuid::new_v4());
             } else {

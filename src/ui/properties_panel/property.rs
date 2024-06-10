@@ -45,11 +45,11 @@ impl Property {
 impl RenderOnce for Property {
     fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
         match self {
-            Self::Float(element) => div().child(element),
-            Self::Bool(element) => div().child(element),
-            Self::Text(element) => div().child(element),
-            Self::Color(element) => div().child(element),
-            Self::Enum(element) => div().child(element),
+            Self::Float(component) => div().child(component),
+            Self::Bool(component) => div().child(component),
+            Self::Text(component) => div().child(component),
+            Self::Color(component) => div().child(component),
+            Self::Enum(component) => div().child(component),
         }
     }
 }

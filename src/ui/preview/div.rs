@@ -4,7 +4,7 @@ use prelude::FluentBuilder;
 use uuid::Uuid;
 
 use super::active_indicator::ActiveIndicator;
-use super::element::ElementPreview;
+use super::component::ComponentPreview;
 use crate::component::div::DivComponent;
 use crate::component::property::{enum_prop, read_properties, ComponentProperty};
 use crate::component::Component;
@@ -14,7 +14,7 @@ pub struct DivPreview {
     active_id: Model<Option<Uuid>>,
 
     cached_properties: IndexMap<String, ComponentProperty>,
-    child_previews: Vec<ElementPreview>,
+    child_previews: Vec<ComponentPreview>,
     indicator_animation_id: Option<Uuid>,
 }
 
@@ -48,8 +48,8 @@ impl DivPreview {
         })
     }
 
-    fn observe_properties(element: &DivComponent, cx: &mut ViewContext<Self>) {
-        for (key, value) in &element.properties {
+    fn observe_properties(component: &DivComponent, cx: &mut ViewContext<Self>) {
+        for (key, value) in &component.properties {
             let key = key.clone();
             cx.observe(value, move |this, property, cx| {
                 this.cached_properties
@@ -60,8 +60,8 @@ impl DivPreview {
         }
     }
 
-    fn observe_children(element: &DivComponent, cx: &mut ViewContext<Self>) {
-        cx.observe(&element.children, |this, children, cx| {
+    fn observe_children(component: &DivComponent, cx: &mut ViewContext<Self>) {
+        cx.observe(&component.children, |this, children, cx| {
             this.child_previews = create_child_previews(&children, &this.active_id, cx);
             cx.notify();
         })
@@ -145,12 +145,12 @@ impl Render for DivPreview {
 
 fn create_child_previews(
     children: &Model<Vec<Component>>,
-    active_element: &Model<Option<Uuid>>,
+    active_id: &Model<Option<Uuid>>,
     cx: &mut ViewContext<DivPreview>,
-) -> Vec<ElementPreview> {
+) -> Vec<ComponentPreview> {
     let children = children.read(cx).clone();
     children
         .iter()
-        .map(|child| ElementPreview::new(child, active_element, cx))
+        .map(|child| ComponentPreview::new(child, active_id, cx))
         .collect()
 }

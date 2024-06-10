@@ -6,12 +6,12 @@ use super::text::TextPreview;
 use crate::component::Component;
 
 #[derive(IntoElement, Clone)]
-pub enum ElementPreview {
+pub enum ComponentPreview {
     Div(View<DivPreview>),
     Text(View<TextPreview>),
 }
 
-impl ElementPreview {
+impl ComponentPreview {
     pub fn new<V: 'static>(
         component: &Component,
         active_id: &Model<Option<Uuid>>,
@@ -24,11 +24,11 @@ impl ElementPreview {
     }
 }
 
-impl RenderOnce for ElementPreview {
+impl RenderOnce for ComponentPreview {
     fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
         match self {
-            ElementPreview::Div(element) => div().child(element),
-            ElementPreview::Text(element) => div().child(element),
+            ComponentPreview::Div(component) => div().child(component),
+            ComponentPreview::Text(component) => div().child(component),
         }
     }
 }

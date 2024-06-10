@@ -1,11 +1,11 @@
 use gpui::*;
 use uuid::Uuid;
 
-use super::element::ElementPreview;
+use super::component::ComponentPreview;
 use crate::component::Component;
 
 pub struct PreviewPanel {
-    root_component: ElementPreview,
+    root_component: ComponentPreview,
 }
 
 impl PreviewPanel {
@@ -15,7 +15,7 @@ impl PreviewPanel {
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            let root_component = ElementPreview::new(component, active_id, cx);
+            let root_component = ComponentPreview::new(component, active_id, cx);
             Self { root_component }
         })
     }

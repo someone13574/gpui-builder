@@ -14,20 +14,19 @@ pub struct PropertiesPanel {
 impl PropertiesPanel {
     pub fn new<V: 'static>(
         root_component: &Component,
-        active_element: &Model<Option<Uuid>>,
+        active_id: &Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            let cached_active_element = *active_element.read(cx);
-            let properties = if let Some(active_element) =
-                get_active_element(root_component, cached_active_element, cx)
-            {
-                Self::make_properties(&active_element, cx)
-            } else {
-                Vec::new()
-            };
+            let cached_active_id = *active_id.read(cx);
+            let properties =
+                if let Some(active) = get_active_component(root_component, cached_active_id, cx) {
+                    Self::make_properties(&active, cx)
+                } else {
+                    Vec::new()
+                };
 
-            Self::observe_active_element(active_element, cx);
+            Self::observe_active_id(active_id, cx);
 
             Self {
                 root_component: root_component.clone(),
@@ -49,13 +48,13 @@ impl PropertiesPanel {
             .collect()
     }
 
-    fn observe_active_element(active_element: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
-        cx.observe(active_element, |this, active_element_id, cx| {
-            let active_element_id = *active_element_id.read(cx);
-            this.properties = if let Some(active_element) =
-                get_active_element(&this.root_component, active_element_id, cx)
+    fn observe_active_id(active_id: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
+        cx.observe(active_id, |this, active_id, cx| {
+            let active_id = *active_id.read(cx);
+            this.properties = if let Some(active_component) =
+                get_active_component(&this.root_component, active_id, cx)
             {
-                Self::make_properties(&active_element, cx)
+                Self::make_properties(&active_component, cx)
             } else {
                 Vec::new()
             };
@@ -85,7 +84,7 @@ impl Render for PropertiesPanel {
     }
 }
 
-fn get_active_element(
+fn get_active_component(
     search_component: &Component,
     active_id: Option<Uuid>,
     cx: &AppContext,
@@ -99,7 +98,7 @@ fn get_active_element(
             let children = component.children.read(cx);
             children
                 .iter()
-                .find_map(|child| get_active_element(child, active_id, cx))
+                .find_map(|child| get_active_component(child, active_id, cx))
         }
         Component::Text(_) => None,
     }

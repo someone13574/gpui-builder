@@ -116,8 +116,8 @@ impl Render for TreeviewItem {
                     )
                     .on_click(cx.listener(|this, event: &ClickEvent, cx| {
                         if event.down.button == MouseButton::Left {
-                            cx.update_model(&this.active_id, |active_element, cx| {
-                                *active_element = Some(this.component.id());
+                            cx.update_model(&this.active_id, |active_id, cx| {
+                                *active_id = Some(this.component.id());
                                 cx.notify();
                             })
                         }
@@ -134,8 +134,8 @@ impl Render for TreeviewItem {
 fn get_text(component: &Component, cx: &AppContext) -> String {
     match component {
         Component::Div(_) => "div:".to_string(),
-        Component::Text(element) => {
-            let text_property = element.properties.get("text").unwrap().read(cx).clone();
+        Component::Text(component) => {
+            let text_property = component.properties.get("text").unwrap().read(cx).clone();
             let text_property: String = text_property.into();
             format!("\"{text_property}\"")
         }
