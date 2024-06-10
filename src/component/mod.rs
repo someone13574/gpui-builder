@@ -28,14 +28,14 @@ impl Component {
         }
     }
 
-    pub fn with_parent(self, parent: Self) -> Self {
+    pub fn with_parent(self, parent: &Self) -> Self {
         match self {
             Component::Div(mut component) => {
-                component.parent = Some(Box::new(parent));
+                component.parent = Some(Box::new(parent.clone()));
                 component.into()
             }
             Component::Text(mut component) => {
-                component.parent = Some(Box::new(parent));
+                component.parent = Some(Box::new(parent.clone()));
                 component.into()
             }
         }

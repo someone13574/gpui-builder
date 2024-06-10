@@ -1,36 +1,37 @@
-pub mod conversion;
+pub mod from_serde;
+pub mod to_serde;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum SerdeComponent {
     Div(SerdeDiv),
     Text(SerdeText),
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SerdeDiv {
     id: Uuid,
     properties: Vec<SerdeProperty>,
     children: Vec<SerdeComponent>,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SerdeText {
     id: Uuid,
     properties: Vec<SerdeProperty>,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SerdeProperty {
-    key: String,
-    value: String,
-    property_type: SerdePropertyType,
+    pub key: String,
+    pub value: String,
+    pub property_type: SerdePropertyType,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum SerdePropertyType {
     Bool,

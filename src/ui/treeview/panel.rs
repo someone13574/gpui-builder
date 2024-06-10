@@ -7,19 +7,37 @@ use crate::component::Component;
 
 pub struct TreeviewPanel {
     root_item: View<TreeviewItem>,
+    active_id: Model<Option<Uuid>>,
 }
 
 impl TreeviewPanel {
     pub fn new<V: 'static>(
-        root_component: &Component,
+        root_component: &Model<Component>,
         active_id: &Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            let root_item = TreeviewItem::new(0, root_component, active_id, cx);
+            cx.observe(root_component, |this: &mut Self, root_component, cx| {
+                this.root_item = Self::root_item(&root_component, &this.active_id, cx);
+                cx.notify();
+            })
+            .detach();
 
-            Self { root_item }
+            let root_item = Self::root_item(root_component, active_id, cx);
+            Self {
+                root_item,
+                active_id: active_id.clone(),
+            }
         })
+    }
+
+    fn root_item<V: 'static>(
+        root_component: &Model<Component>,
+        active_id: &Model<Option<Uuid>>,
+        cx: &mut ViewContext<V>,
+    ) -> View<TreeviewItem> {
+        let root_component = root_component.read(cx).clone();
+        TreeviewItem::new(0, &root_component, active_id, cx)
     }
 }
 

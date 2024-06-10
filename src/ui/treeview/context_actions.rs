@@ -77,7 +77,7 @@ pub fn move_up_action(cx: &mut ViewContext<TreeviewItem>) -> ContextMenuAction {
                             .unwrap();
                         grandchildren.insert(
                             parent_pos,
-                            component.with_parent(grandparent.clone().into()),
+                            component.with_parent(&grandparent.clone().into()),
                         );
                         cx.notify();
                     });
@@ -120,7 +120,7 @@ pub fn move_down_action(cx: &mut ViewContext<TreeviewItem>) -> ContextMenuAction
                             .unwrap();
                         grandchildren.insert(
                             parent_pos + 1,
-                            component.with_parent(grandparent.clone().into()),
+                            component.with_parent(&grandparent.clone().into()),
                         );
                         cx.notify();
                     });

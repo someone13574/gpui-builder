@@ -21,6 +21,7 @@ impl MainView {
     pub fn new(cx: &mut WindowContext) -> View<Self> {
         cx.new_view(|cx| {
             let root_component = Component::from(DivComponent::new(cx));
+            let root_component = cx.new_model(|_| root_component);
             let selected_id = cx.new_model(|_| None);
 
             let treeview_panel = TreeviewPanel::new(&root_component, &selected_id, cx);
