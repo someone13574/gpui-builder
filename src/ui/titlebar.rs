@@ -1,5 +1,3 @@
-use std::fs;
-
 use gpui::*;
 
 use super::button::Button;
@@ -20,12 +18,24 @@ impl TitleBar {
             save_button: Button::new(
                 "Save",
                 move |_, cx| {
-                    fs::write(
-                        "saved.json",
-                        serde_json::to_string_pretty(&root_component.to_serde(cx))
-                            .expect("Failed to serialize component"),
-                    )
-                    .expect("Failed to save component file");
+                    let component = root_component.to_serde(cx);
+                    cx.spawn(|_| async move {
+                        if let Some(file) = rfd::AsyncFileDialog::new()
+                            .set_file_name("component.json")
+                            .set_directory(".")
+                            .add_filter("json", &["json"])
+                            .save_file()
+                            .await
+                        {
+                            file.write(
+                                &serde_json::to_vec(&component)
+                                    .expect("Failed to serialize component"),
+                            )
+                            .await
+                            .unwrap();
+                        }
+                    })
+                    .detach();
                 },
                 cx,
             ),

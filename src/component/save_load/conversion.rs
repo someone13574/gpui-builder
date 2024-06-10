@@ -8,11 +8,11 @@ use crate::component::text::TextComponent;
 use crate::component::Component;
 
 pub trait ToSerde<T>: Sized {
-    fn to_serde(&self, cx: &mut AppContext) -> T;
+    fn to_serde(&self, cx: &AppContext) -> T;
 }
 
 impl ToSerde<SerdeComponent> for Component {
-    fn to_serde(&self, cx: &mut AppContext) -> SerdeComponent {
+    fn to_serde(&self, cx: &AppContext) -> SerdeComponent {
         match self {
             Component::Div(component) => SerdeComponent::Div(component.to_serde(cx)),
             Component::Text(component) => SerdeComponent::Text(component.to_serde(cx)),
@@ -21,7 +21,7 @@ impl ToSerde<SerdeComponent> for Component {
 }
 
 impl ToSerde<SerdeProperty> for (String, ComponentProperty) {
-    fn to_serde(&self, _cx: &mut AppContext) -> SerdeProperty {
+    fn to_serde(&self, _cx: &AppContext) -> SerdeProperty {
         let (property_type, value) = match &self.1 {
             ComponentProperty::Bool(value) => (SerdePropertyType::Bool, value.to_string()),
             ComponentProperty::Color(value) => (SerdePropertyType::Color, format_rgba(*value)),
@@ -39,7 +39,7 @@ impl ToSerde<SerdeProperty> for (String, ComponentProperty) {
 }
 
 impl ToSerde<SerdeDiv> for DivComponent {
-    fn to_serde(&self, cx: &mut AppContext) -> SerdeDiv {
+    fn to_serde(&self, cx: &AppContext) -> SerdeDiv {
         let children = self.children.read(cx).clone();
         let children = children
             .into_iter()
@@ -59,7 +59,7 @@ impl ToSerde<SerdeDiv> for DivComponent {
 }
 
 impl ToSerde<SerdeText> for TextComponent {
-    fn to_serde(&self, cx: &mut AppContext) -> SerdeText {
+    fn to_serde(&self, cx: &AppContext) -> SerdeText {
         SerdeText {
             id: self.id,
             properties: self
