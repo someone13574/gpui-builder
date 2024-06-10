@@ -4,43 +4,43 @@ use prelude::FluentBuilder;
 use uuid::Uuid;
 
 use super::active_indicator::ActiveIndicator;
-use crate::component::element::text::TextElement;
-use crate::component::element_property::{read_properties, ElementProperty};
+use crate::component::property::{read_properties, ComponentProperty};
+use crate::component::text::TextComponent;
 
 pub struct TextPreview {
-    element: TextElement,
+    component: TextComponent,
 
-    cached_properties: IndexMap<String, ElementProperty>,
+    cached_properties: IndexMap<String, ComponentProperty>,
     indicator_animation_id: Option<Uuid>,
 }
 
 impl TextPreview {
     pub fn new<V: 'static>(
-        element: TextElement,
-        active_element: Model<Option<Uuid>>,
+        component: &TextComponent,
+        active_id: &Model<Option<Uuid>>,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            let cached_properties = read_properties(&element.properties, cx);
-            let indicator_animation_id = if *active_element.read(cx) == Some(element.id) {
+            let cached_properties = read_properties(&component.properties, cx);
+            let indicator_animation_id = if *active_id.read(cx) == Some(component.id) {
                 Some(Uuid::new_v4())
             } else {
                 None
             };
 
-            Self::observe_properties(&element, cx);
-            Self::observe_active_element(&active_element, cx);
+            Self::observe_properties(component, cx);
+            Self::observe_active_id(active_id, cx);
 
             Self {
-                element,
+                component: component.clone(),
                 cached_properties,
                 indicator_animation_id,
             }
         })
     }
 
-    fn observe_properties(element: &TextElement, cx: &mut ViewContext<Self>) {
-        for (key, value) in &element.properties {
+    fn observe_properties(component: &TextComponent, cx: &mut ViewContext<Self>) {
+        for (key, value) in &component.properties {
             let key = key.clone();
             cx.observe(value, move |this, property, cx| {
                 this.cached_properties
@@ -51,10 +51,10 @@ impl TextPreview {
         }
     }
 
-    fn observe_active_element(active_element: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
-        cx.observe(active_element, |this, active_element, cx| {
-            let active_element = *active_element.read(cx);
-            if active_element == Some(this.element.id) {
+    fn observe_active_id(active_id: &Model<Option<Uuid>>, cx: &mut ViewContext<Self>) {
+        cx.observe(active_id, |this, active_id, cx| {
+            let active_id = *active_id.read(cx);
+            if active_id == Some(this.component.id) {
                 this.indicator_animation_id = Some(Uuid::new_v4());
             } else {
                 this.indicator_animation_id = None;

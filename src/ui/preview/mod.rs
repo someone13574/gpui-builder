@@ -1,5 +1,5 @@
 mod active_indicator;
+mod component;
 mod div;
-mod element;
 pub mod panel;
 mod text;

@@ -2,7 +2,7 @@ use gpui::*;
 use prelude::FluentBuilder;
 
 use crate::appearance::colors;
-use crate::component::element_property::{enum_property, ElementProperty};
+use crate::component::property::{enum_prop, ComponentProperty};
 
 pub struct EnumProperty {
     property_name: String,
@@ -14,12 +14,12 @@ pub struct EnumProperty {
 
 impl EnumProperty {
     pub fn new<V: 'static>(
-        property: Model<ElementProperty>,
+        property: Model<ComponentProperty>,
         property_name: String,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
-            let property_value: enum_property::EnumProperty = property.read(cx).clone().into();
+            let property_value: enum_prop::EnumProperty = property.read(cx).clone().into();
 
             let items = property_value
                 .valid
@@ -28,8 +28,7 @@ impl EnumProperty {
                 .collect();
 
             cx.observe(&property, |this: &mut Self, property, cx| {
-                this.active_item =
-                    enum_property::EnumProperty::from(property.read(cx).clone()).value;
+                this.active_item = enum_prop::EnumProperty::from(property.read(cx).clone()).value;
                 this.expanded = false;
                 cx.notify();
             })
@@ -74,13 +73,13 @@ impl Render for EnumProperty {
 
 struct EnumItem {
     text: String,
-    property: Model<ElementProperty>,
+    property: Model<ComponentProperty>,
 }
 
 impl EnumItem {
     pub fn new(
         text: String,
-        property: Model<ElementProperty>,
+        property: Model<ComponentProperty>,
         cx: &mut ViewContext<EnumProperty>,
     ) -> View<Self> {
         cx.new_view(|_| Self { text, property })
@@ -95,7 +94,7 @@ impl Render for EnumItem {
             .id("item")
             .on_click(cx.listener(|this, _, cx| {
                 this.property.update(cx, |property, cx| {
-                    let mut enum_property: enum_property::EnumProperty = property.clone().into();
+                    let mut enum_property: enum_prop::EnumProperty = property.clone().into();
                     enum_property.value.clone_from(&this.text);
                     *property = enum_property.into();
                     cx.notify();

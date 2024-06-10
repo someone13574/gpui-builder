@@ -1,18 +1,18 @@
 use gpui::*;
 
-use crate::component::element_property::color::{format_rgba, parse_rgba};
-use crate::component::element_property::ElementProperty;
+use crate::component::property::color_prop::{format_rgba, parse_rgba};
+use crate::component::property::ComponentProperty;
 use crate::ui::text_entry::{TextEntry, TextModel};
 
 pub struct ColorProperty {
-    property: Model<ElementProperty>,
+    property: Model<ComponentProperty>,
     property_name: String,
     text_entry: View<TextEntry>,
 }
 
 impl ColorProperty {
     pub fn new<V: 'static>(
-        property: Model<ElementProperty>,
+        property: Model<ComponentProperty>,
         property_name: String,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {

@@ -1,17 +1,17 @@
 use gpui::*;
 
-use crate::component::element_property::ElementProperty;
+use crate::component::property::ComponentProperty;
 use crate::ui::text_entry::{TextEntry, TextModel};
 
 pub struct TextProperty {
-    property: Model<ElementProperty>,
+    property: Model<ComponentProperty>,
     property_name: String,
     text_entry: View<TextEntry>,
 }
 
 impl TextProperty {
     pub fn new<V: 'static>(
-        property: Model<ElementProperty>,
+        property: Model<ComponentProperty>,
         property_name: String,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
