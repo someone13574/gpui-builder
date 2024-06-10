@@ -19,6 +19,7 @@ pub mod sizes {
 
     lazy_static! {
         pub static ref TEXT_SIZE: AbsoluteLength = px(14.0).into();
+        pub static ref TEXT_SIZE_SMALL: AbsoluteLength = px(12.0).into();
         pub static ref SIDEBAR_WIDTH: AbsoluteLength = px(250.0).into();
         pub static ref TREEVIEW_INDENT: AbsoluteLength = px(32.0).into();
     }

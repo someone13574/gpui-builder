@@ -2,6 +2,7 @@ use gpui::*;
 use prelude::FluentBuilder;
 use uuid::Uuid;
 
+use super::button::OnClickFn;
 use super::main_view::MainView;
 use crate::appearance::colors;
 
@@ -91,8 +92,6 @@ impl Render for ContextMenu {
     }
 }
 
-pub type OnClickFn = dyn Fn(&ClickEvent, &mut WindowContext);
-
 pub struct ContextMenuAction {
     text: String,
     on_click: Box<OnClickFn>,
@@ -138,6 +137,7 @@ impl Render for ContextMenuItem {
             }))
             .on_click(cx.listener(|this, event, cx| {
                 ContextMenuGlobal::hide(cx);
+                cx.stop_propagation();
                 (this.action.on_click)(event, cx);
             }))
     }

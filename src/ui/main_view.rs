@@ -4,12 +4,14 @@ use prelude::FluentBuilder;
 use super::context_menu::ContextMenuGlobal;
 use super::preview::panel::PreviewPanel;
 use super::properties_panel::panel::PropertiesPanel;
+use super::titlebar::TitleBar;
 use super::treeview::panel::TreeviewPanel;
 use crate::appearance::{colors, sizes};
 use crate::component::div::DivComponent;
 use crate::component::Component;
 
 pub struct MainView {
+    title_bar: TitleBar,
     treeview_panel: View<TreeviewPanel>,
     preview_panel: View<PreviewPanel>,
     properties_panel: View<PropertiesPanel>,
@@ -19,6 +21,7 @@ impl MainView {
     pub fn new(cx: &mut WindowContext) -> View<Self> {
         cx.new_view(|cx| {
             let root_component = Component::from(DivComponent::new(cx));
+            let root_component = cx.new_model(|_| root_component);
             let selected_id = cx.new_model(|_| None);
 
             let treeview_panel = TreeviewPanel::new(&root_component, &selected_id, cx);
@@ -28,6 +31,7 @@ impl MainView {
             ContextMenuGlobal::init(cx);
 
             Self {
+                title_bar: TitleBar::new(&root_component, cx),
                 treeview_panel,
                 preview_panel,
                 properties_panel,
@@ -40,15 +44,22 @@ impl Render for MainView {
     fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
         div()
             .flex()
-            .flex_row()
+            .flex_col()
             .size_full()
             .bg(*colors::BG)
             .text_color(*colors::TEXT)
             .text_size(*sizes::TEXT_SIZE)
             .font_family("Sans")
-            .child(self.treeview_panel.clone())
-            .child(self.preview_panel.clone())
-            .child(self.properties_panel.clone())
+            .child(self.title_bar.clone())
+            .child(
+                div()
+                    .flex()
+                    .flex_row()
+                    .size_full()
+                    .child(self.treeview_panel.clone())
+                    .child(self.preview_panel.clone())
+                    .child(self.properties_panel.clone()),
+            )
             .on_mouse_down(MouseButton::Left, |_event, cx| {
                 ContextMenuGlobal::hide(cx);
             })

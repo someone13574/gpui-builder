@@ -28,7 +28,7 @@ impl DivComponent {
     }
 
     pub fn add_child(&self, child: Component, cx: &mut AppContext) {
-        let child = child.with_parent(self.clone().into());
+        let child = child.with_parent(&self.clone().into());
         self.children.update(cx, |children, cx| {
             children.push(child);
             cx.notify()
