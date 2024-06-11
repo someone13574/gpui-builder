@@ -40,7 +40,7 @@ impl TextPreview {
     }
 
     fn observe_properties(component: &TextComponent, cx: &mut ViewContext<Self>) {
-        for (key, value) in &component.properties {
+        for (key, (_, value)) in &component.properties {
             let key = key.clone();
             cx.observe(value, move |this, property, cx| {
                 this.cached_properties

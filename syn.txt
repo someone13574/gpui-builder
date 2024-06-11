@@ -1,0 +1,2668 @@
+File {
+    shebang: None,
+    attrs: [],
+    items: [
+        Item::Use {
+            attrs: [],
+            vis: Visibility::Inherited,
+            use_token: Use,
+            leading_colon: None,
+            tree: UseTree::Path(
+                UsePath {
+                    ident: Ident(
+                        gpui,
+                    ),
+                    colon2_token: PathSep,
+                    tree: UseTree::Glob(
+                        UseGlob {
+                            star_token: Star,
+                        },
+                    ),
+                },
+            ),
+            semi_token: Semi,
+        },
+        Item::Use {
+            attrs: [],
+            vis: Visibility::Inherited,
+            use_token: Use,
+            leading_colon: None,
+            tree: UseTree::Path(
+                UsePath {
+                    ident: Ident(
+                        prelude,
+                    ),
+                    colon2_token: PathSep,
+                    tree: UseTree::Name(
+                        UseName {
+                            ident: Ident(
+                                FluentBuilder,
+                            ),
+                        },
+                    ),
+                },
+            ),
+            semi_token: Semi,
+        },
+        Item::Use {
+            attrs: [],
+            vis: Visibility::Inherited,
+            use_token: Use,
+            leading_colon: None,
+            tree: UseTree::Path(
+                UsePath {
+                    ident: Ident(
+                        super,
+                    ),
+                    colon2_token: PathSep,
+                    tree: UseTree::Path(
+                        UsePath {
+                            ident: Ident(
+                                context_menu,
+                            ),
+                            colon2_token: PathSep,
+                            tree: UseTree::Name(
+                                UseName {
+                                    ident: Ident(
+                                        ContextMenuGlobal,
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            semi_token: Semi,
+        },
+        Item::Use {
+            attrs: [],
+            vis: Visibility::Inherited,
+            use_token: Use,
+            leading_colon: None,
+            tree: UseTree::Path(
+                UsePath {
+                    ident: Ident(
+                        super,
+                    ),
+                    colon2_token: PathSep,
+                    tree: UseTree::Path(
+                        UsePath {
+                            ident: Ident(
+                                preview,
+                            ),
+                            colon2_token: PathSep,
+                            tree: UseTree::Path(
+                                UsePath {
+                                    ident: Ident(
+                                        panel,
+                                    ),
+                                    colon2_token: PathSep,
+                                    tree: UseTree::Name(
+                                        UseName {
+                                            ident: Ident(
+                                                PreviewPanel,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            semi_token: Semi,
+        },
+        Item::Use {
+            attrs: [],
+            vis: Visibility::Inherited,
+            use_token: Use,
+            leading_colon: None,
+            tree: UseTree::Path(
+                UsePath {
+                    ident: Ident(
+                        super,
+                    ),
+                    colon2_token: PathSep,
+                    tree: UseTree::Path(
+                        UsePath {
+                            ident: Ident(
+                                properties_panel,
+                            ),
+                            colon2_token: PathSep,
+                            tree: UseTree::Path(
+                                UsePath {
+                                    ident: Ident(
+                                        panel,
+                                    ),
+                                    colon2_token: PathSep,
+                                    tree: UseTree::Name(
+                                        UseName {
+                                            ident: Ident(
+                                                PropertiesPanel,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            semi_token: Semi,
+        },
+        Item::Use {
+            attrs: [],
+            vis: Visibility::Inherited,
+            use_token: Use,
+            leading_colon: None,
+            tree: UseTree::Path(
+                UsePath {
+                    ident: Ident(
+                        super,
+                    ),
+                    colon2_token: PathSep,
+                    tree: UseTree::Path(
+                        UsePath {
+                            ident: Ident(
+                                titlebar,
+                            ),
+                            colon2_token: PathSep,
+                            tree: UseTree::Name(
+                                UseName {
+                                    ident: Ident(
+                                        TitleBar,
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            semi_token: Semi,
+        },
+        Item::Use {
+            attrs: [],
+            vis: Visibility::Inherited,
+            use_token: Use,
+            leading_colon: None,
+            tree: UseTree::Path(
+                UsePath {
+                    ident: Ident(
+                        super,
+                    ),
+                    colon2_token: PathSep,
+                    tree: UseTree::Path(
+                        UsePath {
+                            ident: Ident(
+                                treeview,
+                            ),
+                            colon2_token: PathSep,
+                            tree: UseTree::Path(
+                                UsePath {
+                                    ident: Ident(
+                                        panel,
+                                    ),
+                                    colon2_token: PathSep,
+                                    tree: UseTree::Name(
+                                        UseName {
+                                            ident: Ident(
+                                                TreeviewPanel,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            semi_token: Semi,
+        },
+        Item::Use {
+            attrs: [],
+            vis: Visibility::Inherited,
+            use_token: Use,
+            leading_colon: None,
+            tree: UseTree::Path(
+                UsePath {
+                    ident: Ident(
+                        crate,
+                    ),
+                    colon2_token: PathSep,
+                    tree: UseTree::Path(
+                        UsePath {
+                            ident: Ident(
+                                appearance,
+                            ),
+                            colon2_token: PathSep,
+                            tree: UseTree::Group(
+                                UseGroup {
+                                    brace_token: Brace,
+                                    items: [
+                                        UseTree::Name(
+                                            UseName {
+                                                ident: Ident(
+                                                    colors,
+                                                ),
+                                            },
+                                        ),
+                                        Comma,
+                                        UseTree::Name(
+                                            UseName {
+                                                ident: Ident(
+                                                    sizes,
+                                                ),
+                                            },
+                                        ),
+                                    ],
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            semi_token: Semi,
+        },
+        Item::Use {
+            attrs: [],
+            vis: Visibility::Inherited,
+            use_token: Use,
+            leading_colon: None,
+            tree: UseTree::Path(
+                UsePath {
+                    ident: Ident(
+                        crate,
+                    ),
+                    colon2_token: PathSep,
+                    tree: UseTree::Path(
+                        UsePath {
+                            ident: Ident(
+                                component,
+                            ),
+                            colon2_token: PathSep,
+                            tree: UseTree::Path(
+                                UsePath {
+                                    ident: Ident(
+                                        div,
+                                    ),
+                                    colon2_token: PathSep,
+                                    tree: UseTree::Name(
+                                        UseName {
+                                            ident: Ident(
+                                                DivComponent,
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            semi_token: Semi,
+        },
+        Item::Use {
+            attrs: [],
+            vis: Visibility::Inherited,
+            use_token: Use,
+            leading_colon: None,
+            tree: UseTree::Path(
+                UsePath {
+                    ident: Ident(
+                        crate,
+                    ),
+                    colon2_token: PathSep,
+                    tree: UseTree::Path(
+                        UsePath {
+                            ident: Ident(
+                                component,
+                            ),
+                            colon2_token: PathSep,
+                            tree: UseTree::Name(
+                                UseName {
+                                    ident: Ident(
+                                        Component,
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            semi_token: Semi,
+        },
+        Item::Struct {
+            attrs: [],
+            vis: Visibility::Public(
+                Pub,
+            ),
+            struct_token: Struct,
+            ident: Ident(
+                MainView,
+            ),
+            generics: Generics {
+                lt_token: None,
+                params: [],
+                gt_token: None,
+                where_clause: None,
+            },
+            fields: Fields::Named {
+                brace_token: Brace,
+                named: [
+                    Field {
+                        attrs: [],
+                        vis: Visibility::Inherited,
+                        mutability: FieldMutability::None,
+                        ident: Some(
+                            Ident(
+                                title_bar,
+                            ),
+                        ),
+                        colon_token: Some(
+                            Colon,
+                        ),
+                        ty: Type::Path {
+                            qself: None,
+                            path: Path {
+                                leading_colon: None,
+                                segments: [
+                                    PathSegment {
+                                        ident: Ident(
+                                            TitleBar,
+                                        ),
+                                        arguments: PathArguments::None,
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                    Comma,
+                    Field {
+                        attrs: [],
+                        vis: Visibility::Inherited,
+                        mutability: FieldMutability::None,
+                        ident: Some(
+                            Ident(
+                                treeview_panel,
+                            ),
+                        ),
+                        colon_token: Some(
+                            Colon,
+                        ),
+                        ty: Type::Path {
+                            qself: None,
+                            path: Path {
+                                leading_colon: None,
+                                segments: [
+                                    PathSegment {
+                                        ident: Ident(
+                                            View,
+                                        ),
+                                        arguments: PathArguments::AngleBracketed {
+                                            colon2_token: None,
+                                            lt_token: Lt,
+                                            args: [
+                                                GenericArgument::Type(
+                                                    Type::Path {
+                                                        qself: None,
+                                                        path: Path {
+                                                            leading_colon: None,
+                                                            segments: [
+                                                                PathSegment {
+                                                                    ident: Ident(
+                                                                        TreeviewPanel,
+                                                                    ),
+                                                                    arguments: PathArguments::None,
+                                                                },
+                                                            ],
+                                                        },
+                                                    },
+                                                ),
+                                            ],
+                                            gt_token: Gt,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                    Comma,
+                    Field {
+                        attrs: [],
+                        vis: Visibility::Inherited,
+                        mutability: FieldMutability::None,
+                        ident: Some(
+                            Ident(
+                                preview_panel,
+                            ),
+                        ),
+                        colon_token: Some(
+                            Colon,
+                        ),
+                        ty: Type::Path {
+                            qself: None,
+                            path: Path {
+                                leading_colon: None,
+                                segments: [
+                                    PathSegment {
+                                        ident: Ident(
+                                            View,
+                                        ),
+                                        arguments: PathArguments::AngleBracketed {
+                                            colon2_token: None,
+                                            lt_token: Lt,
+                                            args: [
+                                                GenericArgument::Type(
+                                                    Type::Path {
+                                                        qself: None,
+                                                        path: Path {
+                                                            leading_colon: None,
+                                                            segments: [
+                                                                PathSegment {
+                                                                    ident: Ident(
+                                                                        PreviewPanel,
+                                                                    ),
+                                                                    arguments: PathArguments::None,
+                                                                },
+                                                            ],
+                                                        },
+                                                    },
+                                                ),
+                                            ],
+                                            gt_token: Gt,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                    Comma,
+                    Field {
+                        attrs: [],
+                        vis: Visibility::Inherited,
+                        mutability: FieldMutability::None,
+                        ident: Some(
+                            Ident(
+                                properties_panel,
+                            ),
+                        ),
+                        colon_token: Some(
+                            Colon,
+                        ),
+                        ty: Type::Path {
+                            qself: None,
+                            path: Path {
+                                leading_colon: None,
+                                segments: [
+                                    PathSegment {
+                                        ident: Ident(
+                                            View,
+                                        ),
+                                        arguments: PathArguments::AngleBracketed {
+                                            colon2_token: None,
+                                            lt_token: Lt,
+                                            args: [
+                                                GenericArgument::Type(
+                                                    Type::Path {
+                                                        qself: None,
+                                                        path: Path {
+                                                            leading_colon: None,
+                                                            segments: [
+                                                                PathSegment {
+                                                                    ident: Ident(
+                                                                        PropertiesPanel,
+                                                                    ),
+                                                                    arguments: PathArguments::None,
+                                                                },
+                                                            ],
+                                                        },
+                                                    },
+                                                ),
+                                            ],
+                                            gt_token: Gt,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                    Comma,
+                ],
+            },
+            semi_token: None,
+        },
+        Item::Impl {
+            attrs: [],
+            defaultness: None,
+            unsafety: None,
+            impl_token: Impl,
+            generics: Generics {
+                lt_token: None,
+                params: [],
+                gt_token: None,
+                where_clause: None,
+            },
+            trait_: None,
+            self_ty: Type::Path {
+                qself: None,
+                path: Path {
+                    leading_colon: None,
+                    segments: [
+                        PathSegment {
+                            ident: Ident(
+                                MainView,
+                            ),
+                            arguments: PathArguments::None,
+                        },
+                    ],
+                },
+            },
+            brace_token: Brace,
+            items: [
+                ImplItem::Fn {
+                    attrs: [],
+                    vis: Visibility::Public(
+                        Pub,
+                    ),
+                    defaultness: None,
+                    sig: Signature {
+                        constness: None,
+                        asyncness: None,
+                        unsafety: None,
+                        abi: None,
+                        fn_token: Fn,
+                        ident: Ident(
+                            new,
+                        ),
+                        generics: Generics {
+                            lt_token: None,
+                            params: [],
+                            gt_token: None,
+                            where_clause: None,
+                        },
+                        paren_token: Paren,
+                        inputs: [
+                            FnArg::Typed(
+                                PatType {
+                                    attrs: [],
+                                    pat: Pat::Ident {
+                                        attrs: [],
+                                        by_ref: None,
+                                        mutability: None,
+                                        ident: Ident(
+                                            cx,
+                                        ),
+                                        subpat: None,
+                                    },
+                                    colon_token: Colon,
+                                    ty: Type::Reference {
+                                        and_token: And,
+                                        lifetime: None,
+                                        mutability: Some(
+                                            Mut,
+                                        ),
+                                        elem: Type::Path {
+                                            qself: None,
+                                            path: Path {
+                                                leading_colon: None,
+                                                segments: [
+                                                    PathSegment {
+                                                        ident: Ident(
+                                                            WindowContext,
+                                                        ),
+                                                        arguments: PathArguments::None,
+                                                    },
+                                                ],
+                                            },
+                                        },
+                                    },
+                                },
+                            ),
+                        ],
+                        variadic: None,
+                        output: ReturnType::Type(
+                            RArrow,
+                            Type::Path {
+                                qself: None,
+                                path: Path {
+                                    leading_colon: None,
+                                    segments: [
+                                        PathSegment {
+                                            ident: Ident(
+                                                View,
+                                            ),
+                                            arguments: PathArguments::AngleBracketed {
+                                                colon2_token: None,
+                                                lt_token: Lt,
+                                                args: [
+                                                    GenericArgument::Type(
+                                                        Type::Path {
+                                                            qself: None,
+                                                            path: Path {
+                                                                leading_colon: None,
+                                                                segments: [
+                                                                    PathSegment {
+                                                                        ident: Ident(
+                                                                            Self,
+                                                                        ),
+                                                                        arguments: PathArguments::None,
+                                                                    },
+                                                                ],
+                                                            },
+                                                        },
+                                                    ),
+                                                ],
+                                                gt_token: Gt,
+                                            },
+                                        },
+                                    ],
+                                },
+                            },
+                        ),
+                    },
+                    block: Block {
+                        brace_token: Brace,
+                        stmts: [
+                            Stmt::Expr(
+                                Expr::MethodCall {
+                                    attrs: [],
+                                    receiver: Expr::Path {
+                                        attrs: [],
+                                        qself: None,
+                                        path: Path {
+                                            leading_colon: None,
+                                            segments: [
+                                                PathSegment {
+                                                    ident: Ident(
+                                                        cx,
+                                                    ),
+                                                    arguments: PathArguments::None,
+                                                },
+                                            ],
+                                        },
+                                    },
+                                    dot_token: Dot,
+                                    method: Ident(
+                                        new_view,
+                                    ),
+                                    turbofish: None,
+                                    paren_token: Paren,
+                                    args: [
+                                        Expr::Closure {
+                                            attrs: [],
+                                            lifetimes: None,
+                                            constness: None,
+                                            movability: None,
+                                            asyncness: None,
+                                            capture: None,
+                                            or1_token: Or,
+                                            inputs: [
+                                                Pat::Ident {
+                                                    attrs: [],
+                                                    by_ref: None,
+                                                    mutability: None,
+                                                    ident: Ident(
+                                                        cx,
+                                                    ),
+                                                    subpat: None,
+                                                },
+                                            ],
+                                            or2_token: Or,
+                                            output: ReturnType::Default,
+                                            body: Expr::Block {
+                                                attrs: [],
+                                                label: None,
+                                                block: Block {
+                                                    brace_token: Brace,
+                                                    stmts: [
+                                                        Stmt::Local {
+                                                            attrs: [],
+                                                            let_token: Let,
+                                                            pat: Pat::Ident {
+                                                                attrs: [],
+                                                                by_ref: None,
+                                                                mutability: None,
+                                                                ident: Ident(
+                                                                    root_component,
+                                                                ),
+                                                                subpat: None,
+                                                            },
+                                                            init: Some(
+                                                                LocalInit {
+                                                                    eq_token: Eq,
+                                                                    expr: Expr::Call {
+                                                                        attrs: [],
+                                                                        func: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            Component,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                    PathSep,
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            from,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                        paren_token: Paren,
+                                                                        args: [
+                                                                            Expr::Call {
+                                                                                attrs: [],
+                                                                                func: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    DivComponent,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                            PathSep,
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    new,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                                paren_token: Paren,
+                                                                                args: [
+                                                                                    Expr::Path {
+                                                                                        attrs: [],
+                                                                                        qself: None,
+                                                                                        path: Path {
+                                                                                            leading_colon: None,
+                                                                                            segments: [
+                                                                                                PathSegment {
+                                                                                                    ident: Ident(
+                                                                                                        cx,
+                                                                                                    ),
+                                                                                                    arguments: PathArguments::None,
+                                                                                                },
+                                                                                            ],
+                                                                                        },
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                    diverge: None,
+                                                                },
+                                                            ),
+                                                            semi_token: Semi,
+                                                        },
+                                                        Stmt::Local {
+                                                            attrs: [],
+                                                            let_token: Let,
+                                                            pat: Pat::Ident {
+                                                                attrs: [],
+                                                                by_ref: None,
+                                                                mutability: None,
+                                                                ident: Ident(
+                                                                    root_component,
+                                                                ),
+                                                                subpat: None,
+                                                            },
+                                                            init: Some(
+                                                                LocalInit {
+                                                                    eq_token: Eq,
+                                                                    expr: Expr::MethodCall {
+                                                                        attrs: [],
+                                                                        receiver: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            cx,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                        dot_token: Dot,
+                                                                        method: Ident(
+                                                                            new_model,
+                                                                        ),
+                                                                        turbofish: None,
+                                                                        paren_token: Paren,
+                                                                        args: [
+                                                                            Expr::Closure {
+                                                                                attrs: [],
+                                                                                lifetimes: None,
+                                                                                constness: None,
+                                                                                movability: None,
+                                                                                asyncness: None,
+                                                                                capture: None,
+                                                                                or1_token: Or,
+                                                                                inputs: [
+                                                                                    Pat::Wild {
+                                                                                        attrs: [],
+                                                                                        underscore_token: Underscore,
+                                                                                    },
+                                                                                ],
+                                                                                or2_token: Or,
+                                                                                output: ReturnType::Default,
+                                                                                body: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    root_component,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                    diverge: None,
+                                                                },
+                                                            ),
+                                                            semi_token: Semi,
+                                                        },
+                                                        Stmt::Local {
+                                                            attrs: [],
+                                                            let_token: Let,
+                                                            pat: Pat::Ident {
+                                                                attrs: [],
+                                                                by_ref: None,
+                                                                mutability: None,
+                                                                ident: Ident(
+                                                                    selected_id,
+                                                                ),
+                                                                subpat: None,
+                                                            },
+                                                            init: Some(
+                                                                LocalInit {
+                                                                    eq_token: Eq,
+                                                                    expr: Expr::MethodCall {
+                                                                        attrs: [],
+                                                                        receiver: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            cx,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                        dot_token: Dot,
+                                                                        method: Ident(
+                                                                            new_model,
+                                                                        ),
+                                                                        turbofish: None,
+                                                                        paren_token: Paren,
+                                                                        args: [
+                                                                            Expr::Closure {
+                                                                                attrs: [],
+                                                                                lifetimes: None,
+                                                                                constness: None,
+                                                                                movability: None,
+                                                                                asyncness: None,
+                                                                                capture: None,
+                                                                                or1_token: Or,
+                                                                                inputs: [
+                                                                                    Pat::Wild {
+                                                                                        attrs: [],
+                                                                                        underscore_token: Underscore,
+                                                                                    },
+                                                                                ],
+                                                                                or2_token: Or,
+                                                                                output: ReturnType::Default,
+                                                                                body: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    None,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                    diverge: None,
+                                                                },
+                                                            ),
+                                                            semi_token: Semi,
+                                                        },
+                                                        Stmt::Local {
+                                                            attrs: [],
+                                                            let_token: Let,
+                                                            pat: Pat::Ident {
+                                                                attrs: [],
+                                                                by_ref: None,
+                                                                mutability: None,
+                                                                ident: Ident(
+                                                                    treeview_panel,
+                                                                ),
+                                                                subpat: None,
+                                                            },
+                                                            init: Some(
+                                                                LocalInit {
+                                                                    eq_token: Eq,
+                                                                    expr: Expr::Call {
+                                                                        attrs: [],
+                                                                        func: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            TreeviewPanel,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                    PathSep,
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            new,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                        paren_token: Paren,
+                                                                        args: [
+                                                                            Expr::Reference {
+                                                                                attrs: [],
+                                                                                and_token: And,
+                                                                                mutability: None,
+                                                                                expr: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    root_component,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                            Comma,
+                                                                            Expr::Reference {
+                                                                                attrs: [],
+                                                                                and_token: And,
+                                                                                mutability: None,
+                                                                                expr: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    selected_id,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                            Comma,
+                                                                            Expr::Path {
+                                                                                attrs: [],
+                                                                                qself: None,
+                                                                                path: Path {
+                                                                                    leading_colon: None,
+                                                                                    segments: [
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                cx,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                    ],
+                                                                                },
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                    diverge: None,
+                                                                },
+                                                            ),
+                                                            semi_token: Semi,
+                                                        },
+                                                        Stmt::Local {
+                                                            attrs: [],
+                                                            let_token: Let,
+                                                            pat: Pat::Ident {
+                                                                attrs: [],
+                                                                by_ref: None,
+                                                                mutability: None,
+                                                                ident: Ident(
+                                                                    preview_panel,
+                                                                ),
+                                                                subpat: None,
+                                                            },
+                                                            init: Some(
+                                                                LocalInit {
+                                                                    eq_token: Eq,
+                                                                    expr: Expr::Call {
+                                                                        attrs: [],
+                                                                        func: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            PreviewPanel,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                    PathSep,
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            new,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                        paren_token: Paren,
+                                                                        args: [
+                                                                            Expr::Reference {
+                                                                                attrs: [],
+                                                                                and_token: And,
+                                                                                mutability: None,
+                                                                                expr: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    root_component,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                            Comma,
+                                                                            Expr::Reference {
+                                                                                attrs: [],
+                                                                                and_token: And,
+                                                                                mutability: None,
+                                                                                expr: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    selected_id,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                            Comma,
+                                                                            Expr::Path {
+                                                                                attrs: [],
+                                                                                qself: None,
+                                                                                path: Path {
+                                                                                    leading_colon: None,
+                                                                                    segments: [
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                cx,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                    ],
+                                                                                },
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                    diverge: None,
+                                                                },
+                                                            ),
+                                                            semi_token: Semi,
+                                                        },
+                                                        Stmt::Local {
+                                                            attrs: [],
+                                                            let_token: Let,
+                                                            pat: Pat::Ident {
+                                                                attrs: [],
+                                                                by_ref: None,
+                                                                mutability: None,
+                                                                ident: Ident(
+                                                                    properties_panel,
+                                                                ),
+                                                                subpat: None,
+                                                            },
+                                                            init: Some(
+                                                                LocalInit {
+                                                                    eq_token: Eq,
+                                                                    expr: Expr::Call {
+                                                                        attrs: [],
+                                                                        func: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            PropertiesPanel,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                    PathSep,
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            new,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                        paren_token: Paren,
+                                                                        args: [
+                                                                            Expr::Reference {
+                                                                                attrs: [],
+                                                                                and_token: And,
+                                                                                mutability: None,
+                                                                                expr: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    root_component,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                            Comma,
+                                                                            Expr::Reference {
+                                                                                attrs: [],
+                                                                                and_token: And,
+                                                                                mutability: None,
+                                                                                expr: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    selected_id,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                            Comma,
+                                                                            Expr::Path {
+                                                                                attrs: [],
+                                                                                qself: None,
+                                                                                path: Path {
+                                                                                    leading_colon: None,
+                                                                                    segments: [
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                cx,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                    ],
+                                                                                },
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                    diverge: None,
+                                                                },
+                                                            ),
+                                                            semi_token: Semi,
+                                                        },
+                                                        Stmt::Expr(
+                                                            Expr::Call {
+                                                                attrs: [],
+                                                                func: Expr::Path {
+                                                                    attrs: [],
+                                                                    qself: None,
+                                                                    path: Path {
+                                                                        leading_colon: None,
+                                                                        segments: [
+                                                                            PathSegment {
+                                                                                ident: Ident(
+                                                                                    ContextMenuGlobal,
+                                                                                ),
+                                                                                arguments: PathArguments::None,
+                                                                            },
+                                                                            PathSep,
+                                                                            PathSegment {
+                                                                                ident: Ident(
+                                                                                    init,
+                                                                                ),
+                                                                                arguments: PathArguments::None,
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                },
+                                                                paren_token: Paren,
+                                                                args: [
+                                                                    Expr::Path {
+                                                                        attrs: [],
+                                                                        qself: None,
+                                                                        path: Path {
+                                                                            leading_colon: None,
+                                                                            segments: [
+                                                                                PathSegment {
+                                                                                    ident: Ident(
+                                                                                        cx,
+                                                                                    ),
+                                                                                    arguments: PathArguments::None,
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                ],
+                                                            },
+                                                            Some(
+                                                                Semi,
+                                                            ),
+                                                        ),
+                                                        Stmt::Expr(
+                                                            Expr::Struct {
+                                                                attrs: [],
+                                                                qself: None,
+                                                                path: Path {
+                                                                    leading_colon: None,
+                                                                    segments: [
+                                                                        PathSegment {
+                                                                            ident: Ident(
+                                                                                Self,
+                                                                            ),
+                                                                            arguments: PathArguments::None,
+                                                                        },
+                                                                    ],
+                                                                },
+                                                                brace_token: Brace,
+                                                                fields: [
+                                                                    FieldValue {
+                                                                        attrs: [],
+                                                                        member: Member::Named(
+                                                                            Ident(
+                                                                                title_bar,
+                                                                            ),
+                                                                        ),
+                                                                        colon_token: Some(
+                                                                            Colon,
+                                                                        ),
+                                                                        expr: Expr::Call {
+                                                                            attrs: [],
+                                                                            func: Expr::Path {
+                                                                                attrs: [],
+                                                                                qself: None,
+                                                                                path: Path {
+                                                                                    leading_colon: None,
+                                                                                    segments: [
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                TitleBar,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                        PathSep,
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                new,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                    ],
+                                                                                },
+                                                                            },
+                                                                            paren_token: Paren,
+                                                                            args: [
+                                                                                Expr::Reference {
+                                                                                    attrs: [],
+                                                                                    and_token: And,
+                                                                                    mutability: None,
+                                                                                    expr: Expr::Path {
+                                                                                        attrs: [],
+                                                                                        qself: None,
+                                                                                        path: Path {
+                                                                                            leading_colon: None,
+                                                                                            segments: [
+                                                                                                PathSegment {
+                                                                                                    ident: Ident(
+                                                                                                        root_component,
+                                                                                                    ),
+                                                                                                    arguments: PathArguments::None,
+                                                                                                },
+                                                                                            ],
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                Comma,
+                                                                                Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    cx,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                    Comma,
+                                                                    FieldValue {
+                                                                        attrs: [],
+                                                                        member: Member::Named(
+                                                                            Ident(
+                                                                                treeview_panel,
+                                                                            ),
+                                                                        ),
+                                                                        colon_token: None,
+                                                                        expr: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            treeview_panel,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                    },
+                                                                    Comma,
+                                                                    FieldValue {
+                                                                        attrs: [],
+                                                                        member: Member::Named(
+                                                                            Ident(
+                                                                                preview_panel,
+                                                                            ),
+                                                                        ),
+                                                                        colon_token: None,
+                                                                        expr: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            preview_panel,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                    },
+                                                                    Comma,
+                                                                    FieldValue {
+                                                                        attrs: [],
+                                                                        member: Member::Named(
+                                                                            Ident(
+                                                                                properties_panel,
+                                                                            ),
+                                                                        ),
+                                                                        colon_token: None,
+                                                                        expr: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            properties_panel,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                    },
+                                                                    Comma,
+                                                                ],
+                                                                dot2_token: None,
+                                                                rest: None,
+                                                            },
+                                                            None,
+                                                        ),
+                                                    ],
+                                                },
+                                            },
+                                        },
+                                    ],
+                                },
+                                None,
+                            ),
+                        ],
+                    },
+                },
+            ],
+        },
+        Item::Impl {
+            attrs: [],
+            defaultness: None,
+            unsafety: None,
+            impl_token: Impl,
+            generics: Generics {
+                lt_token: None,
+                params: [],
+                gt_token: None,
+                where_clause: None,
+            },
+            trait_: Some(
+                (
+                    None,
+                    Path {
+                        leading_colon: None,
+                        segments: [
+                            PathSegment {
+                                ident: Ident(
+                                    Render,
+                                ),
+                                arguments: PathArguments::None,
+                            },
+                        ],
+                    },
+                    For,
+                ),
+            ),
+            self_ty: Type::Path {
+                qself: None,
+                path: Path {
+                    leading_colon: None,
+                    segments: [
+                        PathSegment {
+                            ident: Ident(
+                                MainView,
+                            ),
+                            arguments: PathArguments::None,
+                        },
+                    ],
+                },
+            },
+            brace_token: Brace,
+            items: [
+                ImplItem::Fn {
+                    attrs: [],
+                    vis: Visibility::Inherited,
+                    defaultness: None,
+                    sig: Signature {
+                        constness: None,
+                        asyncness: None,
+                        unsafety: None,
+                        abi: None,
+                        fn_token: Fn,
+                        ident: Ident(
+                            render,
+                        ),
+                        generics: Generics {
+                            lt_token: None,
+                            params: [],
+                            gt_token: None,
+                            where_clause: None,
+                        },
+                        paren_token: Paren,
+                        inputs: [
+                            FnArg::Receiver(
+                                Receiver {
+                                    attrs: [],
+                                    reference: Some(
+                                        (
+                                            And,
+                                            None,
+                                        ),
+                                    ),
+                                    mutability: Some(
+                                        Mut,
+                                    ),
+                                    self_token: SelfValue,
+                                    colon_token: None,
+                                    ty: Type::Reference {
+                                        and_token: And,
+                                        lifetime: None,
+                                        mutability: Some(
+                                            Mut,
+                                        ),
+                                        elem: Type::Path {
+                                            qself: None,
+                                            path: Path {
+                                                leading_colon: None,
+                                                segments: [
+                                                    PathSegment {
+                                                        ident: Ident(
+                                                            Self,
+                                                        ),
+                                                        arguments: PathArguments::None,
+                                                    },
+                                                ],
+                                            },
+                                        },
+                                    },
+                                },
+                            ),
+                            Comma,
+                            FnArg::Typed(
+                                PatType {
+                                    attrs: [],
+                                    pat: Pat::Ident {
+                                        attrs: [],
+                                        by_ref: None,
+                                        mutability: None,
+                                        ident: Ident(
+                                            cx,
+                                        ),
+                                        subpat: None,
+                                    },
+                                    colon_token: Colon,
+                                    ty: Type::Reference {
+                                        and_token: And,
+                                        lifetime: None,
+                                        mutability: Some(
+                                            Mut,
+                                        ),
+                                        elem: Type::Path {
+                                            qself: None,
+                                            path: Path {
+                                                leading_colon: None,
+                                                segments: [
+                                                    PathSegment {
+                                                        ident: Ident(
+                                                            ViewContext,
+                                                        ),
+                                                        arguments: PathArguments::AngleBracketed {
+                                                            colon2_token: None,
+                                                            lt_token: Lt,
+                                                            args: [
+                                                                GenericArgument::Type(
+                                                                    Type::Path {
+                                                                        qself: None,
+                                                                        path: Path {
+                                                                            leading_colon: None,
+                                                                            segments: [
+                                                                                PathSegment {
+                                                                                    ident: Ident(
+                                                                                        Self,
+                                                                                    ),
+                                                                                    arguments: PathArguments::None,
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                ),
+                                                            ],
+                                                            gt_token: Gt,
+                                                        },
+                                                    },
+                                                ],
+                                            },
+                                        },
+                                    },
+                                },
+                            ),
+                        ],
+                        variadic: None,
+                        output: ReturnType::Type(
+                            RArrow,
+                            Type::ImplTrait {
+                                impl_token: Impl,
+                                bounds: [
+                                    TypeParamBound::Trait(
+                                        TraitBound {
+                                            paren_token: None,
+                                            modifier: TraitBoundModifier::None,
+                                            lifetimes: None,
+                                            path: Path {
+                                                leading_colon: None,
+                                                segments: [
+                                                    PathSegment {
+                                                        ident: Ident(
+                                                            IntoElement,
+                                                        ),
+                                                        arguments: PathArguments::None,
+                                                    },
+                                                ],
+                                            },
+                                        },
+                                    ),
+                                ],
+                            },
+                        ),
+                    },
+                    block: Block {
+                        brace_token: Brace,
+                        stmts: [
+                            Stmt::Expr(
+                                Expr::MethodCall {
+                                    attrs: [],
+                                    receiver: Expr::MethodCall {
+                                        attrs: [],
+                                        receiver: Expr::MethodCall {
+                                            attrs: [],
+                                            receiver: Expr::MethodCall {
+                                                attrs: [],
+                                                receiver: Expr::MethodCall {
+                                                    attrs: [],
+                                                    receiver: Expr::MethodCall {
+                                                        attrs: [],
+                                                        receiver: Expr::MethodCall {
+                                                            attrs: [],
+                                                            receiver: Expr::MethodCall {
+                                                                attrs: [],
+                                                                receiver: Expr::MethodCall {
+                                                                    attrs: [],
+                                                                    receiver: Expr::MethodCall {
+                                                                        attrs: [],
+                                                                        receiver: Expr::MethodCall {
+                                                                            attrs: [],
+                                                                            receiver: Expr::MethodCall {
+                                                                                attrs: [],
+                                                                                receiver: Expr::MethodCall {
+                                                                                    attrs: [],
+                                                                                    receiver: Expr::Call {
+                                                                                        attrs: [],
+                                                                                        func: Expr::Path {
+                                                                                            attrs: [],
+                                                                                            qself: None,
+                                                                                            path: Path {
+                                                                                                leading_colon: None,
+                                                                                                segments: [
+                                                                                                    PathSegment {
+                                                                                                        ident: Ident(
+                                                                                                            div,
+                                                                                                        ),
+                                                                                                        arguments: PathArguments::None,
+                                                                                                    },
+                                                                                                ],
+                                                                                            },
+                                                                                        },
+                                                                                        paren_token: Paren,
+                                                                                        args: [],
+                                                                                    },
+                                                                                    dot_token: Dot,
+                                                                                    method: Ident(
+                                                                                        flex,
+                                                                                    ),
+                                                                                    turbofish: None,
+                                                                                    paren_token: Paren,
+                                                                                    args: [],
+                                                                                },
+                                                                                dot_token: Dot,
+                                                                                method: Ident(
+                                                                                    flex_col,
+                                                                                ),
+                                                                                turbofish: None,
+                                                                                paren_token: Paren,
+                                                                                args: [],
+                                                                            },
+                                                                            dot_token: Dot,
+                                                                            method: Ident(
+                                                                                size_full,
+                                                                            ),
+                                                                            turbofish: None,
+                                                                            paren_token: Paren,
+                                                                            args: [],
+                                                                        },
+                                                                        dot_token: Dot,
+                                                                        method: Ident(
+                                                                            bg,
+                                                                        ),
+                                                                        turbofish: None,
+                                                                        paren_token: Paren,
+                                                                        args: [
+                                                                            Expr::Unary {
+                                                                                attrs: [],
+                                                                                op: UnOp::Deref(
+                                                                                    Star,
+                                                                                ),
+                                                                                expr: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    colors,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                            PathSep,
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    BG,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                    dot_token: Dot,
+                                                                    method: Ident(
+                                                                        text_color,
+                                                                    ),
+                                                                    turbofish: None,
+                                                                    paren_token: Paren,
+                                                                    args: [
+                                                                        Expr::Unary {
+                                                                            attrs: [],
+                                                                            op: UnOp::Deref(
+                                                                                Star,
+                                                                            ),
+                                                                            expr: Expr::Path {
+                                                                                attrs: [],
+                                                                                qself: None,
+                                                                                path: Path {
+                                                                                    leading_colon: None,
+                                                                                    segments: [
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                colors,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                        PathSep,
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                TEXT,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                    ],
+                                                                                },
+                                                                            },
+                                                                        },
+                                                                    ],
+                                                                },
+                                                                dot_token: Dot,
+                                                                method: Ident(
+                                                                    text_size,
+                                                                ),
+                                                                turbofish: None,
+                                                                paren_token: Paren,
+                                                                args: [
+                                                                    Expr::Unary {
+                                                                        attrs: [],
+                                                                        op: UnOp::Deref(
+                                                                            Star,
+                                                                        ),
+                                                                        expr: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            sizes,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                    PathSep,
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            TEXT_SIZE,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                    },
+                                                                ],
+                                                            },
+                                                            dot_token: Dot,
+                                                            method: Ident(
+                                                                font_family,
+                                                            ),
+                                                            turbofish: None,
+                                                            paren_token: Paren,
+                                                            args: [
+                                                                Expr::Lit {
+                                                                    attrs: [],
+                                                                    lit: Lit::Str {
+                                                                        token: "Sans",
+                                                                    },
+                                                                },
+                                                            ],
+                                                        },
+                                                        dot_token: Dot,
+                                                        method: Ident(
+                                                            child,
+                                                        ),
+                                                        turbofish: None,
+                                                        paren_token: Paren,
+                                                        args: [
+                                                            Expr::MethodCall {
+                                                                attrs: [],
+                                                                receiver: Expr::Field {
+                                                                    attrs: [],
+                                                                    base: Expr::Path {
+                                                                        attrs: [],
+                                                                        qself: None,
+                                                                        path: Path {
+                                                                            leading_colon: None,
+                                                                            segments: [
+                                                                                PathSegment {
+                                                                                    ident: Ident(
+                                                                                        self,
+                                                                                    ),
+                                                                                    arguments: PathArguments::None,
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                    dot_token: Dot,
+                                                                    member: Member::Named(
+                                                                        Ident(
+                                                                            title_bar,
+                                                                        ),
+                                                                    ),
+                                                                },
+                                                                dot_token: Dot,
+                                                                method: Ident(
+                                                                    clone,
+                                                                ),
+                                                                turbofish: None,
+                                                                paren_token: Paren,
+                                                                args: [],
+                                                            },
+                                                        ],
+                                                    },
+                                                    dot_token: Dot,
+                                                    method: Ident(
+                                                        child,
+                                                    ),
+                                                    turbofish: None,
+                                                    paren_token: Paren,
+                                                    args: [
+                                                        Expr::MethodCall {
+                                                            attrs: [],
+                                                            receiver: Expr::MethodCall {
+                                                                attrs: [],
+                                                                receiver: Expr::MethodCall {
+                                                                    attrs: [],
+                                                                    receiver: Expr::MethodCall {
+                                                                        attrs: [],
+                                                                        receiver: Expr::MethodCall {
+                                                                            attrs: [],
+                                                                            receiver: Expr::MethodCall {
+                                                                                attrs: [],
+                                                                                receiver: Expr::Call {
+                                                                                    attrs: [],
+                                                                                    func: Expr::Path {
+                                                                                        attrs: [],
+                                                                                        qself: None,
+                                                                                        path: Path {
+                                                                                            leading_colon: None,
+                                                                                            segments: [
+                                                                                                PathSegment {
+                                                                                                    ident: Ident(
+                                                                                                        div,
+                                                                                                    ),
+                                                                                                    arguments: PathArguments::None,
+                                                                                                },
+                                                                                            ],
+                                                                                        },
+                                                                                    },
+                                                                                    paren_token: Paren,
+                                                                                    args: [],
+                                                                                },
+                                                                                dot_token: Dot,
+                                                                                method: Ident(
+                                                                                    flex,
+                                                                                ),
+                                                                                turbofish: None,
+                                                                                paren_token: Paren,
+                                                                                args: [],
+                                                                            },
+                                                                            dot_token: Dot,
+                                                                            method: Ident(
+                                                                                flex_row,
+                                                                            ),
+                                                                            turbofish: None,
+                                                                            paren_token: Paren,
+                                                                            args: [],
+                                                                        },
+                                                                        dot_token: Dot,
+                                                                        method: Ident(
+                                                                            size_full,
+                                                                        ),
+                                                                        turbofish: None,
+                                                                        paren_token: Paren,
+                                                                        args: [],
+                                                                    },
+                                                                    dot_token: Dot,
+                                                                    method: Ident(
+                                                                        child,
+                                                                    ),
+                                                                    turbofish: None,
+                                                                    paren_token: Paren,
+                                                                    args: [
+                                                                        Expr::MethodCall {
+                                                                            attrs: [],
+                                                                            receiver: Expr::Field {
+                                                                                attrs: [],
+                                                                                base: Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    self,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                                dot_token: Dot,
+                                                                                member: Member::Named(
+                                                                                    Ident(
+                                                                                        treeview_panel,
+                                                                                    ),
+                                                                                ),
+                                                                            },
+                                                                            dot_token: Dot,
+                                                                            method: Ident(
+                                                                                clone,
+                                                                            ),
+                                                                            turbofish: None,
+                                                                            paren_token: Paren,
+                                                                            args: [],
+                                                                        },
+                                                                    ],
+                                                                },
+                                                                dot_token: Dot,
+                                                                method: Ident(
+                                                                    child,
+                                                                ),
+                                                                turbofish: None,
+                                                                paren_token: Paren,
+                                                                args: [
+                                                                    Expr::MethodCall {
+                                                                        attrs: [],
+                                                                        receiver: Expr::Field {
+                                                                            attrs: [],
+                                                                            base: Expr::Path {
+                                                                                attrs: [],
+                                                                                qself: None,
+                                                                                path: Path {
+                                                                                    leading_colon: None,
+                                                                                    segments: [
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                self,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                    ],
+                                                                                },
+                                                                            },
+                                                                            dot_token: Dot,
+                                                                            member: Member::Named(
+                                                                                Ident(
+                                                                                    preview_panel,
+                                                                                ),
+                                                                            ),
+                                                                        },
+                                                                        dot_token: Dot,
+                                                                        method: Ident(
+                                                                            clone,
+                                                                        ),
+                                                                        turbofish: None,
+                                                                        paren_token: Paren,
+                                                                        args: [],
+                                                                    },
+                                                                ],
+                                                            },
+                                                            dot_token: Dot,
+                                                            method: Ident(
+                                                                child,
+                                                            ),
+                                                            turbofish: None,
+                                                            paren_token: Paren,
+                                                            args: [
+                                                                Expr::MethodCall {
+                                                                    attrs: [],
+                                                                    receiver: Expr::Field {
+                                                                        attrs: [],
+                                                                        base: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            self,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                        dot_token: Dot,
+                                                                        member: Member::Named(
+                                                                            Ident(
+                                                                                properties_panel,
+                                                                            ),
+                                                                        ),
+                                                                    },
+                                                                    dot_token: Dot,
+                                                                    method: Ident(
+                                                                        clone,
+                                                                    ),
+                                                                    turbofish: None,
+                                                                    paren_token: Paren,
+                                                                    args: [],
+                                                                },
+                                                            ],
+                                                        },
+                                                        Comma,
+                                                    ],
+                                                },
+                                                dot_token: Dot,
+                                                method: Ident(
+                                                    on_mouse_down,
+                                                ),
+                                                turbofish: None,
+                                                paren_token: Paren,
+                                                args: [
+                                                    Expr::Path {
+                                                        attrs: [],
+                                                        qself: None,
+                                                        path: Path {
+                                                            leading_colon: None,
+                                                            segments: [
+                                                                PathSegment {
+                                                                    ident: Ident(
+                                                                        MouseButton,
+                                                                    ),
+                                                                    arguments: PathArguments::None,
+                                                                },
+                                                                PathSep,
+                                                                PathSegment {
+                                                                    ident: Ident(
+                                                                        Left,
+                                                                    ),
+                                                                    arguments: PathArguments::None,
+                                                                },
+                                                            ],
+                                                        },
+                                                    },
+                                                    Comma,
+                                                    Expr::Closure {
+                                                        attrs: [],
+                                                        lifetimes: None,
+                                                        constness: None,
+                                                        movability: None,
+                                                        asyncness: None,
+                                                        capture: None,
+                                                        or1_token: Or,
+                                                        inputs: [
+                                                            Pat::Ident {
+                                                                attrs: [],
+                                                                by_ref: None,
+                                                                mutability: None,
+                                                                ident: Ident(
+                                                                    _event,
+                                                                ),
+                                                                subpat: None,
+                                                            },
+                                                            Comma,
+                                                            Pat::Ident {
+                                                                attrs: [],
+                                                                by_ref: None,
+                                                                mutability: None,
+                                                                ident: Ident(
+                                                                    cx,
+                                                                ),
+                                                                subpat: None,
+                                                            },
+                                                        ],
+                                                        or2_token: Or,
+                                                        output: ReturnType::Default,
+                                                        body: Expr::Block {
+                                                            attrs: [],
+                                                            label: None,
+                                                            block: Block {
+                                                                brace_token: Brace,
+                                                                stmts: [
+                                                                    Stmt::Expr(
+                                                                        Expr::Call {
+                                                                            attrs: [],
+                                                                            func: Expr::Path {
+                                                                                attrs: [],
+                                                                                qself: None,
+                                                                                path: Path {
+                                                                                    leading_colon: None,
+                                                                                    segments: [
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                ContextMenuGlobal,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                        PathSep,
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                hide,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                    ],
+                                                                                },
+                                                                            },
+                                                                            paren_token: Paren,
+                                                                            args: [
+                                                                                Expr::Path {
+                                                                                    attrs: [],
+                                                                                    qself: None,
+                                                                                    path: Path {
+                                                                                        leading_colon: None,
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: Ident(
+                                                                                                    cx,
+                                                                                                ),
+                                                                                                arguments: PathArguments::None,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                        Some(
+                                                                            Semi,
+                                                                        ),
+                                                                    ),
+                                                                ],
+                                                            },
+                                                        },
+                                                    },
+                                                ],
+                                            },
+                                            dot_token: Dot,
+                                            method: Ident(
+                                                on_mouse_down,
+                                            ),
+                                            turbofish: None,
+                                            paren_token: Paren,
+                                            args: [
+                                                Expr::Path {
+                                                    attrs: [],
+                                                    qself: None,
+                                                    path: Path {
+                                                        leading_colon: None,
+                                                        segments: [
+                                                            PathSegment {
+                                                                ident: Ident(
+                                                                    MouseButton,
+                                                                ),
+                                                                arguments: PathArguments::None,
+                                                            },
+                                                            PathSep,
+                                                            PathSegment {
+                                                                ident: Ident(
+                                                                    Middle,
+                                                                ),
+                                                                arguments: PathArguments::None,
+                                                            },
+                                                        ],
+                                                    },
+                                                },
+                                                Comma,
+                                                Expr::Closure {
+                                                    attrs: [],
+                                                    lifetimes: None,
+                                                    constness: None,
+                                                    movability: None,
+                                                    asyncness: None,
+                                                    capture: None,
+                                                    or1_token: Or,
+                                                    inputs: [
+                                                        Pat::Ident {
+                                                            attrs: [],
+                                                            by_ref: None,
+                                                            mutability: None,
+                                                            ident: Ident(
+                                                                _event,
+                                                            ),
+                                                            subpat: None,
+                                                        },
+                                                        Comma,
+                                                        Pat::Ident {
+                                                            attrs: [],
+                                                            by_ref: None,
+                                                            mutability: None,
+                                                            ident: Ident(
+                                                                cx,
+                                                            ),
+                                                            subpat: None,
+                                                        },
+                                                    ],
+                                                    or2_token: Or,
+                                                    output: ReturnType::Default,
+                                                    body: Expr::Block {
+                                                        attrs: [],
+                                                        label: None,
+                                                        block: Block {
+                                                            brace_token: Brace,
+                                                            stmts: [
+                                                                Stmt::Expr(
+                                                                    Expr::Call {
+                                                                        attrs: [],
+                                                                        func: Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            ContextMenuGlobal,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                    PathSep,
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            hide,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                        paren_token: Paren,
+                                                                        args: [
+                                                                            Expr::Path {
+                                                                                attrs: [],
+                                                                                qself: None,
+                                                                                path: Path {
+                                                                                    leading_colon: None,
+                                                                                    segments: [
+                                                                                        PathSegment {
+                                                                                            ident: Ident(
+                                                                                                cx,
+                                                                                            ),
+                                                                                            arguments: PathArguments::None,
+                                                                                        },
+                                                                                    ],
+                                                                                },
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                    Some(
+                                                                        Semi,
+                                                                    ),
+                                                                ),
+                                                            ],
+                                                        },
+                                                    },
+                                                },
+                                            ],
+                                        },
+                                        dot_token: Dot,
+                                        method: Ident(
+                                            on_mouse_down,
+                                        ),
+                                        turbofish: None,
+                                        paren_token: Paren,
+                                        args: [
+                                            Expr::Path {
+                                                attrs: [],
+                                                qself: None,
+                                                path: Path {
+                                                    leading_colon: None,
+                                                    segments: [
+                                                        PathSegment {
+                                                            ident: Ident(
+                                                                MouseButton,
+                                                            ),
+                                                            arguments: PathArguments::None,
+                                                        },
+                                                        PathSep,
+                                                        PathSegment {
+                                                            ident: Ident(
+                                                                Right,
+                                                            ),
+                                                            arguments: PathArguments::None,
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            Comma,
+                                            Expr::Closure {
+                                                attrs: [],
+                                                lifetimes: None,
+                                                constness: None,
+                                                movability: None,
+                                                asyncness: None,
+                                                capture: None,
+                                                or1_token: Or,
+                                                inputs: [
+                                                    Pat::Ident {
+                                                        attrs: [],
+                                                        by_ref: None,
+                                                        mutability: None,
+                                                        ident: Ident(
+                                                            _event,
+                                                        ),
+                                                        subpat: None,
+                                                    },
+                                                    Comma,
+                                                    Pat::Ident {
+                                                        attrs: [],
+                                                        by_ref: None,
+                                                        mutability: None,
+                                                        ident: Ident(
+                                                            cx,
+                                                        ),
+                                                        subpat: None,
+                                                    },
+                                                ],
+                                                or2_token: Or,
+                                                output: ReturnType::Default,
+                                                body: Expr::Block {
+                                                    attrs: [],
+                                                    label: None,
+                                                    block: Block {
+                                                        brace_token: Brace,
+                                                        stmts: [
+                                                            Stmt::Expr(
+                                                                Expr::Call {
+                                                                    attrs: [],
+                                                                    func: Expr::Path {
+                                                                        attrs: [],
+                                                                        qself: None,
+                                                                        path: Path {
+                                                                            leading_colon: None,
+                                                                            segments: [
+                                                                                PathSegment {
+                                                                                    ident: Ident(
+                                                                                        ContextMenuGlobal,
+                                                                                    ),
+                                                                                    arguments: PathArguments::None,
+                                                                                },
+                                                                                PathSep,
+                                                                                PathSegment {
+                                                                                    ident: Ident(
+                                                                                        hide,
+                                                                                    ),
+                                                                                    arguments: PathArguments::None,
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                    paren_token: Paren,
+                                                                    args: [
+                                                                        Expr::Path {
+                                                                            attrs: [],
+                                                                            qself: None,
+                                                                            path: Path {
+                                                                                leading_colon: None,
+                                                                                segments: [
+                                                                                    PathSegment {
+                                                                                        ident: Ident(
+                                                                                            cx,
+                                                                                        ),
+                                                                                        arguments: PathArguments::None,
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        },
+                                                                    ],
+                                                                },
+                                                                Some(
+                                                                    Semi,
+                                                                ),
+                                                            ),
+                                                        ],
+                                                    },
+                                                },
+                                            },
+                                        ],
+                                    },
+                                    dot_token: Dot,
+                                    method: Ident(
+                                        when_some,
+                                    ),
+                                    turbofish: None,
+                                    paren_token: Paren,
+                                    args: [
+                                        Expr::MethodCall {
+                                            attrs: [],
+                                            receiver: Expr::Field {
+                                                attrs: [],
+                                                base: Expr::MethodCall {
+                                                    attrs: [],
+                                                    receiver: Expr::Path {
+                                                        attrs: [],
+                                                        qself: None,
+                                                        path: Path {
+                                                            leading_colon: None,
+                                                            segments: [
+                                                                PathSegment {
+                                                                    ident: Ident(
+                                                                        cx,
+                                                                    ),
+                                                                    arguments: PathArguments::None,
+                                                                },
+                                                            ],
+                                                        },
+                                                    },
+                                                    dot_token: Dot,
+                                                    method: Ident(
+                                                        global,
+                                                    ),
+                                                    turbofish: Some(
+                                                        AngleBracketedGenericArguments {
+                                                            colon2_token: Some(
+                                                                PathSep,
+                                                            ),
+                                                            lt_token: Lt,
+                                                            args: [
+                                                                GenericArgument::Type(
+                                                                    Type::Path {
+                                                                        qself: None,
+                                                                        path: Path {
+                                                                            leading_colon: None,
+                                                                            segments: [
+                                                                                PathSegment {
+                                                                                    ident: Ident(
+                                                                                        ContextMenuGlobal,
+                                                                                    ),
+                                                                                    arguments: PathArguments::None,
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                ),
+                                                            ],
+                                                            gt_token: Gt,
+                                                        },
+                                                    ),
+                                                    paren_token: Paren,
+                                                    args: [],
+                                                },
+                                                dot_token: Dot,
+                                                member: Member::Named(
+                                                    Ident(
+                                                        view,
+                                                    ),
+                                                ),
+                                            },
+                                            dot_token: Dot,
+                                            method: Ident(
+                                                clone,
+                                            ),
+                                            turbofish: None,
+                                            paren_token: Paren,
+                                            args: [],
+                                        },
+                                        Comma,
+                                        Expr::Closure {
+                                            attrs: [],
+                                            lifetimes: None,
+                                            constness: None,
+                                            movability: None,
+                                            asyncness: None,
+                                            capture: None,
+                                            or1_token: Or,
+                                            inputs: [
+                                                Pat::Ident {
+                                                    attrs: [],
+                                                    by_ref: None,
+                                                    mutability: None,
+                                                    ident: Ident(
+                                                        this,
+                                                    ),
+                                                    subpat: None,
+                                                },
+                                                Comma,
+                                                Pat::Ident {
+                                                    attrs: [],
+                                                    by_ref: None,
+                                                    mutability: None,
+                                                    ident: Ident(
+                                                        context_menu,
+                                                    ),
+                                                    subpat: None,
+                                                },
+                                            ],
+                                            or2_token: Or,
+                                            output: ReturnType::Default,
+                                            body: Expr::MethodCall {
+                                                attrs: [],
+                                                receiver: Expr::Path {
+                                                    attrs: [],
+                                                    qself: None,
+                                                    path: Path {
+                                                        leading_colon: None,
+                                                        segments: [
+                                                            PathSegment {
+                                                                ident: Ident(
+                                                                    this,
+                                                                ),
+                                                                arguments: PathArguments::None,
+                                                            },
+                                                        ],
+                                                    },
+                                                },
+                                                dot_token: Dot,
+                                                method: Ident(
+                                                    child,
+                                                ),
+                                                turbofish: None,
+                                                paren_token: Paren,
+                                                args: [
+                                                    Expr::Path {
+                                                        attrs: [],
+                                                        qself: None,
+                                                        path: Path {
+                                                            leading_colon: None,
+                                                            segments: [
+                                                                PathSegment {
+                                                                    ident: Ident(
+                                                                        context_menu,
+                                                                    ),
+                                                                    arguments: PathArguments::None,
+                                                                },
+                                                            ],
+                                                        },
+                                                    },
+                                                ],
+                                            },
+                                        },
+                                        Comma,
+                                    ],
+                                },
+                                None,
+                            ),
+                        ],
+                    },
+                },
+            ],
+        },
+    ],
+}

@@ -3,6 +3,7 @@ use gpui::*;
 use super::button::Button;
 use crate::appearance::colors;
 use crate::component::save_load::from_serde::FromSerde;
+use crate::component::save_load::rust_generator::generate_syntax_tree;
 use crate::component::save_load::to_serde::ToSerde;
 use crate::component::save_load::SerdeComponent;
 use crate::component::Component;
@@ -25,22 +26,23 @@ impl TitleBar {
                     let component = cx.read_model(&root_component_clone, |component, cx| {
                         component.to_serde(cx)
                     });
-                    cx.spawn(|_| async move {
-                        if let Some(file) = rfd::AsyncFileDialog::new()
-                            .set_file_name("component.json")
-                            .add_filter("json", &["json"])
-                            .save_file()
-                            .await
-                        {
-                            file.write(
-                                &serde_json::to_vec(&component)
-                                    .expect("Failed to serialize component"),
-                            )
-                            .await
-                            .unwrap();
-                        }
-                    })
-                    .detach();
+                    generate_syntax_tree(component);
+                    // cx.spawn(|_| async move {
+                    //     if let Some(file) = rfd::AsyncFileDialog::new()
+                    //         .set_file_name("component.json")
+                    //         .add_filter("json", &["json"])
+                    //         .save_file()
+                    //         .await
+                    //     {
+                    //         file.write(
+                    //             &serde_json::to_vec(&component)
+                    //                 .expect("Failed to serialize component"),
+                    //         )
+                    //         .await
+                    //         .unwrap();
+                    //     }
+                    // })
+                    // .detach();
                 },
                 cx,
             ),

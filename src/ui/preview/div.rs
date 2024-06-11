@@ -51,7 +51,7 @@ impl DivPreview {
     fn observe_properties(component: &DivComponent, cx: &mut ViewContext<Self>) {
         for (key, value) in &component.properties {
             let key = key.clone();
-            cx.observe(value, move |this, property, cx| {
+            cx.observe(&value.1, move |this, property, cx| {
                 this.cached_properties
                     .insert(key.clone(), property.read(cx).clone());
                 cx.notify();

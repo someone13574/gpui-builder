@@ -2,7 +2,7 @@ use gpui::{AppContext, Model};
 use indexmap::IndexMap;
 use uuid::Uuid;
 
-use super::property::{to_model, ComponentProperty};
+use super::property::{to_model_with_default, ComponentProperty};
 use super::Component;
 
 #[derive(Clone, Debug)]
@@ -10,7 +10,7 @@ pub struct TextComponent {
     pub id: Uuid,
     pub parent: Option<Box<Component>>,
 
-    pub properties: IndexMap<String, Model<ComponentProperty>>,
+    pub properties: IndexMap<String, (ComponentProperty, Model<ComponentProperty>)>,
 }
 
 impl TextComponent {
@@ -22,9 +22,14 @@ impl TextComponent {
         }
     }
 
-    fn default_properties(cx: &mut AppContext) -> IndexMap<String, Model<ComponentProperty>> {
+    fn default_properties(
+        cx: &mut AppContext,
+    ) -> IndexMap<String, (ComponentProperty, Model<ComponentProperty>)> {
         let mut properties = IndexMap::new();
-        properties.insert("text".to_string(), to_model("New text".to_string(), cx));
+        properties.insert(
+            "text".to_string(),
+            to_model_with_default("New text".to_string(), cx),
+        );
         properties
     }
 }

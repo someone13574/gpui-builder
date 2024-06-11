@@ -3,6 +3,7 @@ use gpui::AppContext;
 use super::{SerdeComponent, SerdeDiv, SerdeProperty, SerdePropertyType, SerdeText};
 use crate::component::div::DivComponent;
 use crate::component::property::color_prop::format_rgba;
+use crate::component::property::enum_prop::EnumProperty;
 use crate::component::property::ComponentProperty;
 use crate::component::text::TextComponent;
 use crate::component::Component;
@@ -20,19 +21,40 @@ impl ToSerde<SerdeComponent> for Component {
     }
 }
 
-impl ToSerde<SerdeProperty> for (String, ComponentProperty) {
+impl ToSerde<SerdeProperty> for (String, ComponentProperty, ComponentProperty) {
     fn to_serde(&self, _cx: &AppContext) -> SerdeProperty {
-        let (property_type, value) = match &self.1 {
-            ComponentProperty::Bool(value) => (SerdePropertyType::Bool, value.to_string()),
-            ComponentProperty::Color(value) => (SerdePropertyType::Color, format_rgba(*value)),
-            ComponentProperty::Enum(value) => (SerdePropertyType::Enum, value.value.clone()),
-            ComponentProperty::Float(value) => (SerdePropertyType::Float, value.to_string()),
-            ComponentProperty::Text(value) => (SerdePropertyType::Text, value.clone()),
+        let (property_type, default, value) = match &self.2 {
+            ComponentProperty::Bool(value) => (
+                SerdePropertyType::Bool,
+                bool::from(self.1.clone()).to_string(),
+                value.to_string(),
+            ),
+            ComponentProperty::Color(value) => (
+                SerdePropertyType::Color,
+                format_rgba(self.1.clone().into()),
+                format_rgba(*value),
+            ),
+            ComponentProperty::Enum(value) => (
+                SerdePropertyType::Enum,
+                EnumProperty::from(self.1.clone()).value,
+                value.value.clone(),
+            ),
+            ComponentProperty::Float(value) => (
+                SerdePropertyType::Float,
+                f32::from(self.1.clone()).to_string(),
+                value.to_string(),
+            ),
+            ComponentProperty::Text(value) => (
+                SerdePropertyType::Text,
+                self.1.clone().into(),
+                value.clone(),
+            ),
         };
 
         SerdeProperty {
             key: self.0.clone(),
             value,
+            default,
             property_type,
         }
     }
@@ -52,7 +74,9 @@ impl ToSerde<SerdeDiv> for DivComponent {
             properties: self
                 .properties
                 .iter()
-                .map(|(key, value)| (key.to_string(), value.read(cx).clone()).to_serde(cx))
+                .map(|(key, (default, value))| {
+                    (key.to_string(), default.clone(), value.read(cx).clone()).to_serde(cx)
+                })
                 .collect(),
         }
     }
@@ -65,7 +89,9 @@ impl ToSerde<SerdeText> for TextComponent {
             properties: self
                 .properties
                 .iter()
-                .map(|(key, value)| (key.to_string(), value.read(cx).clone()).to_serde(cx))
+                .map(|(key, (default, value))| {
+                    (key.to_string(), default.clone(), value.read(cx).clone()).to_serde(cx)
+                })
                 .collect(),
         }
     }

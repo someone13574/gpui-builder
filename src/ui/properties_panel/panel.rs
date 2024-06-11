@@ -47,7 +47,7 @@ impl PropertiesPanel {
 
         properties
             .into_iter()
-            .map(|(key, property)| Property::new(property, key, cx))
+            .map(|(key, (_, property))| Property::new(property, key, cx))
             .collect()
     }
 

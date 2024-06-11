@@ -24,39 +24,60 @@ impl FromSerde<SerdeComponent> for Component {
     }
 }
 
-impl FromSerde<SerdeProperty> for (String, ComponentProperty) {
+impl FromSerde<SerdeProperty> for (String, ComponentProperty, ComponentProperty) {
     fn from_serde(this: SerdeProperty, _cx: &mut AppContext) -> Self {
-        let value = match this.property_type {
-            SerdePropertyType::Bool => ComponentProperty::Bool(this.value.parse().unwrap()),
-            SerdePropertyType::Color => ComponentProperty::Color(parse_rgba(&this.value).unwrap()),
-            SerdePropertyType::Enum => ComponentProperty::Enum({
+        let (default, value) = match this.property_type {
+            SerdePropertyType::Bool => (
+                ComponentProperty::Bool(this.default.parse().unwrap()),
+                ComponentProperty::Bool(this.value.parse().unwrap()),
+            ),
+            SerdePropertyType::Color => (
+                ComponentProperty::Color(parse_rgba(&this.default).unwrap()),
+                ComponentProperty::Color(parse_rgba(&this.value).unwrap()),
+            ),
+            SerdePropertyType::Enum => {
                 let mut enum_prop = match this.key.as_str() {
                     "display" => display_enum_property(),
                     "overflow_x" | "overflow_y" => overflow_enum_property(),
                     "cursor_style" => cursor_enum_property(),
                     key => unreachable!("Unknown enum property {key}"),
                 };
+                let mut default_enum_prop = enum_prop.clone();
+
                 enum_prop.value.clone_from(&this.value);
-                enum_prop
-            }),
-            SerdePropertyType::Float => ComponentProperty::Float(this.value.parse().unwrap()),
-            SerdePropertyType::Text => ComponentProperty::Text(this.value.clone()),
+                default_enum_prop.value.clone_from(&this.default);
+
+                (
+                    ComponentProperty::Enum(default_enum_prop),
+                    ComponentProperty::Enum(enum_prop),
+                )
+            }
+            SerdePropertyType::Float => (
+                ComponentProperty::Float(this.default.parse().unwrap()),
+                ComponentProperty::Float(this.value.parse().unwrap()),
+            ),
+            SerdePropertyType::Text => (
+                ComponentProperty::Text(this.default.clone()),
+                ComponentProperty::Text(this.value.clone()),
+            ),
         };
 
-        (this.key.clone(), value)
+        (this.key.clone(), default, value)
     }
 }
 
 impl FromSerde<SerdeDiv> for DivComponent {
     fn from_serde(this: SerdeDiv, cx: &mut AppContext) -> Self {
-        let properties: Vec<(String, ComponentProperty)> = this
+        let properties: Vec<(String, ComponentProperty, ComponentProperty)> = this
             .properties
             .into_iter()
             .map(|property| FromSerde::<SerdeProperty>::from_serde(property, cx))
             .collect();
         let properties = properties
             .into_iter()
-            .map(|(key, property)| (key, cx.new_model(|_| property)))
+            .map(|(key, default_property, property)| {
+                (key, (default_property, cx.new_model(|_| property)))
+            })
             .collect();
 
         let this_component = DivComponent {
@@ -79,19 +100,21 @@ impl FromSerde<SerdeDiv> for DivComponent {
 }
 
 impl FromSerde<SerdeText> for TextComponent {
-    fn from_serde(value: SerdeText, cx: &mut AppContext) -> Self {
-        let properties: Vec<(String, ComponentProperty)> = value
+    fn from_serde(this: SerdeText, cx: &mut AppContext) -> Self {
+        let properties: Vec<(String, ComponentProperty, ComponentProperty)> = this
             .properties
             .into_iter()
             .map(|property| FromSerde::<SerdeProperty>::from_serde(property, cx))
             .collect();
         let properties = properties
             .into_iter()
-            .map(|(key, property)| (key, cx.new_model(|_| property)))
+            .map(|(key, default_property, property)| {
+                (key, (default_property, cx.new_model(|_| property)))
+            })
             .collect();
 
         TextComponent {
-            id: value.id,
+            id: this.id,
             parent: None,
             properties,
         }

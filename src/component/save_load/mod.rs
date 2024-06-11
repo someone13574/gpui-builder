@@ -1,4 +1,5 @@
 pub mod from_serde;
+pub mod rust_generator;
 pub mod to_serde;
 
 use serde::{Deserialize, Serialize};
@@ -28,6 +29,7 @@ pub struct SerdeText {
 pub struct SerdeProperty {
     pub key: String,
     pub value: String,
+    pub default: String,
     pub property_type: SerdePropertyType,
 }
 

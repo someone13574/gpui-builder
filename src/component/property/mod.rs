@@ -23,19 +23,20 @@ impl ComponentProperty {
     }
 }
 
-pub fn to_model<T: Into<ComponentProperty>>(
+pub fn to_model_with_default<T: Into<ComponentProperty>>(
     property: T,
     cx: &mut AppContext,
-) -> Model<ComponentProperty> {
-    property.into().to_model(cx)
+) -> (ComponentProperty, Model<ComponentProperty>) {
+    let property = property.into();
+    (property.clone(), property.to_model(cx))
 }
 
 pub fn read_properties(
-    properties: &IndexMap<String, Model<ComponentProperty>>,
+    properties: &IndexMap<String, (ComponentProperty, Model<ComponentProperty>)>,
     cx: &mut AppContext,
 ) -> IndexMap<String, ComponentProperty> {
     properties
         .iter()
-        .map(|(key, value)| (key.to_string(), value.read(cx).clone()))
+        .map(|(key, (_, value))| (key.to_string(), value.read(cx).clone()))
         .collect()
 }

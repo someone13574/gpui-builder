@@ -5,12 +5,15 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-async-channel = "2.3.1"
 gpui = { git = "https://github.com/zed-industries/zed", rev = "ddb551c794345538dbef112c5bcc2ae99f27b07f" }
 indexmap = "2.2.6"
 lazy_static = "1.4.0"
 notify = "6.1.1"
+prettyplease = "0.2.20"
+proc-macro2 = "1.0.85"
+quote = "1.0.36"
 rfd = "0.14.1"
 serde = "1.0.203"
 serde_json = "1.0.117"
+syn = { version = "2.0.66", features = ["full", "extra-traits"] }
 uuid = { version = "1.8.0", features = ["v4"] }

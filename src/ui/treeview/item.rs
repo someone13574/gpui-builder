@@ -68,10 +68,13 @@ impl TreeviewItem {
                 })
                 .detach(),
             Component::Text(component) => {
-                cx.observe(component.properties.get("text").unwrap(), |this, _, cx| {
-                    this.cached_text = get_text(&this.component, cx);
-                    cx.notify();
-                })
+                cx.observe(
+                    &component.properties.get("text").unwrap().1,
+                    |this, _, cx| {
+                        this.cached_text = get_text(&this.component, cx);
+                        cx.notify();
+                    },
+                )
                 .detach();
             }
         }
@@ -135,7 +138,7 @@ fn get_text(component: &Component, cx: &AppContext) -> String {
     match component {
         Component::Div(_) => "div:".to_string(),
         Component::Text(component) => {
-            let text_property = component.properties.get("text").unwrap().read(cx).clone();
+            let text_property = component.properties.get("text").unwrap().1.read(cx).clone();
             let text_property: String = text_property.into();
             format!("\"{text_property}\"")
         }
