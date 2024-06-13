@@ -21,7 +21,12 @@ impl ColorProperty {
             let text_model = TextModel::new(format_rgba(property_value), cx);
             Self::observe_entry(&text_model, cx);
 
-            let text_entry = TextEntry::new(text_model, |char| char.is_ascii_hexdigit(), cx);
+            let text_entry = TextEntry::new(
+                text_model,
+                |char| char.is_ascii_hexdigit(),
+                |text| parse_rgba(text).is_some(),
+                cx,
+            );
 
             Self {
                 property,

@@ -1,15 +1,17 @@
 use gpui::*;
+use prelude::FluentBuilder;
 use uuid::Uuid;
 
 use crate::appearance::colors;
 
 pub struct TextModel {
     pub text: String,
+    pub valid: bool,
 }
 
 impl TextModel {
     pub fn new(text: String, cx: &mut AppContext) -> Model<Self> {
-        cx.new_model(|_cx| Self { text })
+        cx.new_model(|_cx| Self { text, valid: true })
     }
 }
 
@@ -18,12 +20,14 @@ pub struct TextEntry {
     model: Model<TextModel>,
     focus_handle: FocusHandle,
     filter_input: fn(char) -> bool,
+    valid: fn(&str) -> bool,
 }
 
 impl TextEntry {
     pub fn new<V: 'static>(
         model: Model<TextModel>,
         filter_input: fn(char) -> bool,
+        valid: fn(&str) -> bool,
         cx: &mut ViewContext<V>,
     ) -> View<Self> {
         cx.new_view(|cx| {
@@ -32,6 +36,7 @@ impl TextEntry {
                 id: Uuid::new_v4(),
                 model,
                 filter_input,
+                valid,
                 focus_handle: cx.focus_handle(),
             }
         })
@@ -41,9 +46,12 @@ impl TextEntry {
 impl Render for TextEntry {
     fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
         let text = self.model.read(cx).text.clone();
+        let valid = (self.valid)(&text);
+
         div()
             .w_full()
             .border_color(*colors::BORDER)
+            .when(!valid, |this_div| this_div.border_color(red()))
             .border_1()
             .rounded(px(8.0))
             .px_1()

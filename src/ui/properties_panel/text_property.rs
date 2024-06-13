@@ -20,7 +20,7 @@ impl TextProperty {
             let text_model = TextModel::new(property_value, cx);
             Self::observe_entry(&text_model, cx);
 
-            let text_entry = TextEntry::new(text_model, |_| true, cx);
+            let text_entry = TextEntry::new(text_model, |_| true, |_| true, cx);
 
             Self {
                 property,

@@ -20,7 +20,12 @@ impl FloatProperty {
             let text_model = TextModel::new(property_value.to_string(), cx);
             Self::observe_entry(&text_model, cx);
 
-            let text_entry = TextEntry::new(text_model, |char| char.is_ascii_hexdigit(), cx);
+            let text_entry = TextEntry::new(
+                text_model,
+                |char| char.is_ascii_hexdigit(),
+                |text| text.parse::<f32>().is_ok(),
+                cx,
+            );
 
             Self {
                 property,
