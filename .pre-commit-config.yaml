@@ -14,19 +14,12 @@ repos:
     hooks:
       - id: forbid-crlf
       - id: forbid-tabs
-  - repo: https://github.com/doublify/pre-commit-rust
-    rev: v1.0
-    hooks:
-      - id: clippy
-  - repo: local
-    hooks:
-      - id: fmt
-        name: fmt
-        entry: cargo +nightly fmt
-        language: system
-        types: [rust]
-        args: ["--"]
   - repo: https://github.com/crate-ci/typos
     rev: v1.16.5
     hooks:
       - id: typos
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+      - id: clippy
+      - id: fmt

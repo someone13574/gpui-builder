@@ -6,12 +6,11 @@ use crate::appearance::colors;
 
 pub struct TextModel {
     pub text: String,
-    pub valid: bool,
 }
 
 impl TextModel {
     pub fn new(text: String, cx: &mut AppContext) -> Model<Self> {
-        cx.new_model(|_cx| Self { text, valid: true })
+        cx.new_model(|_cx| Self { text })
     }
 }
 
