@@ -39,7 +39,7 @@ impl Render for CheckBox {
             .when(self.checked, |this| {
                 this.bg(rgb(0xff0000)).p(px(2.0)).child(
                     svg()
-                        .path("assets/icons/check.svg") // TODO: Fix this
+                        .path("assets/icons/check.svg")
                         .text_color(white())
                         .size_full(),
                 )
