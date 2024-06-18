@@ -7,7 +7,7 @@ This is an application which aims to speed up the visual aspect of designing an 
 
 ## Contributing
 
-Contributions are always welcome! Please open a draft PR while you work on any larger changes as well as discussing them in an issue beforehand. You can also comment on an issue if you would like to be assigned to it. Note that many issues have pre-requisite issues might need to be done before work can be started (mostly save/load).
+Contributions are always welcome! Please open a draft PR while you work on any larger changes as well as discussing them in an issue beforehand. You can also comment on an issue if you would like to be assigned to it. Note that many issues have pre-requisite issues might need to be done before work can be started (mostly save/load). This project uses pre-commit for CI, so you may need to install pre-commit.
 
 ## License
 
