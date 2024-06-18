@@ -1,8 +1,8 @@
-use gpui::*;
-
-use anyhow::{Context, Result};
 use std::borrow::Cow;
 use std::fs;
+
+use anyhow::{Context, Result};
+use gpui::*;
 
 pub struct Assets {}
 
