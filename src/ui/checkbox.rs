@@ -1,6 +1,8 @@
 use gpui::prelude::*;
 use gpui::*;
 
+use crate::appearance::colors;
+
 pub struct CheckBox {
     model: Model<bool>,
 
@@ -37,9 +39,9 @@ impl Render for CheckBox {
             .border_color(rgb(0x505050))
             .when(self.hovered, |this| this.bg(rgba(0xffffff04)))
             .when(self.checked, |this| {
-                this.bg(rgb(0xff0000)).p(px(2.0)).child(
+                this.bg(*colors::LIST_ITEM_ACTIVE).p(px(2.0)).child(
                     svg()
-                        .path("assets/icons/check.svg") // TODO: Fix this
+                        .path("assets/icons/check.svg")
                         .text_color(white())
                         .size_full(),
                 )
