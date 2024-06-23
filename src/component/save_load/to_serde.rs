@@ -22,18 +22,31 @@ impl ToSerde<SerdeComponent> for Component {
 
 impl ToSerde<SerdeProperty> for (String, ComponentProperty) {
     fn to_serde(&self, _cx: &AppContext) -> SerdeProperty {
-        let (property_type, value) = match &self.1 {
-            ComponentProperty::Bool(value) => (SerdePropertyType::Bool, value.to_string()),
-            ComponentProperty::Color(value) => (SerdePropertyType::Color, format_rgba(*value)),
-            ComponentProperty::Enum(value) => (SerdePropertyType::Enum, value.value.clone()),
-            ComponentProperty::Float(value) => (SerdePropertyType::Float, value.to_string()),
-            ComponentProperty::Text(value) => (SerdePropertyType::Text, value.clone()),
+        let (property_type, value, extra_data) = match &self.1 {
+            ComponentProperty::Bool(value) => {
+                (SerdePropertyType::Bool, value.to_string(), String::new())
+            }
+            ComponentProperty::Color(value) => {
+                (SerdePropertyType::Color, format_rgba(*value), String::new())
+            }
+            ComponentProperty::Enum(value) => (
+                SerdePropertyType::Enum,
+                value.value.clone(),
+                value.extra_data.clone(),
+            ),
+            ComponentProperty::Float(value) => {
+                (SerdePropertyType::Float, value.to_string(), String::new())
+            }
+            ComponentProperty::Text(value) => {
+                (SerdePropertyType::Text, value.clone(), String::new())
+            }
         };
 
         SerdeProperty {
             key: self.0.clone(),
             value,
             property_type,
+            extra_data,
         }
     }
 }

@@ -10,7 +10,9 @@ pub mod overflow;
 pub struct EnumProperty {
     pub value: String,
     pub valid: Vec<String>,
+    pub extra_data: String,
     pub to_enum: fn(&str) -> Box<dyn Any>,
+    pub to_code: fn(&str, &str) -> String,
 }
 
 impl EnumProperty {

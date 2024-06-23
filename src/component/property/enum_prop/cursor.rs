@@ -31,7 +31,9 @@ pub fn cursor_enum_property() -> EnumProperty {
         .into_iter()
         .map(|string| string.to_string())
         .collect(),
+        extra_data: String::new(),
         to_enum: text_to_enum,
+        to_code,
     }
 }
 
@@ -59,4 +61,9 @@ fn text_to_enum(text: &str) -> Box<dyn Any> {
         "Context Menu" => CursorStyle::ContextualMenu,
         _ => unreachable!("Invalid option {text}"),
     })
+}
+
+fn to_code(text: &str, _extra_data: &str) -> String {
+    let cursor_style: CursorStyle = *text_to_enum(text).downcast().unwrap();
+    format!(".cursor(CursorStyle::{:?})", cursor_style)
 }
