@@ -5,7 +5,9 @@ use crate::component::div::DivComponent;
 use crate::component::property::color_prop::parse_rgba;
 use crate::component::property::enum_prop::cursor::cursor_enum_property;
 use crate::component::property::enum_prop::display::display_enum_property;
-use crate::component::property::enum_prop::overflow::overflow_enum_property;
+use crate::component::property::enum_prop::overflow::{
+    overflow_enum_property, OverflowEnumDirection,
+};
 use crate::component::property::ComponentProperty;
 use crate::component::save_load::SerdePropertyType;
 use crate::component::text::TextComponent;
@@ -32,7 +34,8 @@ impl FromSerde<SerdeProperty> for (String, ComponentProperty) {
             SerdePropertyType::Enum => ComponentProperty::Enum({
                 let mut enum_prop = match this.key.as_str() {
                     "display" => display_enum_property(),
-                    "overflow_x" | "overflow_y" => overflow_enum_property(),
+                    "overflow_x" => overflow_enum_property(OverflowEnumDirection::X),
+                    "overflow_y" => overflow_enum_property(OverflowEnumDirection::Y),
                     "cursor_style" => cursor_enum_property(),
                     key => unreachable!("Unknown enum property {key}"),
                 };

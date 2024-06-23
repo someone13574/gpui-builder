@@ -4,7 +4,7 @@ use uuid::Uuid;
 
 use super::property::enum_prop::cursor::cursor_enum_property;
 use super::property::enum_prop::display::display_enum_property;
-use super::property::enum_prop::overflow::overflow_enum_property;
+use super::property::enum_prop::overflow::{overflow_enum_property, OverflowEnumDirection};
 use super::property::{to_model, ComponentProperty};
 use super::Component;
 
@@ -42,11 +42,11 @@ impl DivComponent {
         properties.insert("visible".to_string(), to_model(true, cx));
         properties.insert(
             "overflow_x".to_string(),
-            to_model(overflow_enum_property(), cx),
+            to_model(overflow_enum_property(OverflowEnumDirection::X), cx),
         );
         properties.insert(
             "overflow_y".to_string(),
-            to_model(overflow_enum_property(), cx),
+            to_model(overflow_enum_property(OverflowEnumDirection::Y), cx),
         );
         properties.insert("margin_left".to_string(), to_model(0.0, cx));
         properties.insert("margin_right".to_string(), to_model(0.0, cx));

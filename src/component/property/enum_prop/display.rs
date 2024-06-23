@@ -11,7 +11,9 @@ pub fn display_enum_property() -> EnumProperty {
             .into_iter()
             .map(|string| string.to_string())
             .collect(),
+        extra_data: String::new(),
         to_enum: text_to_enum,
+        to_code,
     }
 }
 
@@ -21,4 +23,13 @@ fn text_to_enum(text: &str) -> Box<dyn Any> {
         "Flex" => Display::Flex,
         _ => unreachable!("Invalid option {text}"),
     })
+}
+
+fn to_code(text: &str, _extra_data: &str) -> String {
+    match text {
+        "Block" => ".block()",
+        "Flex" => ".flex()",
+        _ => unreachable!(),
+    }
+    .to_string()
 }
